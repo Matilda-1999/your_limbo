@@ -539,7 +539,7 @@ export const SKILLS = {
     },
   },
 
-  // [파열] - 이 버전을 남기세요
+  // [파열]
 SKILL_RUPTURE: {
   id: "SKILL_RUPTURE",
   name: "파열",
@@ -558,7 +558,7 @@ SKILL_RUPTURE: {
     // 쿨타임 체크 및 남은 턴 계산 로직
       const lastUsed = caster.lastSkillTurn[skillId] || 0;
       if (lastUsed !== 0 && currentTurn - lastUsed < cooldown) {
-        const remainingTurns = cooldownPeriod - (currentTurn - lastUsed);
+        const remainingTurns = cooldown - (currentTurn - lastUsed);
         battleLog(`✦정보✦ ${caster.name}, [파열] 사용 불가: 쿨타임 ${remainingTurns}턴 남음.`);
         return false;
       }
