@@ -366,121 +366,113 @@ function confirmAction() {
   syncUI();
 }
 
-  async function executeBattleTurn() {
-  DOM.executeBtn.style.display = "none";
-  
-  // [1] 기믹성 스킬 우선 발동 (아군 행동 전)
-  // 예고된 스킬이 기믹(GIMMICK_)이거나 특정 디버프형이면 즉시 실행합니다.
-  const actionId = state.enemyPreviewAction?.skillId;
-  const actionData = MONSTER_SKILLS[actionId];
-  
-  const activeBoss = state.enemyCharacters.find(e => e.isAlive && (e.name.includes("테르모르") || e.name.includes("카르나블룸")));
+async function executeBattleTurn() {
+    DOM.executeBtn.style.display = "none";
 
-  if (activeBoss && actionData && (actionId.startsWith("GIMMICK_") || actionData.type?.includes("디버프"))) {
-    log(`\n<b>[태세 전환] ${activeBoss.name}:</b> ${actionData.name}`);
-    actionData.execute(activeBoss, state.allyCharacters, state.enemyCharacters, log, {
-      ...state,
-      calculateDamage: (a, d, p, t, o = {}) => BattleEngine.calculateDamage(a, d, p, t, {
-        ...o, gimmickData: MONSTER_SKILLS, parseSafeCoords: Utils.parseSafeCoords, battleLog: log
-      }),
-      applyHeal: BattleEngine.applyHeal,
-      utils: Utils
-    });
-    syncUI();
-    await new Promise((r) => setTimeout(r, 600));
-  }
+    const actionId = state.enemyPreviewAction?.skillId;
+    const actionData = MONSTER_SKILLS[actionId];
 
-  log(`\n\n☂︎ 지금부터 5 분 동안 행동을 게시해 주세요.\n\n`);
+    // 보스 탐색 (중복 선언 방지를 위해 상단에서 한 번만 수행)
+    const activeBoss = state.enemyCharacters.find(
+      (e) => e.isAlive && (e.name.includes("테르모르") || e.name.includes("카르나블룸"))
+    );
 
-  // [2] 아군 행동 실행 (이때 안전지대 판정이 실시간으로 적용됨)
-  for (const action of state.playerActionsQueue) {
-    const { caster, skill, targetId, moveDelta } = action;
-    if (!caster.isAlive) continue;
-
-    if (action.type === "skill") {
-      const target = Utils.findCharacterById(targetId, state.allyCharacters, state.enemyCharacters, state.mapObjects);
-      log(`✦ ${caster.name}, [${skill.name}] 시전.`);
-      
-      skill.execute(caster, target, state.allyCharacters, state.enemyCharacters, log, {
+    // [1] 기믹성 스킬 우선 발동 (아군 행동 전)
+    // 예고된 스킬이 기믹(GIMMICK_)이거나 특정 디버프형이면 즉시 실행하여 '안전지대' 등을 활성화합니다.
+    if (activeBoss && actionData && (actionId.startsWith("GIMMICK_") || actionData.type?.includes("디버프"))) {
+      log(`\n<b>[태세 전환] ${activeBoss.name}:</b> ${actionData.name}`);
+      actionData.execute(activeBoss, state.allyCharacters, state.enemyCharacters, log, {
         ...state,
-        currentTurn: state.currentTurn,
-        applyHeal: BattleEngine.applyHeal,
         calculateDamage: (a, d, p, t, o = {}) => BattleEngine.calculateDamage(a, d, p, t, {
-          ...o, gimmickData: MONSTER_SKILLS, parseSafeCoords: Utils.parseSafeCoords, battleLog: log
+          ...o,
+          gimmickData: MONSTER_SKILLS,
+          parseSafeCoords: Utils.parseSafeCoords,
+          battleLog: log
         }),
-        displayCharacters: syncUI,
-        mapObjects: state.mapObjects
+        applyHeal: BattleEngine.applyHeal,
+        utils: Utils
       });
-      if (!caster.lastSkillTurn) caster.lastSkillTurn = {};
-      caster.lastSkillTurn[skill.id] = state.currentTurn;
-    } else if (action.type === "move") {
-      const oldPos = `${caster.posX},${caster.posY}`;
-      delete state.characterPositions[oldPos];
-      caster.posX += moveDelta.dx;
-      caster.posY += moveDelta.dy;
-      state.characterPositions[`${caster.posX},${caster.posY}`] = caster.id;
-      log(`✦ ${caster.name}, (${caster.posX},${caster.posY})로 이동.`);
+      syncUI();
+      await new Promise((r) => setTimeout(r, 600));
     }
-    syncUI();
-    await new Promise((r) => setTimeout(r, 600));
-  }
 
-  // [3] 적군 공격 스킬 실행 (아군 행동 후 반격)
-  if (activeBoss && actionData && actionId.startsWith("SKILL_")) {
-    log(`\n\n☂︎ ${activeBoss.name}의 반격이 시작됩니다.\n\n`);
-    await performEnemyAction(activeBoss); 
-    syncUI();
-    await new Promise(r => setTimeout(r, 600));
-  }
-  // (3) 적군 행동 실행
-  resolveMinionGimmicks();
+    log(`\n\n☂︎ 지금부터 5 분 동안 행동을 게시해 주세요.\n\n`);
 
-  // 보스 검색 중복 제거
-  const activeBoss = state.enemyCharacters.find(
-    (e) => e.isAlive && (e.name.includes("테르모르") || e.name.includes("카르나블룸"))
-  );
-  const turnOwner = activeBoss ? activeBoss.name : "적군";
-  log(`\n\n☂︎ ${turnOwner}의 반격이 시작됩니다.\n\n`);
+    // [2] 아군 행동 실행 (이때 안전지대 판정이 실시간으로 적용됨)
+    for (const action of state.playerActionsQueue) {
+      const { caster, skill, targetId, moveDelta } = action;
+      if (!caster.isAlive) continue;
 
-  for (const enemy of state.enemyCharacters.filter(e => e.isAlive)) {
-    await performEnemyAction(enemy); 
-    syncUI();
-    await new Promise(r => setTimeout(r, 600));
-  }
+      if (action.type === "skill") {
+        const target = Utils.findCharacterById(targetId, state.allyCharacters, state.enemyCharacters, state.mapObjects);
+        log(`✦ ${caster.name}, [${skill.name}] 시전.`);
 
-  // 마무리 (상태이상 갱신 및 다음 턴 준비)
-  [...state.allyCharacters, ...state.enemyCharacters].forEach((c) => {
-    if (c.isAlive) {
-    // 1. [추가] 사라질 버프들을 먼저 식별하여 특수 효과(체력 흡수 등) 처리
-    c.buffs.forEach((b) => {
-      // 이번 턴이 끝나면 사라질 버프 (제거 직전 상태)
-      if (!b.unremovable && b.turnsLeft === 1) { 
-        
-        // [의지] 효과: 남은 보호막만큼 체력 흡수
-        if (b.effect && b.effect.healOnRemove) {
-          const healAmount = Math.round(c.shield);
-          c.currentHp = Math.min(c.maxHp, c.currentHp + healAmount);
-          log(`✦효과 종료✦ ${c.name}, [${b.name}]이 해제되며 체력을 ${healAmount}만큼 흡수합니다.`);
-          c.shield = 0; // 흡수 후 보호막 초기화
-        }
+        skill.execute(caster, target, state.allyCharacters, state.enemyCharacters, log, {
+          ...state,
+          currentTurn: state.currentTurn,
+          applyHeal: BattleEngine.applyHeal,
+          calculateDamage: (a, d, p, t, o = {}) => BattleEngine.calculateDamage(a, d, p, t, {
+            ...o,
+            gimmickData: MONSTER_SKILLS,
+            parseSafeCoords: Utils.parseSafeCoords,
+            battleLog: log
+          }),
+          displayCharacters: syncUI,
+          mapObjects: state.mapObjects
+        });
+        if (!caster.lastSkillTurn) caster.lastSkillTurn = {};
+        caster.lastSkillTurn[skill.id] = state.currentTurn;
+      } else if (action.type === "move") {
+        const oldPos = `${caster.posX},${caster.posY}`;
+        delete state.characterPositions[oldPos];
+        caster.posX += moveDelta.dx;
+        caster.posY += moveDelta.dy;
+        state.characterPositions[`${caster.posX},${caster.posY}`] = caster.id;
+        log(`✦ ${caster.name}, (${caster.posX},${caster.posY})로 이동.`);
+      }
+      syncUI();
+      await new Promise((r) => setTimeout(r, 600));
+    }
 
-        // [의지] 효과: 누적 대미지 데이터 초기화
-        if (b.effect && b.effect.resetsTotalDamageTaken) {
-          c.totalDamageTakenThisBattle = 0;
-        }
+    // [3] 적군 공격 및 마무리 단계
+    resolveMinionGimmicks();
+
+    const turnOwner = activeBoss ? activeBoss.name : "적군";
+    log(`\n\n☂︎ ${turnOwner}의 반격이 시작됩니다.\n\n`);
+
+    // 모든 살아있는 적군(보스 포함) 행동 실행
+    // 만약 예고된 스킬이 공격형(SKILL_)이라면 performEnemyAction에서 처리됩니다.
+    for (const enemy of state.enemyCharacters.filter(e => e.isAlive)) {
+      await performEnemyAction(enemy);
+      syncUI();
+      await new Promise(r => setTimeout(r, 600));
+    }
+
+    // [4] 마무리 (상태이상 갱신 및 다음 턴 준비)
+    [...state.allyCharacters, ...state.enemyCharacters].forEach((c) => {
+      if (c.isAlive) {
+        c.buffs.forEach((b) => {
+          if (!b.unremovable && b.turnsLeft === 1) {
+            if (b.effect && b.effect.healOnRemove) {
+              const healAmount = Math.round(c.shield);
+              c.currentHp = Math.min(c.maxHp, c.currentHp + healAmount);
+              log(`✦효과 종료✦ ${c.name}, [${b.name}]이 해제되며 체력을 ${healAmount}만큼 흡수합니다.`);
+              c.shield = 0;
+            }
+            if (b.effect && b.effect.resetsTotalDamageTaken) {
+              c.totalDamageTakenThisBattle = 0;
+            }
+          }
+        });
+
+        c.buffs.forEach((b) => { if (!b.unremovable) b.turnsLeft--; });
+        c.debuffs.forEach((d) => d.turnsLeft--);
+        c.buffs = c.buffs.filter((b) => b.turnsLeft > 0 || b.unremovable);
+        c.debuffs = c.debuffs.filter((d) => d.turnsLeft > 0);
       }
     });
 
-    // 2. 실제 턴 수 감소 및 필터링
-    c.buffs.forEach((b) => { if (!b.unremovable) b.turnsLeft--; });
-    c.debuffs.forEach((d) => d.turnsLeft--);
-    
-    c.buffs = c.buffs.filter((b) => b.turnsLeft > 0 || b.unremovable);
-    c.debuffs = c.debuffs.filter((d) => d.turnsLeft > 0);
-  }
-});
-
-  checkMapShrink();
+    checkMapShrink();
 
   const result = (typeof BattleEngine.checkBattleEnd === 'function') 
     ? BattleEngine.checkBattleEnd(state.allyCharacters, state.enemyCharacters)
