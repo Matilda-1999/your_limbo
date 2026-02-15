@@ -16,6 +16,8 @@ export const SKILLS = {
         const shieldAmount = Math.round(
           caster.currentHp * 2.0 + caster.def * 2.0
         );
+        caster.shield += shieldAmount;
+        
         caster.removeBuffById("iron_fortress");
         caster.addBuff("iron_fortress", "[철옹성]", 3, {
           description: "자신에게 보호막 부여. 3턴간 아군 피해 대신 받음.",
@@ -33,6 +35,10 @@ export const SKILLS = {
         // 짝수 턴: 의지
         const damageTaken = caster.totalDamageTakenThisBattle;
         const shieldAmount = Math.round(damageTaken * 2.5);
+
+        // 1. 실제 보호막 수치 반영
+        caster.shield += shieldAmount;
+        
         caster.removeBuffById("will_buff");
         caster.addBuff("will_buff", "[의지]", 3, {
           description:
@@ -41,13 +47,7 @@ export const SKILLS = {
           healOnRemove: true,
           resetsTotalDamageTaken: true,
         });
-        battleLog(
-          `✦스킬✦ ${
-            caster.name
-          }, [근성](짝수) 사용: [의지] 효과 발동. (받은 피해: ${damageTaken}) 보호막 +${shieldAmount} (3턴). (현재 총 보호막: ${caster.shield.toFixed(
-            0
-          )})`
-        );
+        battleLog(`✦스킬✦ ${caster.name}, [근성](짝수) 사용: [의지] 발동. (누적 피해: ${damageTaken}) 보호막 +${shieldAmount}. (현재 총 보호막: ${Math.round(caster.shield)})`);
       }
       return true;
     },
