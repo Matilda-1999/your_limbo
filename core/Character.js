@@ -198,28 +198,20 @@ export class Character {
         }
     }
 
-    지우 님, 현재 updateBuffs 코드를 보니 **[의지]**의 체력 흡수와 기록 초기화는 완벽하게 구현되어 있습니다. 하지만 앞서 이야기한 [허상]의 턴 종료 추가 공격 로직은 아직 빠져 있네요.
-
-또한, 받은 피해의 총합 홀/수 계산이 정확하게 작동하려면 누적 대미지 데이터가 업데이트되는 시점의 정밀도가 중요합니다. 지우 님이 주신 updateBuffs를 바탕으로 [허상] 추가 공격을 더하고, 홀/수 판정이 꼬이지 않도록 보완한 최종 버전을 정리해 드릴게요.
-
-🛠️ Character.js 내 updateBuffs 최종 수정본
-이 코드로 교체하시면 **[의지]**의 생존 기믹과 **[허상]**의 추격 기믹이 동시에 작동합니다.
-
-JavaScript
-updateBuffs(logFn, allies = [], enemies = [], state = {}) {
-    this.buffs.forEach(buff => {
-        buff.turnsLeft--;
-
-        // 1. [허상] 턴 종료 시 추가 공격 실행
-        if (buff.effect && buff.effect.extraAttack && buff.turnsLeft === 0) {
-            // 저장된 타겟 ID로 살아있는 적을 찾음
-            const target = enemies.find(e => e.id === buff.effect.targetId && e.isAlive);
-            if (target) {
-                const dmg = Math.round(this.getEffectiveStat("atk") * (buff.effect.powerMultiplier || 0.5));
-                logFn(`✦허상:추격✦ ${this.name}의 잔영이 가장 강한 적 ${target.name}에게 ${dmg}의 피해를 입힙니다!`);
-                target.takeDamage(dmg, logFn, this, enemies, allies, state);
+    updateBuffs(logFn, allies = [], enemies = [], state = {}) {
+        this.buffs.forEach(buff => {
+            buff.turnsLeft--;
+    
+            // 1. [허상] 턴 종료 시 추가 공격 실행
+            if (buff.effect && buff.effect.extraAttack && buff.turnsLeft === 0) {
+                // 저장된 타겟 ID로 살아 있는 적을 찾음
+                const target = enemies.find(e => e.id === buff.effect.targetId && e.isAlive);
+                if (target) {
+                    const dmg = Math.round(this.getEffectiveStat("atk") * (buff.effect.powerMultiplier || 0.5));
+                    logFn(`✦허상:추격✦ ${this.name}의 잔영이 가장 강한 적 ${target.name}에게 ${dmg}의 피해를 입힙니다!`);
+                    target.takeDamage(dmg, logFn, this, enemies, allies, state);
+                }
             }
-        }
 
         // 2. [의지] 버프 종료 시 기믹
         if (buff.turnsLeft === 0) {
@@ -239,6 +231,38 @@ updateBuffs(logFn, allies = [], enemies = [], state = {}) {
     this.buffs = this.buffs.filter(b => b.turnsLeft > 0);
 }
 
+    updateDebuffs(logFn, allies = [], enemies = [], state = {}) {
+        this.debuffs.forEach(debuff => {
+            debuff.turnsLeft--;
+
+            // [진리] 중독 & 맹독 처리
+            if (debuff.id === "poison_truth") {
+                // 1. [중독] 결산: 현재 체력의 1.5% 피해
+                const poisonDmg = Math.max(1, Math.round(this.currentHp * 0.015));
+                logFn(`✦중독✦ ${this.name}이(가) 독으로 ${poisonDmg}의 피해를 입습니다.`);
+                
+                // 데미지 입힘 (공격자 null 처리)
+                this.takeDamage(poisonDmg, logFn, null, enemies, allies, state);
+
+                // 2. [맹독] 결산 후 추가 공격 (시전자의 공격력 x 30%)
+                const caster = allies.find(a => a.id === debuff.effect.casterId);
+                if (caster && caster.isAlive) {
+                    const aliveEnemies = enemies.filter(e => e.isAlive);
+                    if (aliveEnemies.length > 0) {
+                        const randomTarget = aliveEnemies[Math.floor(Math.random() * aliveEnemies.length)];
+                        const venomDmg = Math.round(caster.getEffectiveStat("atk") * 0.3);
+                        
+                        logFn(`✦맹독✦ 결산 완료. ${caster.name}의 맹독이 ${randomTarget.name}을(를) 추가 타격합니다!`);
+                        randomTarget.takeDamage(venomDmg, logFn, caster, enemies, allies, state);
+                    }
+                }
+            }
+        });
+
+        // 턴이 다 된 디버프 제거
+        this.debuffs = this.debuffs.filter(d => d.turnsLeft > 0);
+    }
+    
     addDebuff(id, name, turns, effect) {
         const existing = this.debuffs.find(d => d.id === id);
         if (existing && effect.maxStacks) {
