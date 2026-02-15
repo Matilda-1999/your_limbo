@@ -308,7 +308,7 @@ export const SKILLS = {
     description: "모든 아군의 방어력을 강화하고 자신에게 [실재] 스택을 부여합니다. 3턴 연속 사용은 불가능합니다.",
     targetType: "all_allies",
     targetSelection: "all_allies",
-    execute: (caster, allies, enemies, battleLog, state) => {
+    execute: (caster, target, allies, enemies, battleLog, state) => {
       const { currentTurn } = state;
       const skillId = "SKILL_REALITY";
       
