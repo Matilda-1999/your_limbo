@@ -366,7 +366,6 @@ function confirmAction() {
   syncUI();
 }
 
-async function executeBattleTurn() {
   async function executeBattleTurn() {
   DOM.executeBtn.style.display = "none";
   
