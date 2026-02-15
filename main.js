@@ -304,33 +304,30 @@ async function executeBattleTurn() {
         if (!caster.isAlive) continue;
 
         if (action.type === "skill") {
-    const target = Utils.findCharacterById(targetId, state.allyCharacters, state.enemyCharacters, state.mapObjects);
-    log(`✦ ${caster.name}, [${skill.name}] 시전.`);
-    
-    // skills.js의 각 스킬 execute 구조에 맞게 인자를 재구성하여 전달합니다.
-    skill.execute(
-        caster, 
-        // 스킬이 단일 타겟팅인 경우 target을 전달, 광역인 경우 allies/enemies를 우선하도록 구성됨
-        skill.targetSelection === "enemy" || skill.targetSelection === "ally_or_self" ? target : state.allyCharacters,
-        skill.targetSelection === "enemy" ? state.enemyCharacters : state.enemyCharacters,
-        log, // 이 log 함수가 skills.js의 battleLog 매개변수로 들어갑니다.
-        {
-            currentTurn: state.currentTurn,
-            applyHeal: BattleEngine.applyHeal,
-            calculateDamage: (a, d, p, t, o) => BattleEngine.calculateDamage(a, d, p, t, {
-                ...o, 
-                gimmickData: MONSTER_SKILLS, 
-                parseSafeCoords: Utils.parseSafeCoords
-            }),
-            displayCharacters: syncUI, // UI 갱신 함수 전달
-            mapObjects: state.mapObjects
-        }
-    );
-    caster.lastSkillTurn[skill.id] = state.currentTurn;
-}
-                        
+            const target = Utils.findCharacterById(targetId, state.allyCharacters, state.enemyCharacters, state.mapObjects);
+            log(`✦ ${caster.name}, [${skill.name}] 시전.`);
+            
+            // 인자 순서와 state 객체 구성을 skills.js 구조에 맞게 전달
+            skill.execute(
+                caster, 
+                target, 
+                state.allyCharacters, 
+                state.enemyCharacters, 
+                log, 
+                {
+                    currentTurn: state.currentTurn,
+                    applyHeal: BattleEngine.applyHeal,
+                    calculateDamage: (a, d, p, t, o) => BattleEngine.calculateDamage(a, d, p, t, {
+                        ...o, 
+                        gimmickData: MONSTER_SKILLS, 
+                        parseSafeCoords: Utils.parseSafeCoords
+                    }),
+                    displayCharacters: syncUI,
+                    mapObjects: state.mapObjects
+                }
+            );
             caster.lastSkillTurn[skill.id] = state.currentTurn;
-        } else if (action.type === "move") {
+        } else if (action.type === "move") { // 바로 이 else 문이 에러가 났던 지점입니다.
             const oldPos = `${caster.posX},${caster.posY}`;
             delete state.characterPositions[oldPos];
             caster.posX += moveDelta.dx; 
