@@ -440,7 +440,6 @@ async function executeBattleTurn() {
             currentTurn: state.currentTurn,
             applyHeal: BattleEngine.applyHeal,
             calculateDamage: (a, d, p, t, o = {}) => {
-              // 실제 계산 엔진 호출
               const finalDamage = BattleEngine.calculateDamage(a, d, p, t, {
                 ...o,
                 gimmickData: MONSTER_SKILLS,
@@ -450,21 +449,19 @@ async function executeBattleTurn() {
     
               console.log(
                 `%c[아군 스킬 계산] %c${a.name} %c-> %c${d.name} | %c계수: ${p} | %c최종 대미지: ${finalDamage}`,
-                "color: #4da6ff; font-weight: bold;", // [아군 스킬 계산]
-                "color: white;", // 아군 이름
-                "color: gray;", // ->
-                "color: #ffcc00;", // 적군 이름
-                "color: #00ff00;", // 계수
-                "color: #ff0000; font-weight: bold;" // 최종 대미지
+                "color: #4da6ff; font-weight: bold;",
+                "color: white;",
+                "color: gray;",
+                "color: #ffcc00;",
+                "color: #00ff00;",
+                "color: #ff0000; font-weight: bold;"
               );
-    
               return finalDamage;
-            },
-    
+            }, // calculateDamage 종료
             displayCharacters: syncUI,
             mapObjects: state.mapObjects,
-          }
-        );
+          } // 객체 종료
+        ); // skill.execute 종료
     
         if (!caster.lastSkillTurn) caster.lastSkillTurn = {};
         caster.lastSkillTurn[skill.id] = state.currentTurn;
