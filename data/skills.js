@@ -477,12 +477,12 @@ export const SKILLS = {
       const scratchStacks = target.getDebuffStacks("scratch");
       if (scratchStacks > 0) {
         battleLog(`✦효과✦ ${target.name} [흠집 ${scratchStacks}스택]: 추가타 발생.`);
-        let bonusPower = 0.25;
-        if (scratchStacks === 2) bonusPower = 0.35;
-        else if (scratchStacks >= 3) bonusPower = 0.45;
+        let bonusPower = 0.08;
+        if (scratchStacks === 2) bonusPower = 0.12;
+        else if (scratchStacks >= 3) bonusPower = 0.16;
 
         for (let i = 0; i < 2; i++) {
-          const bonusDamage = calculateDamage(caster, target, bonusPower, damageType, statTypeToUse);
+          const bonusDamage = calculateDamage(caster, target, bonusPower, "fixed", statTypeToUse);
           target.takeDamage(bonusDamage, battleLog, caster);
           battleLog(`  ✦추가 피해✦ [흠집 효과] ${i + 1}회: ${target.name}에게 ${bonusDamage} 추가 ${damageTypeKorean} 피해.`);
           if (!target.isAlive) break;
