@@ -381,12 +381,19 @@ async function executeBattleTurn() {
       skill.execute(caster, target, state.allyCharacters, state.enemyCharacters, log, {
         currentTurn: state.currentTurn,
         applyHeal: BattleEngine.applyHeal,
-        calculateDamage: (a, d, p, t, o) => BattleEngine.calculateDamage(a, d, p, t, {
-          ...o, gimmickData: MONSTER_SKILLS, parseSafeCoords: Utils.parseSafeCoords
+        // calculateDamage 인자 형식을 BattleEngine.js 수정안에 맞게 최적화
+        calculateDamage: (a, d, p, t, o = {}) => BattleEngine.calculateDamage(a, d, p, t, {
+          ...o, 
+          gimmickData: MONSTER_SKILLS, 
+          parseSafeCoords: Utils.parseSafeCoords,
+          battleLog: log // 로그 연동
         }),
         displayCharacters: syncUI,
-        mapObjects: state.mapObjects
+        mapObjects: state.mapObjects // [수정] 침전(SEDIMENTATION) 스킬에 필수적인 데이터
       });
+
+      // lastSkillTurn 객체 초기화 확인 및 기록
+      if (!caster.lastSkillTurn) caster.lastSkillTurn = {};
       caster.lastSkillTurn[skill.id] = state.currentTurn;
     } else if (action.type === "move") {
       const oldPos = `${caster.posX},${caster.posY}`;
@@ -513,7 +520,9 @@ async function performEnemyAction(enemy) {
   if (target) {
     if (provoke)
       log(`✦도발✦ ${enemy.name}이(가) ${target.name}에게 고정됩니다.`);
-    const dmg = BattleEngine.calculateDamage(enemy, target, 1.0, "physical");
+    const dmg = BattleEngine.calculateDamage(enemy, target, 1.0, "physical", {
+        battleLog: log
+    });
     target.takeDamage(
       dmg,
       log,
@@ -567,7 +576,11 @@ function syncUI() {
   updateFirebaseState();
 }
 
+let isFirebaseUpdating = false;
 async function updateFirebaseState() {
+  if (isFirebaseUpdating) return;
+
+  isFirebaseUpdating = true;
   try {
     const battleRef = ref(db, "liveBattle/currentSession");
     await set(battleRef, {
