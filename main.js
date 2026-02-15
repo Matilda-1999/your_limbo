@@ -192,7 +192,10 @@ function prepareNextTurnCycle() {
         console.groupEnd();
       
         const skillData = MONSTER_SKILLS[nextSkillId];
-        log(`\n\n"${skillData.script}"\n\n`); 
+        if (skillData) {
+        // script가 없으면 name을 출력하거나 빈 문자열 처리하여 undefined 방지
+        const scriptText = skillData.script || `\n<pre>${skillData.name} 준비 중...</pre>\n`;
+        log(`\n\n${scriptText}\n\n`);
 
       log(`\n\n ☂︎ 전원, 5 분 동안 행동해 주세요. \n\n`);
     }
