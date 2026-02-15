@@ -481,7 +481,7 @@ async function performEnemyAction(enemy) {
     applyHeal: BattleEngine.applyHeal
   };
   const success = actionData.execute(enemy, state.allyCharacters, state.enemyCharacters, log, extendedState);
-  if (success && hitCount === 0) log(`✦정보✦ 공격 범위 내에 대상이 없어 아무도 피해를 입지 않았습니다.`);
+  if (success && hitCount === 0) log(`✦정보✦ 범위 내에 대상이 없어 아무 일도 일어나지 않았습니다.`);
 }
 
 // 9. 초기화 및 전역 등록
