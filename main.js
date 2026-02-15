@@ -421,15 +421,32 @@ async function executeBattleTurn() {
           ...state,
           currentTurn: state.currentTurn,
           applyHeal: BattleEngine.applyHeal,
-          calculateDamage: (a, d, p, t, o = {}) => BattleEngine.calculateDamage(a, d, p, t, {
-            ...o,
-            gimmickData: MONSTER_SKILLS,
-            parseSafeCoords: Utils.parseSafeCoords,
-            battleLog: log
-          }),
+          calculateDamage: (a, d, p, t, o = {}) => {
+            // 실제 계산 엔진 호출
+            const finalDamage = BattleEngine.calculateDamage(a, d, p, t, {
+              ...o,
+              gimmickData: MONSTER_SKILLS,
+              parseSafeCoords: Utils.parseSafeCoords,
+              battleLog: log
+            });
+
+        console.log(
+          `%c[아군 스킬 계산] %c${a.name} %c-> %c${d.name} | %c계수: ${p} | %c최종 대미지: ${finalDamage}`,
+          'color: #4da6ff; font-weight: bold;', // [아군 스킬 계산]
+          'color: white;',                     // 아군 이름
+          'color: gray;',                      // ->
+          'color: #ffcc00;',                   // 적군 이름
+          'color: #00ff00;',                   // 계수
+          'color: #ff0000; font-weight: bold;' // 최종 대미지
+        );
+
+            return finalDamage;
+      },
+          
           displayCharacters: syncUI,
           mapObjects: state.mapObjects
         });
+        
         if (!caster.lastSkillTurn) caster.lastSkillTurn = {};
         caster.lastSkillTurn[skill.id] = state.currentTurn;
       } else if (action.type === "move") {
@@ -576,12 +593,16 @@ async function performEnemyAction(enemy) {
   // 2. 확장된 state 준비 (BattleEngine 유틸리티 포함)
   const extendedState = {
     ...state,
-    calculateDamage: (a, d, p, t, o = {}) => BattleEngine.calculateDamage(a, d, p, t, {
-      ...o,
-      gimmickData: MONSTER_SKILLS,
-      parseSafeCoords: Utils.parseSafeCoords,
-      battleLog: log
-    }),
+    calculateDamage: (a, d, p, t, o = {}) => {
+      const dmg = BattleEngine.calculateDamage(a, d, p, t, {
+        ...o, gimmickData: MONSTER_SKILLS, parseSafeCoords: Utils.parseSafeCoords, battleLog: log
+      });
+
+    console.log(`%c[적군 공격] %c${a.name} %c의 ${actionData.name} -> %c${d.name}: %c${dmg} 피해`, 
+        'color: #ffaa00;', 'color: white;', 'color: gray;', 'color: #ff4d4d;', 'color: #ff0000; font-weight: bold;');
+      return dmg;
+    },
+    
     applyHeal: BattleEngine.applyHeal
   };
 
