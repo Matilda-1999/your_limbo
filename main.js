@@ -183,6 +183,8 @@ function promptAllySelection() {
 }
 
 function startCharacterAction(char) {
+    if (!char) return;
+    
     DOM.allySelectDiv.style.display = "none";
     DOM.skillArea.style.display = "block";
     DOM.actingName.textContent = char.name;
@@ -191,15 +193,19 @@ function startCharacterAction(char) {
     DOM.confirmBtn.style.display = "none";
     state.selectedAction = null;
 
-    char.skills.forEach(skillId => {
+    const allSkillIds = Object.keys(SKILLS);
+
+    allSkillIds.forEach(skillId => {
         const skill = SKILLS[skillId];
         if (!skill) return;
 
         const btn = document.createElement("button");
         btn.textContent = skill.name;
         
-        const lastUsed = char.lastSkillTurn[skillId] || 0;
+        // 쿨다운 계산
+        const lastUsed = char.lastSkillTurn ? (char.lastSkillTurn[skillId] || 0) : 0;
         const isOnCooldown = skill.cooldown && (state.currentTurn - lastUsed < skill.cooldown);
+        
         if (isOnCooldown) { 
             btn.disabled = true; 
             btn.textContent += ` (${skill.cooldown - (state.currentTurn - lastUsed)}턴)`; 
@@ -208,7 +214,9 @@ function startCharacterAction(char) {
         btn.onclick = () => {
             state.selectedAction = { type: "skill", skill, caster: char, targetId: null };
             UI.renderSkillDescription(DOM.description, skill);
-            if (skill.targetSelection === "self" || skill.targetType.startsWith("all_")) {
+            
+            // 자가 타겟팅 또는 전체 타겟팅 스킬 처리
+            if (skill.targetSelection === "self" || (skill.targetType && skill.targetType.startsWith("all_"))) {
                 state.selectedAction.targetId = char.id;
                 DOM.targetName.textContent = "즉시 발동";
                 DOM.confirmBtn.style.display = "block";
@@ -221,6 +229,12 @@ function startCharacterAction(char) {
         DOM.skillButtons.appendChild(btn);
     });
 
+    // 이동 컨트롤 생성
+    renderMovementControls(char);
+}
+
+// 이동 컨트롤 렌더링 함수
+function renderMovementControls(char) {
     DOM.moveButtons.innerHTML = "<h4>이동(8방향)</h4>";
     const directions = [
         { d: "↖", x: -1, y: -1 }, { d: "↑", x: 0, y: -1 }, { d: "↗", x: 1, y: -1 },
