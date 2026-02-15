@@ -180,34 +180,35 @@ function prepareNextTurnCycle() {
   state.playerActionsQueue = [];
   DOM.executeBtn.style.display = "none";
   
-  const boss = state.enemyCharacters.find(e => e.isAlive && e.name.includes("테르모르"));
-    if (boss) {
-        // 턴 시작 시 이번에 쓸 스킬을 미리 랜덤으로 골라둡니다.
-        const available = [...(boss.skills || []), ...(boss.gimmicks || [])];
-        const nextSkillId = available[Math.floor(Math.random() * available.length)];
-        state.enemyPreviewAction = { skillId: nextSkillId }; // 예약
+  if (boss) {
+    // 1. 사용할 스킬 결정
+    const available = [...(boss.skills || []), ...(boss.gimmicks || [])];
+    const nextSkillId = available[Math.floor(Math.random() * available.length)];
+    state.enemyPreviewAction = { skillId: nextSkillId };
 
+    // 2. 스킬 데이터 가져오기
+    const skillData = MONSTER_SKILLS[nextSkillId];
+
+    if (skillData) {
+      // 3. 콘솔 그룹 출력
+      console.group(`%c[턴 ${state.currentTurn}] 적군 행동 예고`, 'color: #ff4d4d; font-weight: bold;');
+      console.log(`시전자: ${boss.name}`);
+      console.log(`예고 스킬: ${skillData.name} (${nextSkillId})`);
+      console.log(`타격 범위(hitArea):`, skillData.hitArea || "범위 정보 없음");
+      console.groupEnd();
+
+      // 4. 배틀 로그 출력
       log(`\n\n ☂︎ ${state.currentTurn} 턴을 시작합니다.\n\n`);
-
-        console.group(`%c[턴 ${state.currentTurn}] 적군 행동 예고`, 'color: #ff4d4d; font-weight: bold;');
-        console.log(`시전자: ${boss.name}`);
-        console.log(`예고 스킬: ${skillData.name} (${nextSkillId})`);
-        console.log(`타격 범위(hitArea):`, skillData.hitArea || "범위 정보 없음");
-        console.groupEnd();
-      
-        const skillData = MONSTER_SKILLS[nextSkillId];
-        if (skillData) {
-        // script가 없으면 name을 출력하거나 빈 문자열 처리하여 undefined 방지
-        const scriptText = skillData.script || `\n<pre>${skillData.name} 태세를 취합니다. (관련 내용 없어 누락됨)</pre>\n`;
-        log(`\n\n${scriptText}\n\n`);
-
-      log(`\n\n ☂︎ 전원, 5 분 동안 행동해 주세요. \n\n`);
+      const scriptText = skillData.script || `\n<pre>${skillData.name} 태세를 취합니다.</pre>\n`;
+      log(`${scriptText}`);
     }
+    
+    log(`\n\n ☂︎ 전원, 5 분 동안 행동해 주세요. \n\n`);
+  } // if (boss) 종료
 
   promptAllySelection();
   syncUI();
-}
-}
+} // prepareNextTurnCycle 함수 종료
 
 function promptAllySelection() {
   DOM.allySelectDiv.innerHTML = "";
