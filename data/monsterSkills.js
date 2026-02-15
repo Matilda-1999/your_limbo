@@ -9,6 +9,7 @@ export const MONSTER_SKILLS = {
     id: "SKILL_Seismic_Fissure",
     name: "균열의 진동",
     hitArea: [{x:1,y:1},{x:2,y:1},{x:3,y:1},{x:1,y:2},{x:3,y:2},{x:1,y:3},{x:2,y:3},{x:3,y:3}],
+    script: `\n<pre>"마른 땅이 갈라지며 균열이 퍼져나간다 \n 이 전장은 오로지 한 생명의 손아귀에 놓여 있다. \n "땅이 갈라지는 소리를 들은 적 있느냐.""</pre>\n`,
     execute: (caster, allies, enemies, battleLog, state) => {
       const area = MONSTER_SKILLS.SKILL_Seismic_Fissure.hitArea;
       const hitTargets = allies.filter(t => t.isAlive && area.some(pos => pos.x === t.posX && pos.y === t.posY));
@@ -26,7 +27,7 @@ export const MONSTER_SKILLS = {
     id: "SKILL_Echo_of_Silence",
     name: "침묵의 메아리",
     hitArea: [{x:0,y:2},{x:1,y:1},{x:3,y:1},{x:2,y:0},{x:4,y:2},{x:1,y:3},{x:3,y:3}],
-    script: `\n<pre>"자연의 숨결 앞에서는 그 어떤 주문도 무의미하다."</pre>\n`,
+    script: `\n<pre>기묘한 울림이 공간을 가른다. \n 거대한 풍광을 앞에 두고, 달리 무엇을 말할 수 있겠는가? \n "자연의 숨결 앞에서는 그 어떤 주문도 무의미하다."</pre>\n`,
     execute: (caster, allies, enemies, battleLog, state) => {
       const area = MONSTER_SKILLS.SKILL_Echo_of_Silence.hitArea;
       const hitTargets = allies.filter(t => t.isAlive && area.some(p => p.x === t.posX && p.y === t.posY));
@@ -45,6 +46,7 @@ export const MONSTER_SKILLS = {
     id: "SKILL_Crushing_Sky",
     name: "무너지는 하늘",
     hitArea: [{x:2,y:0},{x:2,y:1},{x:0,y:2},{x:1,y:2},{x:3,y:2},{x:4,y:2},{x:2,y:3},{x:2,y:4}],
+    script: `\n<pre>거대한 석괴가 하늘에서 떨어지기 시작한다. \n 때로 자연이라는 것은, 인간에게 이다지도 무자비하다. \n "대지가 너희에게 분노하리라."</pre>\n`,
     execute: (caster, allies, enemies, battleLog, state) => {
       const area = MONSTER_SKILLS.SKILL_Crushing_Sky.hitArea;
       const hitTargets = allies.filter(t => t.isAlive && area.some(p => p.x === t.posX && p.y === t.posY));
@@ -62,6 +64,7 @@ export const MONSTER_SKILLS = {
     id: "SKILL_Birth_of_Vines",
     name: "덩굴 탄생",
     hitArea: [{x:0,y:0}, {x:0,y:2}, {x:0,y:4}, {x:1,y:1}, {x:1,y:3}, {x:2,y:0}, {x:2,y:2}, {x:2,y:4}, {x:3,y:1}, {x:3,y:3}, {x:4,y:0}, {x:4,y:2}, {x:4,y:4}],
+    script: `\n<pre>바닥으로부터 수많은 덩굴이 솟구친다. \n 벗어날 수 없는 공포가 당신의 발목을 옥죄어 온다. \n "이 땅에 모습을 드러낸 이들을, 잊지 않겠다."</pre>\n`,
     execute: (caster, allies, enemies, battleLog, state) => {
       const area = MONSTER_SKILLS.SKILL_Birth_of_Vines.hitArea;
       const hitTargets = allies.filter(t => t.isAlive && area.some(p => p.x === t.posX && p.y === t.posY));
@@ -77,6 +80,7 @@ export const MONSTER_SKILLS = {
     id: "SKILL_Seeds_Wrath",
     name: "씨앗의 분노",
     hitArea: [{x:1,y:1}, {x:1,y:2}, {x:1,y:3}, {x:2,y:1}, {x:2,y:3}, {x:3,y:1}, {x:3,y:2}, {x:3,y:3}, {x:0,y:0}, {x:0,y:4}, {x:4,y:0}, {x:4,y:4}],
+    script: `\n<pre>고운 꽃가루가 하늘을 뒤덮는다. \n 생경한 아름다움은 고요한 찬사만을 강요한다. \n "많은 말은 필요하지 않은 법."</pre>\n`,
     execute: (caster, allies, enemies, battleLog, state) => {
       const greenArea = [{x:1,y:1},{x:1,y:2},{x:1,y:3},{x:2,y:1},{x:2,y:3},{x:3,y:1},{x:3,y:2},{x:3,y:3}];
       const blueArea = [{x:0,y:0},{x:0,y:4},{x:4,y:0},{x:4,y:4}];
@@ -177,7 +181,7 @@ export const MONSTER_SKILLS = {
     name: "대지의 수호(북)",
     hitArea: [],
     coords: "0,0;1,0;2,0;3,0;4,0;1,1;2,1;3,1",
-    script: `<pre>우리가 상대할 것은 대지, 그 자체였을까.\n절벽이 앞을 가로막는다.\n허나 무너뜨릴 수 없을 듯하던 북쪽 성벽 또한 작은 균열 하나에 허물어지는 법.\n"무딘 칼날로 대지를 가를 수 있겠는가?"</pre>\n`,
+    script: `\n<pre>우리가 상대할 것은 대지, 그 자체였을까.\n절벽이 앞을 가로막는다.\n허나 무너뜨릴 수 없을 듯하던 북쪽 성벽 또한 작은 균열 하나에 허물어지는 법.\n"무딘 칼날로 대지를 가를 수 있겠는가?"</pre>\n`,
     execute: (caster, allies, enemies, battleLog, state) => {
       caster.activeGimmick = "GIMMICK_Aegis_of_Earth4";
       battleLog(`✦기믹 발동✦ ${caster.name}가 북쪽 성벽을 세웁니다.`);
@@ -188,6 +192,7 @@ export const MONSTER_SKILLS = {
   GIMMICK_Seed_of_Devour: {
     id: "GIMMICK_Seed_of_Devour",
     name: "흡수의 술식",
+    script: `\n<pre> 생명의 씨앗들이 고개를 들기 시작한다. \n 이 씨앗들이 결실을 맺지 못하도록 꺾어야 한다. \n "씨앗은 생명을 흡수해, 다시 죽음을 틔운다."</pre>`,
     execute: (caster, allies, enemies, battleLog, state) => {
       const { mapObjects, characterPositions, mapWidth, mapHeight, utils } = state;
       const gimmickType = Math.floor(Math.random() * 3) + 1; 
