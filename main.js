@@ -434,7 +434,7 @@ document.addEventListener("DOMContentLoaded", () => {
 /**
  * UI를 갱신하고 최신 상태를 Firebase에 업로드하여 관전자가 볼 수 있게 합니다.
  */
-const syncUI = () => {
+function syncUI = () => {
     // 1. 맵 그리드 렌더링
     UI.renderMapGrid(
         DOM.mapContainer, 
