@@ -512,10 +512,10 @@ export const SKILLS = {
 
       battleLog(`✦스킬✦ ${caster.name}, ${target.name}에게 [간파] 발동.`);
 
-      // 1. 관통 2연타 (방어력 30% 무시로 0데미지 방지)
+      // 1. 관통 2연타 (방어력 20% 무시로 0데미지 방지)
       // 원본 위력인 2.6을 2타로 나누어 각 1.3씩 적용
       for (let i = 0; i < 2; i++) {
-      const d1 = calculateDamage(caster, target, 1.3, damageType, { penetration: 0.3 });
+      const d1 = calculateDamage(caster, target, 1.3, damageType, { penetration: 0.2 });
       target.takeDamage(d1, battleLog, caster);
       battleLog(`✦피해✦ [간파] ${i + 1}타: ${target.name}에게 ${d1} ${damageTypeKorean} 피해.`);
       if (!target.isAlive) return true;
