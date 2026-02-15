@@ -1,8 +1,9 @@
-// player_view.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
-import { UI } from './ui/renderUI.js';
+import { UI } from './core/renderUI.js';
+import { Character } from './core/Character.js';
 
+const firebaseConfig = { ... };
 const firebaseConfig = {
     apiKey: "AIzaSyAOd24AzDmA609KAaa_4frTMnAeY8mJrXM",
     authDomain: "raid-simulator-1999.firebaseapp.com",
