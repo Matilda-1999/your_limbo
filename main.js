@@ -580,7 +580,8 @@ function syncUI() {
       char,
       "ally",
       isSelected,
-      state.isBattleStarted ? null : (id) => deleteChar(id, "ally")
+      state.isBattleStarted ? null : (id) => deleteChar(id, "ally"),
+      syncUI
     );
     card.onclick = () => selectTarget(char.id);
     DOM.allyDisplay.appendChild(card);
