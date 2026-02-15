@@ -388,7 +388,7 @@ async function executeBattleTurn() {
           battleLog: log // 로그 연동
         }),
         displayCharacters: syncUI,
-        mapObjects: state.mapObjects // [수정] 침전(SEDIMENTATION) 스킬에 필수적인 데이터
+        mapObjects: state.mapObjects
       });
 
       // lastSkillTurn 객체 초기화 확인 및 기록
