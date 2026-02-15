@@ -324,10 +324,7 @@ async function executeBattleTurn() {
                     displayCharacters: syncUI,
                     mapObjects: state.mapObjects
                 }
-            );
-            caster.lastSkillTurn[skill.id] = state.currentTurn;
-        }
-            
+            );       
             caster.lastSkillTurn[skill.id] = state.currentTurn;
         } else if (action.type === "move") { 
             const oldPos = `${caster.posX},${caster.posY}`;
