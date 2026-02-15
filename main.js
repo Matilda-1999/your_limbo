@@ -32,7 +32,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// 3. 전역 상태 관리 (기믹 관련 상태 변수 추가)
+// 3. 전역 상태 관리
 let state = {
     allyCharacters: [],
     enemyCharacters: [],
@@ -47,8 +47,8 @@ let state = {
     enemyPreviewAction: null,
     mapWidth: 5,
     mapHeight: 5,
-    minionsWipedTurn: null, // 앵콜 기믹용
-    mapShrinkState: 0       // 맵 축소 상태 (0: 정상, 1: 7x7, 2: 5x5)
+    minionsWipedTurn: null,
+    mapShrinkState: 0
 };
 
 // 4. HTML 요소 참조
@@ -91,9 +91,9 @@ function loadSelectedMap() {
 
     log(`\n<pre>${config.flavorText}</pre>\n`);
     syncUI();
-};
+}
 
-window.addCharacter = (team) => {
+function addCharacter(team) {
     const nameInput = document.getElementById("charName");
     const name = nameInput.value || `${team}${Date.now().toString().slice(-3)}`;
     const type = document.getElementById("charType").value;
@@ -116,9 +116,9 @@ window.addCharacter = (team) => {
     } else {
         alert("맵에 빈 공간이 없습니다.");
     }
-};
+}
 
-const deleteChar = (id, team) => {
+function deleteChar(id, team) {
     const list = team === "ally" ? state.allyCharacters : state.enemyCharacters;
     const idx = list.findIndex(c => c.id === id);
     if (idx > -1) {
@@ -126,19 +126,19 @@ const deleteChar = (id, team) => {
         list.splice(idx, 1);
         syncUI();
     }
-};
+}
 
 // 7. 전투 흐름 제어
-window.startBattle = () => {
+function startBattle() {
     if (state.allyCharacters.length === 0 || state.enemyCharacters.length === 0) return alert("캐릭터가 부족합니다.");
     state.isBattleStarted = true;
     state.currentTurn = 0;
     DOM.startBtn.style.display = "none";
     log("\n【전투 시작】\n");
     prepareNextTurnCycle();
-};
+}
 
-const prepareNextTurnCycle = () => {
+function prepareNextTurnCycle() {
     state.currentTurn++;
     state.actedAlliesThisTurn = [];
     state.playerActionsQueue = [];
@@ -153,9 +153,9 @@ const prepareNextTurnCycle = () => {
 
     promptAllySelection();
     syncUI();
-};
+}
 
-const promptAllySelection = () => {
+function promptAllySelection() {
     DOM.allySelectDiv.innerHTML = "";
     DOM.skillArea.style.display = "none";
     
@@ -175,9 +175,9 @@ const promptAllySelection = () => {
             DOM.allySelectDiv.appendChild(btn);
         });
     }
-};
+}
 
-const startCharacterAction = (char) => {
+function startCharacterAction(char) {
     DOM.allySelectDiv.style.display = "none";
     DOM.skillArea.style.display = "block";
     DOM.actingName.textContent = char.name;
@@ -253,9 +253,9 @@ const startCharacterAction = (char) => {
         DOM.moveButtons.appendChild(btn);
         if ((index + 1) % 3 === 0) DOM.moveButtons.appendChild(document.createElement("br"));
     });
-};
+}
 
-const selectTarget = (targetId) => {
+function selectTarget(targetId) {
     if (!state.selectedAction || state.selectedAction.type !== "skill") return;
     const target = Utils.findCharacterById(targetId, state.allyCharacters, state.enemyCharacters, state.mapObjects);
     if (!target || !target.isAlive) return;
@@ -264,23 +264,21 @@ const selectTarget = (targetId) => {
     DOM.targetName.textContent = target.name;
     DOM.confirmBtn.style.display = "block";
     syncUI();
-};
+}
 
-window.confirmAction = () => {
+function confirmAction() {
     if (!state.selectedAction) return;
     state.playerActionsQueue.push(state.selectedAction);
     state.actedAlliesThisTurn.push(state.selectedAction.caster.id);
     state.selectedAction = null;
     promptAllySelection();
     syncUI();
-};
+}
 
-// 8. 턴 실행 메인 루프 (기믹 통합 완료)
-window.executeBattleTurn = async () => {
+async function executeBattleTurn() {
     DOM.executeBtn.style.display = "none";
     log(`\n\n☂︎  ${state.currentTurn} 턴을 시작합니다.\n\n`);
 
-    // (1) 아군 행동 실행
     for (const action of state.playerActionsQueue) {
         const { caster, skill, targetId, moveDelta } = action;
         if (!caster.isAlive) continue;
@@ -309,10 +307,8 @@ window.executeBattleTurn = async () => {
         await new Promise(r => setTimeout(r, 600));
     }
 
-    // (2) 적군 차례 시작 전 기믹 판정 (B스테이지)
     resolveMinionGimmicks(); 
 
-    // (3) 적군 행동 실행
     const activeBoss = state.enemyCharacters.find(e => 
         e.isAlive && (e.name.includes("테르모르") || e.name.includes("카르나블룸"))
     );
@@ -325,7 +321,6 @@ window.executeBattleTurn = async () => {
         await new Promise(r => setTimeout(r, 600));
     }
 
-    // (4) 턴 종료 결산
     [...state.allyCharacters, ...state.enemyCharacters].forEach(c => {
         if (c.isAlive) {
             c.buffs.forEach(b => { if(!b.unremovable) b.turnsLeft--; });
@@ -335,7 +330,6 @@ window.executeBattleTurn = async () => {
         }
     });
 
-    // (5) 맵 축소 판정
     checkMapShrink(); 
     
     const result = BattleEngine.checkBattleEnd(state.allyCharacters, state.enemyCharacters);
@@ -346,19 +340,15 @@ window.executeBattleTurn = async () => {
     } else {
         prepareNextTurnCycle();
     }
-};
+}
 
-// --- 특수 기믹 보조 함수들 ---
-
+// --- 기믹 함수들 ---
 function resolveMinionGimmicks() {
     if (!state.selectedMapId || !state.selectedMapId.startsWith("B")) return;
-
     const livingClowns = state.enemyCharacters.filter(e => e.isAlive && e.name === "클라운");
     const livingPierrots = state.enemyCharacters.filter(e => e.isAlive && e.name === "피에로");
     const boss = state.enemyCharacters.find(e => e.name === "카르나블룸" && e.isAlive);
-
     if (!boss) return;
-
     if (livingClowns.length === 0 && livingPierrots.length === 0) {
         if (!state.minionsWipedTurn) state.minionsWipedTurn = state.currentTurn;
         if (state.currentTurn >= state.minionsWipedTurn + 2) {
@@ -368,7 +358,6 @@ function resolveMinionGimmicks() {
             state.minionsWipedTurn = null;
         }
     }
-
     if ((livingClowns.length > 0 && livingPierrots.length === 0) || (livingClowns.length === 0 && livingPierrots.length > 0)) {
         log("✦기믹✦ 남겨진 인형들이 외로움에 폭주합니다.");
         [...livingClowns, ...livingPierrots].forEach(m => {
@@ -381,7 +370,6 @@ function checkMapShrink() {
     if (state.selectedMapId !== "B-2") return;
     const boss = state.enemyCharacters.find(e => e.name === "카르나블룸" && e.isAlive);
     if (!boss) return;
-
     const hpPercent = (boss.currentHp / boss.maxHp) * 100;
     if (hpPercent <= 20 && state.mapShrinkState < 2) {
         state.mapShrinkState = 2;
@@ -395,11 +383,9 @@ function checkMapShrink() {
 async function performEnemyAction(enemy) {
     const provoke = enemy.debuffs.find(d => d.id === "provoked");
     let target = provoke ? Utils.findCharacterById(provoke.effect.targetId, state.allyCharacters) : null;
-    
     if (!target || !target.isAlive) {
         target = state.allyCharacters.find(a => a.isAlive);
     }
-    
     if (target) {
         if (provoke) log(`✦도발✦ ${enemy.name}이(가) ${target.name}에게 고정됩니다.`);
         const dmg = BattleEngine.calculateDamage(enemy, target, 1.0, "physical");
@@ -413,7 +399,6 @@ function addCharacterAtPos(templateId, pos) {
     if (!pos) return;
     const template = MONSTER_TEMPLATES[templateId];
     if (!template) return;
-
     const monster = new Character(template.name, template.type, null);
     Object.assign(monster, {
         maxHp: template.maxHp, currentHp: template.maxHp,
@@ -430,23 +415,9 @@ document.addEventListener("DOMContentLoaded", () => {
     syncUI();
 });
 
-
-/**
- * UI를 갱신하고 최신 상태를 Firebase에 업로드하여 관전자가 볼 수 있게 합니다.
- */
-function syncUI = () => {
-    // 1. 맵 그리드 렌더링
-    UI.renderMapGrid(
-        DOM.mapContainer, 
-        state.allyCharacters, 
-        state.enemyCharacters, 
-        state.mapObjects, 
-        state.enemyPreviewAction, 
-        state.mapWidth, 
-        state.mapHeight
-    );
+function syncUI() {
+    UI.renderMapGrid(DOM.mapContainer, state.allyCharacters, state.enemyCharacters, state.mapObjects, state.enemyPreviewAction, state.mapWidth, state.mapHeight);
     
-    // 2. 아군 카드 리스트 렌더링
     DOM.allyDisplay.innerHTML = "";
     state.allyCharacters.forEach(char => {
         const isSelected = state.selectedAction?.targetId === char.id;
@@ -455,7 +426,6 @@ function syncUI = () => {
         DOM.allyDisplay.appendChild(card);
     });
 
-    // 3. 적군 카드 리스트 렌더링
     DOM.enemyDisplay.innerHTML = "";
     state.enemyCharacters.forEach(char => {
         const isSelected = state.selectedAction?.targetId === char.id;
@@ -464,13 +434,9 @@ function syncUI = () => {
         DOM.enemyDisplay.appendChild(card);
     });
 
-    // 4. 관전자를 위해 Firebase에 현재 상태 업로드
     updateFirebaseState();
-};
+}
 
-/**
- * 실시간 데이터베이스에 현재 전투 상태를 저장합니다.
- */
 const updateFirebaseState = async () => {
     try {
         const battleRef = ref(db, 'liveBattle/currentSession');
@@ -489,7 +455,8 @@ const updateFirebaseState = async () => {
     }
 };
 
-window.loadSelectedMap = window.loadSelectedMap || loadSelectedMap;
+// HTML 전역 호출 가능하도록 설정
+window.loadSelectedMap = loadSelectedMap;
 window.addCharacter = addCharacter;
 window.startBattle = startBattle;
 window.confirmAction = confirmAction;
