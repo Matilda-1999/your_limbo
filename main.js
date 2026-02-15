@@ -171,7 +171,6 @@ function promptAllySelection() {
             btn.className = "button";
             btn.style.margin = "5px";
             btn.textContent = `${ally.name} 행동 선택`;
-            .
             btn.onclick = () => {
                 console.log("선택된 캐릭터:", ally); // 디버깅용
                 startCharacterAction(ally);
