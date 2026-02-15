@@ -438,7 +438,6 @@ async function executeBattleTurn() {
     log(`\n\n☂︎ 아군의 행동을 개시합니다.\n\n`);
 
     // [2] 아군 행동 실행 (이때 안전지대 판정이 실시간으로 적용됨)
-    // [2] 아군 행동 실행 (이때 안전지대 판정이 실시간으로 적용됨)
     for (const action of state.playerActionsQueue) {
       const { caster, skill, targetId, moveDelta } = action;
       if (!caster.isAlive) continue;
