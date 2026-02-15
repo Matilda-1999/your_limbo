@@ -692,7 +692,7 @@ SKILL_RUPTURE: {
     description: "자신의 체력을 소모하여 아군 전체를 대폭 회복시키고 [면역]을 부여합니다.",
     targetType: "all_allies",
     targetSelection: "all_allies",
-    execute: (caster, allies, enemies, battleLog, state) => {
+    execute: (caster, target, allies, enemies, battleLog, state) => {
       const { applyHeal, displayCharacters, mapObjects } = state;
       
       const hpCost = Math.round(caster.maxHp * 0.2);
