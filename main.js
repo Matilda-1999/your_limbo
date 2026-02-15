@@ -352,6 +352,7 @@ async function executeBattleTurn() {
       log(`✦ ${caster.name}, [${skill.name}] 시전.`);
       skill.execute(caster, target, state.allyCharacters, state.enemyCharacters, log, {
         ...state,
+        applyHeal: BattleEngine.applyHeal,
         calculateDamage: (a, d, p, t, o = {}) => {
           const finalDamage = BattleEngine.calculateDamage(a, d, p, t, { ...o, gimmickData: MONSTER_SKILLS, parseSafeCoords: Utils.parseSafeCoords, battleLog: log });
           console.log(`%c[아군 스킬 계산] %c${a.name} -> %c${d.name} | %c피해: ${finalDamage}`, 'color: #4da6ff; font-weight: bold;', 'color: black;', 'color: #ffcc00;', 'color: #ff0000;');
