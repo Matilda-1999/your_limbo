@@ -166,6 +166,7 @@ function startBattle() {
   state.currentTurn = 0;
   DOM.startBtn.style.display = "none";
   log("\n【전투 시작】\n");
+  log("\n\n거대한 바위가 자연의 중심처럼 눌러앉아 있다.\n그것은 그저 풍경처럼 존재했으나, 땅이 울리고, 균열이 일어나면, 바위의 틈 사이로 희미한 숨결이 들려온다. \n  대지는 이미 깨어나고 있다.\n "그 누가 잠든 대지를 일깨우느냐.""\n\n");
   prepareNextTurnCycle();
 }
 
@@ -183,9 +184,15 @@ function prepareNextTurnCycle() {
         state.enemyPreviewAction = { skillId: nextSkillId }; // 예약
 
       log(`\n\n ☂︎ ${state.currentTurn} 턴을 시작합니다.\n\n`);
+
+        console.group(`%c[턴 ${state.currentTurn}] 적군 행동 예고`, 'color: #ff4d4d; font-weight: bold;');
+        console.log(`시전자: ${boss.name}`);
+        console.log(`예고 스킬: ${skillData.name} (${nextSkillId})`);
+        console.log(`타격 범위(hitArea):`, skillData.hitArea || "범위 정보 없음");
+        console.groupEnd();
       
         const skillData = MONSTER_SKILLS[nextSkillId];
-        log(`\n\n거대한 바위가 자연의 중심처럼 눌러앉아 있다.\n그것은 그저 풍경처럼 존재했으나, 땅이 울리고, 균열이 일어나면, 바위의 틈 사이로 희미한 숨결이 들려온다. \n  대지는 이미 깨어나고 있다.\n "그 누가 잠든 대지를 일깨우느냐.""\n\n`); 
+        log(`\n\n"${skillData.script}"\n\n`); 
 
       log(`\n\n ☂︎ 전원, 5 분 동안 행동해 주세요. \n\n`);
     }
