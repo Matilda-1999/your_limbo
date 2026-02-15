@@ -106,8 +106,27 @@ export const UI = {
             <p>방어력: ${character.getEffectiveStat("def")} | 마법 방어력: ${character.getEffectiveStat("mdef")}</p>
             <p>상태: ${character.isAlive ? "생존" : '<span style="color:var(--color-accent-red);">쓰러짐</span>'}</p>
             
-            ${character.buffs.length > 0 ? `<p>버프: ${character.buffs.map(b => `${b.name}(${b.turnsLeft}턴)`).join(", ")}</p>` : ""}
-            ${character.debuffs.length > 0 ? `<p>디버프: ${character.debuffs.map(d => `${d.name}(${d.turnsLeft}턴)`).join(", ")}</p>` : ""}
+            ${(() => {
+                const uniqueBuffLabels = [];
+                character.buffs.forEach(b => {
+                    if (b.name && b.name.trim() !== "") {
+                        const label = `${b.name}(${b.turnsLeft}턴)`;
+                        if (!uniqueBuffLabels.includes(label)) uniqueBuffLabels.push(label);
+                    }
+                });
+                return uniqueBuffLabels.length > 0 ? `<p>버프: ${uniqueBuffLabels.join(", ")}</p>` : "";
+            })()}
+
+            ${(() => {
+                const uniqueDebuffLabels = [];
+                character.debuffs.forEach(d => {
+                    if (d.name && d.name.trim() !== "") {
+                        const label = `${d.name}(${d.turnsLeft}턴)`;
+                        if (!uniqueDebuffLabels.includes(label)) uniqueDebuffLabels.push(label);
+                    }
+                });
+                return uniqueDebuffLabels.length > 0 ? `<p>디버프: ${uniqueDebuffLabels.join(", ")}</p>` : "";
+            })()}
         `;
 
         // 디버그 컨트롤 영역 생성 (수정 버튼 포함)
