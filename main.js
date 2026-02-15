@@ -341,7 +341,7 @@ async function executeBattleTurn() {
     await new Promise((r) => setTimeout(r, 600));
   }
 
-  log(`\n\n☂︎ 아군의 행동을 개시합니다.\n\n`);
+  log(`\n\n<b>☂︎ 아군의 행동을 개시합니다.<b>\n\n`);
 
   for (const action of state.playerActionsQueue) {
     const { caster, skill, targetId, moveDelta } = action;
