@@ -534,29 +534,37 @@ function checkMapShrink() {
 }
 
 async function performEnemyAction(enemy) {
-  // 1. 타겟 선정 (도발 여부 확인)
+  // 1. 타겟 선정
   const provoke = enemy.debuffs.find((d) => d.id === "provoked");
   let target = provoke ? Utils.findCharacterById(provoke.effect.targetId, state.allyCharacters) : null;
   if (!target || !target.isAlive) target = state.allyCharacters.find((a) => a.isAlive);
 
-  if (!target) return;
-
-  // 2. 랜덤 행동 선택 (보유한 skills + gimmicks 합치기)
+  // 2. 랜덤 행동 선택 (skills + gimmicks)
   const availableActions = [...(enemy.skills || []), ...(enemy.gimmicks || [])];
   
-  if (availableActions.length > 0) {
+  // 3. 행동 결정 및 실행
+  if (target && availableActions.length > 0) {
     const randomActionId = availableActions[Math.floor(Math.random() * availableActions.length)];
     const actionData = MONSTER_SKILLS[randomActionId];
 
     if (actionData && typeof actionData.execute === 'function') {
-      // 3. 스킬/기믹 실행
       log(`\n<b>[행동] ${enemy.name}:</b> ${actionData.name}`);
+      // 스킬에 정의된 서사 텍스트(script) 출력
       if (actionData.script) log(actionData.script);
       
+      // 실제 스킬/기믹 로직 실행
       actionData.execute(enemy, state.allyCharacters, state.enemyCharacters, log, state);
+    } else {
+      // 데이터는 있으나 실행 로직이 없는 경우
+      log(`✦정보✦ ${enemy.name}은(는) 망설이고 있습니다. 아무런 행동도 취하지 않습니다.`);
     }
   } else {
-    log(`✦정보✦ ${enemy.name}이(가) 취할 수 있는 행동이 없습니다.`);
+    // 타겟이 없거나 스킬 리스트가 비어있는 경우
+    if (!target) {
+      log(`✦정보✦ 적군이 공격할 대상을 찾지 못해 공격에 실패했습니다.`);
+    } else {
+      log(`✦정보✦ ${enemy.name}은(는) 고요 속에 잠겨 있습니다. 아무 움직임도 보이지 않습니다.`);
+    }
   }
 }
 
