@@ -369,7 +369,7 @@ async function executeBattleTurn() {
   DOM.executeBtn.style.display = "none";
   log(`\n\n☂︎  지금부터 5 분 동안 행동을 게시해 주세요.\n\n`); // 아군 턴임을 명시
 
-  // --- (2) 아군 행동 실행 (Player Phase) ---
+  // (2) 아군 행동 실행
   for (const action of state.playerActionsQueue) {
     const { caster, skill, targetId, moveDelta } = action;
     if (!caster.isAlive) continue;
@@ -400,24 +400,23 @@ async function executeBattleTurn() {
     await new Promise((r) => setTimeout(r, 600));
   }
 
-  // --- (3) 적군 행동 실행 (Enemy Phase) ---
+  // (3) 적군 행동 실행
   resolveMinionGimmicks();
 
-  // [수정] 중복 선언 제거 및 보스 이름 찾기 통합
+  // 보스 검색 중복 제거
   const activeBoss = state.enemyCharacters.find(
     (e) => e.isAlive && (e.name.includes("테르모르") || e.name.includes("카르나블룸"))
   );
   const turnOwner = activeBoss ? activeBoss.name : "적군";
-  log(`\n\n☂︎ ${turnOwner}의 턴.\n\n`);
+  log(`\n\n☂︎ ${turnOwner}의 반격이 시작됩니다.\n\n`);
 
   for (const enemy of state.enemyCharacters.filter(e => e.isAlive)) {
-    // performEnemyAction 내부에서 예고된 스킬이 실행되도록 설정되어 있어야 합니다.
     await performEnemyAction(enemy); 
     syncUI();
     await new Promise(r => setTimeout(r, 600));
   }
 
-  // --- 턴 마무리 (상태이상 감소 및 승패 판정) ---
+  // 마무리 (상태이상 갱신 및 다음 턴 준비)
   [...state.allyCharacters, ...state.enemyCharacters].forEach((c) => {
     if (c.isAlive) {
       c.buffs.forEach((b) => { if (!b.unremovable) b.turnsLeft--; });
@@ -435,8 +434,7 @@ async function executeBattleTurn() {
     state.isBattleStarted = false;
     DOM.startBtn.style.display = "block";
   } else {
-    // 다시 (1)단계인 '적군 예고'가 포함된 prepareNextTurnCycle로 이동합니다.
-    prepareNextTurnCycle();
+    prepareNextTurnCycle(); // 다시 (1)단계 적 예고로 이동
   }
 }
 
