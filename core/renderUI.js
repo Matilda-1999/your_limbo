@@ -13,11 +13,16 @@ export const UI = {
         if (!container) return;
         container.innerHTML = "";
 
-        const previewCoordSet = new Set(previewAction?.hitArea.map(p => `${p.x},${p.y}`) || []);
-        const previewSkillId = previewAction?.skillId || null;
-        const clownSpawns = new Set(SPAWN_POINTS.Clown.map(p => `${p.x},${p.y}`));
-        const pierrotSpawns = new Set(SPAWN_POINTS.Pierrot.map(p => `${p.x},${p.y}`));
-
+        // 1. hitArea를 안전하게 확보합니다. (null이나 undefined일 경우 빈 배열 할당)
+    const hitArea = previewAction?.hitArea || []; 
+    
+    // 2. 위에서 만든 안전한 'hitArea' 변수를 사용하여 map을 돌립니다.
+    const previewCoordSet = new Set(hitArea.map(p => `${p.x},${p.y}`));
+    
+    const previewSkillId = previewAction?.skillId || null;
+    const clownSpawns = new Set(SPAWN_POINTS.Clown.map(p => `${p.x},${p.y}`));
+    const pierrotSpawns = new Set(SPAWN_POINTS.Pierrot.map(p => `${p.x},${p.y}`));
+        
         const contentMap = {};
         [...allies, ...enemies].forEach(char => {
             if (char.isAlive && char.posX !== -1) {
