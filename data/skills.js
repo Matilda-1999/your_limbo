@@ -238,7 +238,7 @@ export const SKILLS = {
     description: "아군의 디버프를 정화하고 무작위 이로운 효과를 부여합니다.",
     targetType: "single_ally",
     targetSelection: "ally",
-    xecute: (caster, allies, enemies, battleLog, state) => {
+    execute: (caster, target, allies, enemies, battleLog, state) => {
       if (!target) {
         battleLog(`✦정보✦ ${caster.name} [허무]: 스킬 대상을 찾을 수 없습니다.`);
         return false;
