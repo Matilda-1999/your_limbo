@@ -307,6 +307,61 @@ export const MONSTER_SKILLS = {
     },
   },
 
+  // --- [테르모르 기믹 추가] ---
+  GIMMICK_Seed_of_Devour: {
+    id: "GIMMICK_Seed_of_Devour",
+    name: "흡수의 술식",
+    execute: (caster, allies, enemies, battleLog, state) => {
+      const { mapObjects, characterPositions, mapWidth, mapHeight } = state;
+      
+      // 1~3 사이의 숫자를 무작위로 선택
+      const gimmickType = Math.floor(Math.random() * 3) + 1; 
+
+      if (gimmickType === 1) {
+        // [하위 기믹 1: 열매 파괴] - 맵에 2개의 열매 생성
+        for (let i = 0; i < 2; i++) {
+          const pos = Utils.getRandomEmptyCell(mapWidth, mapHeight, characterPositions);
+          if (pos) {
+            const fruit = { id: `FRUIT_${Date.now()}_${i}`, name: "생명의 열매", type: "fruit", posX: pos.x, posY: pos.y, isAlive: true, hp: 50 };
+            mapObjects.push(fruit);
+            characterPositions[`${pos.x},${pos.y}`] = fruit.id;
+          }
+        }
+        battleLog(`✦기믹 발동✦ "씨앗은 생명을 흡수해, 다시 죽음을 틔운다." 맵에 열매가 생성되었습니다!`);
+
+      } else if (gimmickType === 2) {
+        // [하위 기믹 2: 불안정한 균열] - 3개의 균열 지대 생성
+        for (let i = 0; i < 3; i++) {
+          const pos = Utils.getRandomEmptyCell(mapWidth, mapHeight, characterPositions);
+          if (pos) {
+            const fissure = { id: `FISSURE_${Date.now()}_${i}`, name: "불안정한 균열", type: "fissure", posX: pos.x, posY: pos.y, isAlive: true, timer: 3 };
+            mapObjects.push(fissure);
+            characterPositions[`${pos.x},${pos.y}`] = fissure.id;
+          }
+        }
+        battleLog(`✦기믹 발동✦ "뿌리는 뽑아도 뽑히지 않고, 다시 죽음을 틔운다." 균열 지대가 생성되었습니다!`);
+
+      } else {
+        // [하위 기믹 3: 메마른 생명의 샘] - 힐러 상호작용 오브젝트 생성
+        const pos = { x: 2, y: 0 }; // 특정 위치 고정 혹은 랜덤
+        const spring = { 
+          id: `SPRING_${Date.now()}`, 
+          name: "메마른 생명의 샘", 
+          type: "spring", 
+          posX: pos.x, 
+          posY: pos.y, 
+          isAlive: true, 
+          healingReceived: 0, 
+          maxHealingRequired: 50 
+        };
+        mapObjects.push(spring);
+        characterPositions[`${pos.x},${pos.y}`] = spring.id;
+        battleLog(`✦기믹 발동✦ "마른 땅에서도 씨앗은 움트니, 비로소 생명이 된다." 생명의 샘이 나타났습니다!`);
+      }
+      return true;
+    },
+  },
+  
   // 균열의 길
   GIMMICK_Path_of_Ruin: {
     id: "GIMMICK_Path_of_Ruin",
