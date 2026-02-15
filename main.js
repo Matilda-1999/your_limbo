@@ -1,0 +1,452 @@
+/**
+ * main.js
+ * 모든 모듈과 특수 기믹(앵콜, 이중창, 맵 축소)을 통합한 메인 실행 파일입니다.
+ */
+
+// 1. 모듈 수입
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+
+import { Character } from './core/Character.js';
+import { BattleEngine } from './core/BattleEngine.js';
+import { Utils } from './core/Utils.js';
+import { UI } from './ui/renderUI.js';
+
+import { SKILLS } from './data/skills.js';
+import { MONSTER_SKILLS } from './data/monsterSkills.js';
+import { MONSTER_TEMPLATES } from './data/monsterTemplates.js';
+import { MAP_CONFIGS } from './data/mapConfigs.js';
+
+// 2. Firebase 설정
+const firebaseConfig = {
+    apiKey: "AIzaSyAOd24AzDmA609KAaa_4frTMnAeY8mJrXM",
+    authDomain: "raid-simulator-1999.firebaseapp.com",
+    databaseURL: "https://raid-simulator-1999-default-rtdb.firebaseio.com",
+    projectId: "raid-simulator-1999",
+    storageBucket: "raid-simulator-1999.firebasestorage.app",
+    messagingSenderId: "112905026016",
+    appId: "1:112905026016:web:419f84388bae3e6291d385",
+    measurementId: "G-P176XFZWH2",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// 3. 전역 상태 관리 (기믹 관련 상태 변수 추가)
+let state = {
+    allyCharacters: [],
+    enemyCharacters: [],
+    mapObjects: [],
+    characterPositions: {},
+    currentTurn: 0,
+    isBattleStarted: false,
+    selectedMapId: "A-1",
+    playerActionsQueue: [],
+    actedAlliesThisTurn: [],
+    selectedAction: null,
+    enemyPreviewAction: null,
+    mapWidth: 5,
+    mapHeight: 5,
+    minionsWipedTurn: null, // 앵콜 기믹용
+    mapShrinkState: 0       // 맵 축소 상태 (0: 정상, 1: 7x7, 2: 5x5)
+};
+
+// 4. HTML 요소 참조
+const DOM = {
+    allyDisplay: document.getElementById("allyCharacters"),
+    enemyDisplay: document.getElementById("enemyCharacters"),
+    mapContainer: document.getElementById("mapGridContainer"),
+    battleLog: document.getElementById("battleLog"),
+    skillArea: document.getElementById("skillSelectionArea"),
+    actingName: document.getElementById("currentActingCharName"),
+    skillButtons: document.getElementById("availableSkills"),
+    moveButtons: document.getElementById("movementControlsArea"),
+    description: document.getElementById("skillDescriptionArea"),
+    targetName: document.getElementById("selectedTargetName"),
+    confirmBtn: document.getElementById("confirmActionButton"),
+    startBtn: document.getElementById("startButton"),
+    executeBtn: document.getElementById("executeTurnButton"),
+    allySelectDiv: document.getElementById("allySelectionButtons")
+};
+
+// 5. 핵심 브릿지 함수
+const syncUI = () => {
+    UI.renderMapGrid(DOM.mapContainer, state.allyCharacters, state.enemyCharacters, state.mapObjects, state.enemyPreviewAction, state.mapWidth, state.mapHeight);
+    
+    DOM.allyDisplay.innerHTML = "";
+    state.allyCharacters.forEach(char => {
+        const isSelected = state.selectedAction?.targetId === char.id;
+        const card = UI.createCharacterCard(char, "ally", isSelected, (id) => deleteChar(id, "ally"));
+        card.onclick = () => selectTarget(char.id);
+        DOM.allyDisplay.appendChild(card);
+    });
+
+    DOM.enemyDisplay.innerHTML = "";
+    state.enemyCharacters.forEach(char => {
+        const isSelected = state.selectedAction?.targetId === char.id;
+        const card = UI.createCharacterCard(char, "enemy", isSelected);
+        card.onclick = () => selectTarget(char.id);
+        DOM.enemyDisplay.appendChild(card);
+    });
+};
+
+const log = (msg) => UI.logToBattleLog(DOM.battleLog, msg);
+
+// 6. 전투 준비 및 캐릭터 관리
+window.loadSelectedMap = () => {
+    if (state.isBattleStarted) return alert("전투 중에는 맵을 변경할 수 없습니다.");
+    const mapId = document.getElementById("mapSelect").value;
+    const config = MAP_CONFIGS[mapId];
+    
+    state.selectedMapId = mapId;
+    state.mapWidth = config.width;
+    state.mapHeight = config.height;
+    state.enemyCharacters = [];
+    state.characterPositions = {};
+    state.mapShrinkState = 0;
+    state.minionsWipedTurn = null;
+
+    config.enemies.forEach(e => {
+        addCharacterAtPos(e.templateId, e.pos);
+    });
+
+    log(`\n<pre>${config.flavorText}</pre>\n`);
+    syncUI();
+};
+
+window.addCharacter = (team) => {
+    const nameInput = document.getElementById("charName");
+    const name = nameInput.value || `${team}${Date.now().toString().slice(-3)}`;
+    const type = document.getElementById("charType").value;
+    const job = document.getElementById("charJob").value;
+    const hp = parseInt(document.getElementById("charCurrentHp").value) || null;
+
+    const newChar = new Character(name, type, job, hp);
+    const emptyCell = Utils.getRandomEmptyCell(state.mapWidth, state.mapHeight, state.characterPositions);
+    
+    if (emptyCell) {
+        newChar.posX = emptyCell.x;
+        newChar.posY = emptyCell.y;
+        state.characterPositions[`${emptyCell.x},${emptyCell.y}`] = newChar.id;
+        
+        if (team === "ally") state.allyCharacters.push(newChar);
+        else state.enemyCharacters.push(newChar);
+        
+        nameInput.value = "";
+        syncUI();
+    } else {
+        alert("맵에 빈 공간이 없습니다.");
+    }
+};
+
+const deleteChar = (id, team) => {
+    const list = team === "ally" ? state.allyCharacters : state.enemyCharacters;
+    const idx = list.findIndex(c => c.id === id);
+    if (idx > -1) {
+        delete state.characterPositions[`${list[idx].posX},${list[idx].posY}`];
+        list.splice(idx, 1);
+        syncUI();
+    }
+};
+
+// 7. 전투 흐름 제어
+window.startBattle = () => {
+    if (state.allyCharacters.length === 0 || state.enemyCharacters.length === 0) return alert("캐릭터가 부족합니다.");
+    state.isBattleStarted = true;
+    state.currentTurn = 0;
+    DOM.startBtn.style.display = "none";
+    log("\n【전투 시작】\n");
+    prepareNextTurnCycle();
+};
+
+const prepareNextTurnCycle = () => {
+    state.currentTurn++;
+    state.actedAlliesThisTurn = [];
+    state.playerActionsQueue = [];
+    DOM.executeBtn.style.display = "none";
+    log(`\n --- ${state.currentTurn} 턴 행동 선택 시작 --- \n`);
+    
+    const boss = state.enemyCharacters.find(e => e.isAlive);
+    if (boss) {
+        const skillId = boss.skills[Math.floor(Math.random() * boss.skills.length)];
+        state.enemyPreviewAction = { skillId, hitArea: [] };
+    }
+
+    promptAllySelection();
+    syncUI();
+};
+
+const promptAllySelection = () => {
+    DOM.allySelectDiv.innerHTML = "";
+    DOM.skillArea.style.display = "none";
+    
+    const available = state.allyCharacters.filter(a => a.isAlive && !state.actedAlliesThisTurn.includes(a.id));
+
+    if (available.length === 0) {
+        DOM.executeBtn.style.display = "block";
+        log("모든 아군의 행동 예약이 완료되었습니다. [턴 실행]을 눌러주세요.");
+    } else {
+        DOM.allySelectDiv.style.display = "block";
+        available.forEach(ally => {
+            const btn = document.createElement("button");
+            btn.className = "button";
+            btn.style.margin = "5px";
+            btn.textContent = `${ally.name} 행동 선택`;
+            btn.onclick = () => startCharacterAction(ally);
+            DOM.allySelectDiv.appendChild(btn);
+        });
+    }
+};
+
+const startCharacterAction = (char) => {
+    DOM.allySelectDiv.style.display = "none";
+    DOM.skillArea.style.display = "block";
+    DOM.actingName.textContent = char.name;
+    DOM.skillButtons.innerHTML = "";
+    DOM.targetName.textContent = "대상 필요";
+    DOM.confirmBtn.style.display = "none";
+    state.selectedAction = null;
+
+    char.skills.forEach(skillId => {
+        const skill = SKILLS[skillId];
+        if (!skill) return;
+
+        const btn = document.createElement("button");
+        btn.textContent = skill.name;
+        
+        const lastUsed = char.lastSkillTurn[skillId] || 0;
+        const isOnCooldown = skill.cooldown && (state.currentTurn - lastUsed < skill.cooldown);
+        if (isOnCooldown) { 
+            btn.disabled = true; 
+            btn.textContent += ` (${skill.cooldown - (state.currentTurn - lastUsed)}턴)`; 
+        }
+
+        btn.onclick = () => {
+            state.selectedAction = { type: "skill", skill, caster: char, targetId: null };
+            UI.renderSkillDescription(DOM.description, skill);
+            if (skill.targetSelection === "self" || skill.targetType.startsWith("all_")) {
+                state.selectedAction.targetId = char.id;
+                DOM.targetName.textContent = "즉시 발동";
+                DOM.confirmBtn.style.display = "block";
+            } else {
+                DOM.confirmBtn.style.display = "none";
+                DOM.targetName.textContent = "대상을 선택하세요";
+            }
+            syncUI();
+        };
+        DOM.skillButtons.appendChild(btn);
+    });
+
+    DOM.moveButtons.innerHTML = "<h4>이동(8방향)</h4>";
+    const directions = [
+        { d: "↖", x: -1, y: -1 }, { d: "↑", x: 0, y: -1 }, { d: "↗", x: 1, y: -1 },
+        { d: "←", x: -1, y: 0 },                          { d: "→", x: 1, y: 0 },
+        { d: "↙", x: -1, y: 1 },  { d: "↓", x: 0, y: 1 },  { d: "↘", x: 1, y: 1 }
+    ];
+
+    directions.forEach((dir, index) => {
+        const btn = document.createElement("button");
+        btn.textContent = dir.d;
+        btn.style.width = "50px";
+        btn.style.height = "50px";
+        btn.style.margin = "2px";
+        btn.style.fontSize = "1.2em";
+
+        const targetX = char.posX + dir.x;
+        const targetY = char.posY + dir.y;
+
+        const isOutOfBounds = targetX < 0 || targetX >= state.mapWidth || targetY < 0 || targetY >= state.mapHeight;
+        const isOccupied = state.characterPositions[`${targetX},${targetY}`];
+
+        if (isOutOfBounds || isOccupied) {
+            btn.disabled = true;
+            btn.style.opacity = "0.3";
+            btn.style.cursor = "not-allowed";
+        }
+
+        btn.onclick = () => {
+            state.selectedAction = { type: "move", caster: char, moveDelta: { dx: dir.x, dy: dir.y } };
+            DOM.targetName.textContent = `이동 예약: (${targetX}, ${targetY})`;
+            DOM.confirmBtn.style.display = "block";
+            syncUI();
+        };
+
+        DOM.moveButtons.appendChild(btn);
+        if ((index + 1) % 3 === 0) DOM.moveButtons.appendChild(document.createElement("br"));
+    });
+};
+
+const selectTarget = (targetId) => {
+    if (!state.selectedAction || state.selectedAction.type !== "skill") return;
+    const target = Utils.findCharacterById(targetId, state.allyCharacters, state.enemyCharacters, state.mapObjects);
+    if (!target || !target.isAlive) return;
+
+    state.selectedAction.targetId = targetId;
+    DOM.targetName.textContent = target.name;
+    DOM.confirmBtn.style.display = "block";
+    syncUI();
+};
+
+window.confirmAction = () => {
+    if (!state.selectedAction) return;
+    state.playerActionsQueue.push(state.selectedAction);
+    state.actedAlliesThisTurn.push(state.selectedAction.caster.id);
+    state.selectedAction = null;
+    promptAllySelection();
+    syncUI();
+};
+
+// 8. 턴 실행 메인 루프 (기믹 통합 완료)
+window.executeBattleTurn = async () => {
+    DOM.executeBtn.style.display = "none";
+    log(`\n\n☂︎  ${state.currentTurn} 턴을 시작합니다.\n\n`);
+
+    // (1) 아군 행동 실행
+    for (const action of state.playerActionsQueue) {
+        const { caster, skill, targetId, moveDelta } = action;
+        if (!caster.isAlive) continue;
+
+        if (action.type === "skill") {
+            const target = Utils.findCharacterById(targetId, state.allyCharacters, state.enemyCharacters, state.mapObjects);
+            log(`✦ ${caster.name}, [${skill.name}] 시전.`);
+            
+            skill.execute(caster, target, state.allyCharacters, state.enemyCharacters, log, {
+                calculateDamage: (a, d, p, t, o) => BattleEngine.calculateDamage(a, d, p, t, {
+                    ...o, 
+                    gimmickData: MONSTER_SKILLS, 
+                    parseSafeCoords: Utils.parseSafeCoords
+                })
+            });
+            caster.lastSkillTurn[skill.id] = state.currentTurn;
+        } else if (action.type === "move") {
+            const oldPos = `${caster.posX},${caster.posY}`;
+            delete state.characterPositions[oldPos];
+            caster.posX += moveDelta.dx; 
+            caster.posY += moveDelta.dy;
+            state.characterPositions[`${caster.posX},${caster.posY}`] = caster.id;
+            log(`✦ ${caster.name}, (${caster.posX},${caster.posY})로 이동.`);
+        }
+        syncUI();
+        await new Promise(r => setTimeout(r, 600));
+    }
+
+    // (2) 적군 차례 시작 전 기믹 판정 (B스테이지)
+    resolveMinionGimmicks(); 
+
+    // (3) 적군 행동 실행
+    const activeBoss = state.enemyCharacters.find(e => 
+        e.isAlive && (e.name.includes("테르모르") || e.name.includes("카르나블룸"))
+    );
+    const turnOwner = activeBoss ? activeBoss.name : "적군";
+    log(`\n\n☂︎ ${turnOwner}의 턴.\n\n`);
+
+    for (const enemy of state.enemyCharacters.filter(e => e.isAlive)) {
+        await performEnemyAction(enemy); 
+        syncUI();
+        await new Promise(r => setTimeout(r, 600));
+    }
+
+    // (4) 턴 종료 결산
+    [...state.allyCharacters, ...state.enemyCharacters].forEach(c => {
+        if (c.isAlive) {
+            c.buffs.forEach(b => { if(!b.unremovable) b.turnsLeft--; });
+            c.debuffs.forEach(d => d.turnsLeft--);
+            c.buffs = c.buffs.filter(b => b.turnsLeft > 0 || b.unremovable);
+            c.debuffs = c.debuffs.filter(d => d.turnsLeft > 0);
+        }
+    });
+
+    // (5) 맵 축소 판정
+    checkMapShrink(); 
+    
+    const result = BattleEngine.checkBattleEnd(state.allyCharacters, state.enemyCharacters);
+    if (result) {
+        log(`\n\n【 전투 종료: ${result === "WIN" ? "승리" : "패배"} 】`);
+        state.isBattleStarted = false;
+        DOM.startBtn.style.display = "block";
+    } else {
+        prepareNextTurnCycle();
+    }
+};
+
+// --- 특수 기믹 보조 함수들 ---
+
+function resolveMinionGimmicks() {
+    if (!state.selectedMapId || !state.selectedMapId.startsWith("B")) return;
+
+    const livingClowns = state.enemyCharacters.filter(e => e.isAlive && e.name === "클라운");
+    const livingPierrots = state.enemyCharacters.filter(e => e.isAlive && e.name === "피에로");
+    const boss = state.enemyCharacters.find(e => e.name === "카르나블룸" && e.isAlive);
+
+    if (!boss) return;
+
+    if (livingClowns.length === 0 && livingPierrots.length === 0) {
+        if (!state.minionsWipedTurn) state.minionsWipedTurn = state.currentTurn;
+        if (state.currentTurn >= state.minionsWipedTurn + 2) {
+            log('✦기믹✦ "나의 아이들은 아직 무대를 떠날 준비가 되지 않은 모양이야."');
+            addCharacterAtPos("Clown", Utils.getRandomEmptyCell(state.mapWidth, state.mapHeight, state.characterPositions));
+            addCharacterAtPos("Pierrot", Utils.getRandomEmptyCell(state.mapWidth, state.mapHeight, state.characterPositions));
+            state.minionsWipedTurn = null;
+        }
+    }
+
+    if ((livingClowns.length > 0 && livingPierrots.length === 0) || (livingClowns.length === 0 && livingPierrots.length > 0)) {
+        log("✦기믹✦ 남겨진 인형들이 외로움에 폭주합니다.");
+        [...livingClowns, ...livingPierrots].forEach(m => {
+            if(!m.hasBuff("duet_enrage")) m.addBuff("duet_enrage", "[폭주]", 99, { atk_boost_multiplier: 1.5 });
+        });
+    }
+}
+
+function checkMapShrink() {
+    if (state.selectedMapId !== "B-2") return;
+    const boss = state.enemyCharacters.find(e => e.name === "카르나블룸" && e.isAlive);
+    if (!boss) return;
+
+    const hpPercent = (boss.currentHp / boss.maxHp) * 100;
+    if (hpPercent <= 20 && state.mapShrinkState < 2) {
+        state.mapShrinkState = 2;
+        log("✦기믹✦ [최종 막]: 무대가 극도로 좁아집니다!");
+    } else if (hpPercent <= 50 && state.mapShrinkState < 1) {
+        state.mapShrinkState = 1;
+        log("✦기믹✦ [제 2막]: 무대가 좁아지기 시작합니다.");
+    }
+}
+
+async function performEnemyAction(enemy) {
+    const provoke = enemy.debuffs.find(d => d.id === "provoked");
+    let target = provoke ? Utils.findCharacterById(provoke.effect.targetId, state.allyCharacters) : null;
+    
+    if (!target || !target.isAlive) {
+        target = state.allyCharacters.find(a => a.isAlive);
+    }
+    
+    if (target) {
+        if (provoke) log(`✦도발✦ ${enemy.name}이(가) ${target.name}에게 고정됩니다.`);
+        const dmg = BattleEngine.calculateDamage(enemy, target, 1.0, "physical");
+        target.takeDamage(dmg, log, enemy, state.allyCharacters, state.enemyCharacters, { 
+            applyHeal: BattleEngine.applyHeal 
+        });
+    }
+}
+
+function addCharacterAtPos(templateId, pos) {
+    if (!pos) return;
+    const template = MONSTER_TEMPLATES[templateId];
+    if (!template) return;
+
+    const monster = new Character(template.name, template.type, null);
+    Object.assign(monster, {
+        maxHp: template.maxHp, currentHp: template.maxHp,
+        atk: template.atk, matk: template.matk, def: template.def, mdef: template.mdef,
+        skills: template.skills, gimmicks: template.gimmicks,
+        posX: pos.x, posY: pos.y
+    });
+    state.enemyCharacters.push(monster);
+    state.characterPositions[`${pos.x},${pos.y}`] = monster.id;
+}
+
+// 9. 초기화
+document.addEventListener("DOMContentLoaded", () => {
+    syncUI();
+});
