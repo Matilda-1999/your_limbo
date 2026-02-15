@@ -172,7 +172,8 @@ export const SKILLS = {
     description: "자신에겐 회복을, 아군에겐 조건부 공격력 증폭을 부여합니다. 턴 종료 시 추가 공격을 수행합니다.",
     targetType: "single_ally_or_self",
     targetSelection: "ally_or_self",
-    const { currentTurn } = state;
+    execute: (caster, target, allies, enemies, battleLog, state) => {
+      const { currentTurn } = state;
 
       // 1. 첫 턴 제약: 다른 아군에게 사용 불가
       if (caster.id !== target.id && currentTurn === 1) {
