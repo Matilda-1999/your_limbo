@@ -509,3 +509,10 @@ const updateFirebaseState = async () => {
         console.error("관전자 데이터 전송 실패:", e);
     }
 };
+
+window.loadSelectedMap = window.loadSelectedMap || loadSelectedMap;
+window.addCharacter = addCharacter;
+window.startBattle = startBattle;
+window.confirmAction = confirmAction;
+window.executeBattleTurn = executeBattleTurn;
+window.syncUI = syncUI;
