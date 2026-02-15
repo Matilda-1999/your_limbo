@@ -69,27 +69,6 @@ const DOM = {
     allySelectDiv: document.getElementById("allySelectionButtons")
 };
 
-// 5. 핵심 브릿지 함수
-const syncUI = () => {
-    UI.renderMapGrid(DOM.mapContainer, state.allyCharacters, state.enemyCharacters, state.mapObjects, state.enemyPreviewAction, state.mapWidth, state.mapHeight);
-    
-    DOM.allyDisplay.innerHTML = "";
-    state.allyCharacters.forEach(char => {
-        const isSelected = state.selectedAction?.targetId === char.id;
-        const card = UI.createCharacterCard(char, "ally", isSelected, (id) => deleteChar(id, "ally"));
-        card.onclick = () => selectTarget(char.id);
-        DOM.allyDisplay.appendChild(card);
-    });
-
-    DOM.enemyDisplay.innerHTML = "";
-    state.enemyCharacters.forEach(char => {
-        const isSelected = state.selectedAction?.targetId === char.id;
-        const card = UI.createCharacterCard(char, "enemy", isSelected);
-        card.onclick = () => selectTarget(char.id);
-        DOM.enemyDisplay.appendChild(card);
-    });
-};
-
 const log = (msg) => UI.logToBattleLog(DOM.battleLog, msg);
 
 // 6. 전투 준비 및 캐릭터 관리
