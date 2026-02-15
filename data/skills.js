@@ -370,7 +370,7 @@ export const SKILLS = {
     description: "모든 적에게 [중독]을 부여하고 턴 종료 시 추가 공격을 예약합니다.",
     targetType: "all_enemies",
     targetSelection: "all_enemies",
-    execute: (caster, enemies, battleLog) => {
+    execute: (caster, target, allies, enemies, battleLog) => {
       battleLog(`✦스킬✦ ${caster.name}, [진리] 사용: 모든 적에게 [중독]을 부여합니다.`);
 
       enemies.filter((e) => e.isAlive).forEach((enemy) => {
