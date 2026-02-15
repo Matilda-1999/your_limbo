@@ -360,28 +360,21 @@ export const SKILLS = {
     id: "SKILL_TRUTH",
     name: "진리",
     type: "광역 디버프",
-    description: "모든 적에게 [중독]을 부여하고 턴 종료 시 추가 공격을 예약합니다.",
+    description: "모든 적에게 [중독]을 부여합니다. 중독 결산 후 랜덤한 적에게 [맹독] 피해를 입힙니다.",
     targetType: "all_enemies",
     targetSelection: "all_enemies",
-    execute: (caster, target, allies, enemies, battleLog) => {
-      battleLog(`✦스킬✦ ${caster.name}, [진리] 사용: 모든 적에게 [중독]을 부여합니다.`);
+    execute: (caster, target, allies, enemies, battleLog, state) => {
+      battleLog(`✦스킬✦ ${caster.name}, [진리] 사용: 모든 적에게 독을 퍼뜨립니다.`);
 
       enemies.filter((e) => e.isAlive).forEach((enemy) => {
-        const poisonDamage = enemy.currentHp * 0.015;
-        enemy.addDebuff("poison_truth", "[중독](진리)", 2, {
-          damagePerTurn: poisonDamage,
-          type: "fixed",
+        enemy.addDebuff("poison_truth", "[중독]", 2, {
+          dotType: "current_hp_ratio", // 현재 체력 비례임을 명시
+          ratio: 0.015,                // 1.5%
           casterId: caster.id,
-          category: "상태 이상",
         });
-        battleLog(`✦상태 이상✦ ${enemy.name}, [중독](진리) 효과 적용(2턴).`);
       });
-
-      // 턴 종료 후 추가 공격 마커
-      caster.addBuff("truth_end_turn_attack_marker", "맹독 추가 공격 대기", 1, {
-        originalCasterId: caster.id,
-        power: 0.3,
-      });
+      
+      caster.checkSupporterPassive(battleLog);
       return true;
     },
   },
