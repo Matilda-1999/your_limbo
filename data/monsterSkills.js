@@ -17,7 +17,7 @@ export const MONSTER_SKILLS = {
      hitTargets.forEach(target => {
        const damage = state.calculateDamage(caster, target, 1.0, "physical");
        target.takeDamage(damage, battleLog, caster);
-       battleLog(`✦피해✦ ${caster.name}의 진동이 ${target.name}에게 적중.`);
+       battleLog(`✦피해✦ ${caster.name}의 진동이 ${target.name}에게 적중하여 ${damage}의 피해를 입혔습니다.`);
      });
      return true;
    },
@@ -35,7 +35,7 @@ export const MONSTER_SKILLS = {
      if (hitTargets.length > 0) {
        hitTargets.forEach(t => {
          t.addDebuff("silence", "[침묵]", hitTargets.length, { description: `주문 사용 불가` });
-         battleLog(`✦광역 디버프✦ ${caster.name}의 메아리가 ${t.name}에게 적중.`);
+         battleLog(`✦광역 디버프✦ ${caster.name}의 메아리가 ${t.name}에게 적중합니다.`);
        });
      }
      return true;
@@ -54,7 +54,7 @@ export const MONSTER_SKILLS = {
      hitTargets.forEach(target => {
        const damage = state.calculateDamage(caster, target, 1.2, "physical");
        target.takeDamage(damage, battleLog, caster);
-       battleLog(`✦피해✦ 하늘에서 떨어진 석괴가 ${target.name}에게 적중.`);
+       battleLog(`✦피해✦ 하늘에서 떨어진 석괴가 ${target.name}에게 적중하여 ${damage}의 피해를 입혔습니다.`);
      });
      return true;
    },
