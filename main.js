@@ -175,18 +175,17 @@ function prepareNextTurnCycle() {
   state.playerActionsQueue = [];
   DOM.executeBtn.style.display = "none";
   
-  // (1) 적군 보스 찾기 및 스킬 대사 예고
-  const boss = state.enemyCharacters.find(e => e.isAlive && (e.name.includes("테르모르") || e.name.includes("카르나블룸")));
-  if (boss && boss.skills && boss.skills.length > 0) {
-      const skillId = boss.skills[0]; 
-      const skillData = MONSTER_SKILLS[skillId]; 
-      
-      if (skillData) {
-          state.enemyPreviewAction = { skillId, hitArea: [] };
-          // 스킬의 script(대사)를 로그에 가장 먼저 출력
-          log(`\n<b>[예고] ${boss.name}:</b> "${skillData.script || "..."}"`); 
-      }
-  }
+  const boss = state.enemyCharacters.find(e => e.isAlive && e.name.includes("테르모르"));
+    if (boss) {
+        // 턴 시작 시 이번에 쓸 스킬을 미리 랜덤으로 골라둡니다.
+        const available = [...(boss.skills || []), ...(boss.gimmicks || [])];
+        const nextSkillId = available[Math.floor(Math.random() * available.length)];
+        state.enemyPreviewAction = { skillId: nextSkillId }; // 예약
+
+        const skillData = MONSTER_SKILLS[nextSkillId];
+        log(`\n<b>[예고] ${boss.name}:</b> "${skillData.script}"`); 
+    }
+}
 
   log(`\n --- ${state.currentTurn} 턴 아군 행동 선택 시작 --- \n`);
   promptAllySelection();
@@ -534,36 +533,31 @@ function checkMapShrink() {
 }
 
 async function performEnemyAction(enemy) {
-  // 1. 타겟 선정
+  // 1. 타겟 선정 (도발 상태 우선 확인)
   const provoke = enemy.debuffs.find((d) => d.id === "provoked");
   let target = provoke ? Utils.findCharacterById(provoke.effect.targetId, state.allyCharacters) : null;
   if (!target || !target.isAlive) target = state.allyCharacters.find((a) => a.isAlive);
 
-  // 2. 랜덤 행동 선택 (skills + gimmicks)
-  const availableActions = [...(enemy.skills || []), ...(enemy.gimmicks || [])];
-  
-  // 3. 행동 결정 및 실행
-  if (target && availableActions.length > 0) {
-    const randomActionId = availableActions[Math.floor(Math.random() * availableActions.length)];
-    const actionData = MONSTER_SKILLS[randomActionId];
+  // 2. 예약된 행동 가져오기 (턴 시작 시 예고된 스킬)
+  const actionId = state.enemyPreviewAction?.skillId;
+  const actionData = MONSTER_SKILLS[actionId];
 
-    if (actionData && typeof actionData.execute === 'function') {
-      log(`\n<b>[행동] ${enemy.name}:</b> ${actionData.name}`);
-      // 스킬에 정의된 서사 텍스트(script) 출력
-      if (actionData.script) log(actionData.script);
-      
-      // 실제 스킬/기믹 로직 실행
-      actionData.execute(enemy, state.allyCharacters, state.enemyCharacters, log, state);
-    } else {
-      // 데이터는 있으나 실행 로직이 없는 경우
-      log(`✦정보✦ ${enemy.name}은(는) 망설이고 있습니다. 아무런 행동도 취하지 않습니다.`);
+  // 3. 행동 실행 및 실패 묘사
+  if (target && actionData) {
+    log(`\n<b>[행동] ${enemy.name}:</b> ${actionData.name}`);
+    
+    // 실제 스킬 로직 실행
+    const success = actionData.execute(enemy, state.allyCharacters, state.enemyCharacters, log, state);
+    
+    if (!success) {
+      log(`✦정보✦ ${enemy.name}의 공격이 빗나갔습니다. 의도했던 파괴는 일어나지 않았습니다.`);
     }
   } else {
-    // 타겟이 없거나 스킬 리스트가 비어있는 경우
+    // 아무도 공격하지 못하거나 행동 데이터가 없을 때의 내러티브
     if (!target) {
-      log(`✦정보✦ 적군이 공격할 대상을 찾지 못해 공격에 실패했습니다.`);
+      log(`✦정보✦ 아무도 공격하지 못했습니다. ${enemy.name}의 서늘한 기운만이 허공을 맴돌며 공격에 실패합니다.`);
     } else {
-      log(`✦정보✦ ${enemy.name}은(는) 고요 속에 잠겨 있습니다. 아무 움직임도 보이지 않습니다.`);
+      log(`✦정보✦ ${enemy.name}은(는) 아무 행동도 취하지 않고 움직이지 않습니다. 정적만이 전장을 채웁니다.`);
     }
   }
 }
