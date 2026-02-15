@@ -79,7 +79,7 @@ export class Character {
         this.totalDamageTakenThisBattle += finalDamage;
         if (this.currentHp <= 0) {
             this.isAlive = false;
-            logFn(`☠️ ${this.name}이(가) 쓰러졌습니다.`);
+            logFn(`✦☠️✦ ${this.name}, 쓰러집니다.`);
         }
     }
 
