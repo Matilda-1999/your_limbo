@@ -209,4 +209,8 @@ export class Character {
     hasDebuff(id) { return this.debuffs.some(d => d.id === id && d.turnsLeft > 0); }
     removeBuffById(id) { this.buffs = this.buffs.filter(b => b.id !== id); }
     removeDebuffById(id) { this.debuffs = this.debuffs.filter(d => d.id !== id); }
+    getDebuffStacks(debuffId) {
+        const debuff = this.debuffs.find(d => d.id === debuffId);
+        return debuff ? (debuff.stacks || 1) : 0;
+    }
 }
