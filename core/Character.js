@@ -69,14 +69,48 @@ export class Character {
     takeDamage(rawDamage, logFn, attacker = null, allies = [], enemies = [], state = {}) {
         if (!this.isAlive) return;
         let finalDamage = rawDamage;
+
+        // 보호막 처리
         if (this.shield > 0) {
             const absorbed = Math.min(finalDamage, this.shield);
             this.shield -= absorbed;
             finalDamage -= absorbed;
             logFn(`✦보호막✦ ${this.name}: 피해 ${Math.round(absorbed)} 흡수.`);
         }
+
+        // 2. 체력 차감 및 피해 기록
         this.currentHp = Math.max(0, this.currentHp - finalDamage);
         this.totalDamageTakenThisBattle += finalDamage;
+
+        // 도발 중이라면 받은 피해를 저장
+        if (this.hasDebuff && this.hasDebuff("provoked_self")) {
+            this.provokeDamage = (this.provokeDamage || 0) + finalDamage;
+        }
+        
+        const reversalBuff = this.buffs.find(b => b.id === "reversal_active");
+        if (reversalBuff && attacker && finalDamage > 0) {
+            // 턴 수에 따른 속성 결정 (홀수: 물리 / 짝수: 마법)
+            const isOddTurn = (state.currentTurn || 1) % 2 !== 0;
+            const damageType = isOddTurn ? "physical" : "magical";
+            const typeName = isOddTurn ? "물리" : "마법";
+    
+            // 공격 스탯 결정
+            const atkStat = this.getEffectiveStat("atk");
+            const storedDmg = this.provokeDamage || 0;
+    
+            // 공식: (공격 스탯 + 도발 저장 피해) × 1.5
+            const counterDamage = Math.round((atkStat + storedDmg) * 1.5);
+            
+            // 반격 실행
+            logFn(`✦역습 발동✦ ${this.name}이(가) ${typeName} 속성으로 반격합니다! (저장된 피해: ${storedDmg})`);
+            attacker.takeDamage(counterDamage, logFn, this);
+            logFn(`✦피해✦ ${attacker.name}에게 ${counterDamage}의 ${typeName} 피해를 입혔습니다.`);
+            
+            // 발동 후 버프 및 저장된 도발 피해 초기화
+            this.buffs = this.buffs.filter(b => b.id !== "reversal_active");
+            this.provokeDamage = 0; 
+        }
+        
         if (this.currentHp <= 0) {
             this.isAlive = false;
             logFn(`✦☠️✦ ${this.name}, 쓰러집니다.`);
