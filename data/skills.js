@@ -555,6 +555,8 @@ SKILL_RUPTURE: {
 
     if (!mainTarget || !mainTarget.isAlive) return false;
 
+    if (!caster.lastSkillTurn) caster.lastSkillTurn = {};
+    
     // 쿨타임 체크 및 남은 턴 계산 로직
       const lastUsed = caster.lastSkillTurn[skillId] || 0;
       if (lastUsed !== 0 && currentTurn - lastUsed < cooldown) {
