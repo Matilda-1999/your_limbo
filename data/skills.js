@@ -61,7 +61,7 @@ export const SKILLS = {
     description: "보호막을 분배하고 턴에 따라 [응수] 또는 [격노] 태세를 취합니다.",
     targetType: "self",
     targetSelection: "self",
-    cooldown: 2,
+    cooldown: 1,
     execute: (caster, target, allies, enemies, battleLog, state) => {
       const { currentTurn } = state;
       const skillId = "SKILL_COUNTER";
@@ -69,10 +69,11 @@ export const SKILLS = {
 
       // 쿨타임 체크
       const lastUsed = caster.lastSkillTurn[skillId] || 0;
-      if (lastUsed !== 0 && currentTurn - lastUsed < 2) { // cooldown: 2
+      if (lastUsed !== 0 && currentTurn - lastUsed < 1) { 
         battleLog(`✦정보✦ ${caster.name}, [${skillName}] 사용 불가: 쿨타임 ${2 - (currentTurn - lastUsed)}턴 남음.`);
         return false;
       }
+
 
       // 보호막 분배 로직
       const baseShield = caster.shield;
@@ -99,7 +100,7 @@ export const SKILLS = {
         });
         battleLog(`✦스킬✦ ${caster.name}, [반격](홀수) 사용: [응수] 태세 돌입.`);
       } else {
-        caster.addBuff("fury_stance", "[격노]", 2, {
+        caster.addBuff("fury_stance", "[격노]", 1, {
           description: "자신 피격 시 모든 적 반격(1.5배), 아군 피격 시 모든 적 반격(0.5배).",
         });
         battleLog(`✦스킬✦ ${caster.name}, [반격](짝수) 사용: [격노] 태세 돌입.`);
