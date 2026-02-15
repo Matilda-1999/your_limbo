@@ -414,7 +414,7 @@ async function executeBattleTurn() {
       await new Promise((r) => setTimeout(r, 600));
     }
 
-    log(`\n\n☂︎ 지금부터 5 분 동안 행동을 게시해 주세요.\n\n`);
+    log(`\n\n☂︎ 아군의 행동을 개시합니다.\n\n`);
 
     // [2] 아군 행동 실행 (이때 안전지대 판정이 실시간으로 적용됨)
     // [2] 아군 행동 실행 (이때 안전지대 판정이 실시간으로 적용됨)
