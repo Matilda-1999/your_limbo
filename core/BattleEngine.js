@@ -3,7 +3,7 @@
  * 전투의 모든 계산과 상태 판정을 관리합니다.
  */
 
-import { TYPE_RELATIONSHIPS, TYPE_ADVANTAGE_MODIFIER, TYPE_DISADVANTAGE_MODIFIER } from './Character.js';
+import { TYPE_RELATIONSHIPS, TYPE_ADVANTAGE_MODIFIER, TYPE_DISADVANTAGE_MODIFIER } from './core/Character.js';
 
 export const BattleEngine = {
     /**
