@@ -365,43 +365,34 @@ function confirmAction() {
   syncUI();
 }
 
+지우 님, 올려주신 코드의 흐름은 의도하신 대로 (2) 아군 행동 완료 후 (3) 적군 행동으로 이어지는 순서가 아주 잘 잡혔습니다. 다만, 현재 코드에 중복 선언과 오타가 섞여 있어 이대로 실행하면 다시 에러가 날 수 있습니다.
+
+아래 코드에서 중복된 부분을 제거하고 깔끔하게 정리해 드릴 테니, 이 버전으로 executeBattleTurn 함수를 교체해 주세요.
+
+🛠️ 수정 및 정리된 executeBattleTurn
+JavaScript
 async function executeBattleTurn() {
   DOM.executeBtn.style.display = "none";
-  log(`\n\n☂︎  ${state.currentTurn} 턴을 시작합니다.\n\n`);
+  log(`\n\n☂︎  지금부터 5 분 동안 행동을 게시해 주세요.\n\n`); // 아군 턴임을 명시
 
+  // --- (2) 아군 행동 실행 (Player Phase) ---
   for (const action of state.playerActionsQueue) {
     const { caster, skill, targetId, moveDelta } = action;
     if (!caster.isAlive) continue;
 
     if (action.type === "skill") {
-      const target = Utils.findCharacterById(
-        targetId,
-        state.allyCharacters,
-        state.enemyCharacters,
-        state.mapObjects
-      );
+      const target = Utils.findCharacterById(targetId, state.allyCharacters, state.enemyCharacters, state.mapObjects);
       log(`✦ ${caster.name}, [${skill.name}] 시전.`);
-
-      skill.execute(
-        caster, // 1. 시전자
-        target, // 2. 대상 (근성 등 자가버프 시에는 본인이 들어감)
-        state.allyCharacters, // 3. 아군 목록
-        state.enemyCharacters, // 4. 적군 목록
-        log, // 5. 로그 함수 (★여기가 battleLog 자리입니다)
-        {
-          // 6. 기타 데이터 (state)
-          currentTurn: state.currentTurn,
-          applyHeal: BattleEngine.applyHeal,
-          calculateDamage: (a, d, p, t, o) =>
-            BattleEngine.calculateDamage(a, d, p, t, {
-              ...o,
-              gimmickData: MONSTER_SKILLS,
-              parseSafeCoords: Utils.parseSafeCoords,
-            }),
-          displayCharacters: syncUI,
-          mapObjects: state.mapObjects,
-        }
-      );
+      
+      skill.execute(caster, target, state.allyCharacters, state.enemyCharacters, log, {
+        currentTurn: state.currentTurn,
+        applyHeal: BattleEngine.applyHeal,
+        calculateDamage: (a, d, p, t, o) => BattleEngine.calculateDamage(a, d, p, t, {
+          ...o, gimmickData: MONSTER_SKILLS, parseSafeCoords: Utils.parseSafeCoords
+        }),
+        displayCharacters: syncUI,
+        mapObjects: state.mapObjects
+      });
       caster.lastSkillTurn[skill.id] = state.currentTurn;
     } else if (action.type === "move") {
       const oldPos = `${caster.posX},${caster.posY}`;
@@ -415,27 +406,27 @@ async function executeBattleTurn() {
     await new Promise((r) => setTimeout(r, 600));
   }
 
+  // --- (3) 적군 행동 실행 (Enemy Phase) ---
   resolveMinionGimmicks();
 
+  // [수정] 중복 선언 제거 및 보스 이름 찾기 통합
   const activeBoss = state.enemyCharacters.find(
-    (e) =>
-      e.isAlive &&
-      (e.name.includes("테르모르") || e.name.includes("카르나블룸"))
+    (e) => e.isAlive && (e.name.includes("테르모르") || e.name.includes("카르나블룸"))
   );
   const turnOwner = activeBoss ? activeBoss.name : "적군";
   log(`\n\n☂︎ ${turnOwner}의 턴.\n\n`);
 
-  for (const enemy of state.enemyCharacters.filter((e) => e.isAlive)) {
-    await performEnemyAction(enemy);
+  for (const enemy of state.enemyCharacters.filter(e => e.isAlive)) {
+    // performEnemyAction 내부에서 예고된 스킬이 실행되도록 설정되어 있어야 합니다.
+    await performEnemyAction(enemy); 
     syncUI();
-    await new Promise((r) => setTimeout(r, 600));
+    await new Promise(r => setTimeout(r, 600));
   }
 
+  // --- 턴 마무리 (상태이상 감소 및 승패 판정) ---
   [...state.allyCharacters, ...state.enemyCharacters].forEach((c) => {
     if (c.isAlive) {
-      c.buffs.forEach((b) => {
-        if (!b.unremovable) b.turnsLeft--;
-      });
+      c.buffs.forEach((b) => { if (!b.unremovable) b.turnsLeft--; });
       c.debuffs.forEach((d) => d.turnsLeft--);
       c.buffs = c.buffs.filter((b) => b.turnsLeft > 0 || b.unremovable);
       c.debuffs = c.debuffs.filter((d) => d.turnsLeft > 0);
@@ -444,15 +435,13 @@ async function executeBattleTurn() {
 
   checkMapShrink();
 
-  const result = BattleEngine.checkBattleEnd(
-    state.allyCharacters,
-    state.enemyCharacters
-  );
+  const result = BattleEngine.checkBattleEnd(state.allyCharacters, state.enemyCharacters);
   if (result) {
     log(`\n\n【 전투 종료: ${result === "WIN" ? "승리" : "패배"} 】`);
     state.isBattleStarted = false;
     DOM.startBtn.style.display = "block";
   } else {
+    // 다시 (1)단계인 '적군 예고'가 포함된 prepareNextTurnCycle로 이동합니다.
     prepareNextTurnCycle();
   }
 }
