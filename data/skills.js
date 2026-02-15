@@ -655,33 +655,35 @@ export const SKILLS = {
   },
 
   // [보상]
-  SKILL_COMPENSATION: {
-    id: "SKILL_COMPENSATION",
-    name: "보상",
-    type: "지정 디버프",
-    description: "자신의 체력을 소모하여 적에게 [전이]를 부여합니다. [전이] 상태인 적 공격 시 공격자가 회복됩니다.",
-    targetType: "single_enemy",
-    targetSelection: "enemy",
-    execute: (caster, target, allies, enemies, battleLog) => {
-      if (!target || !target.isAlive) return false;
+SKILL_COMPENSATION: {
+  id: "SKILL_COMPENSATION",
+  name: "보상",
+  type: "지정 디버프",
+  description: "자신의 체력을 소모하여 적에게 동일한 고정 피해를 입히고 [전이]를 부여합니다.", // 설명 수정
+  targetType: "single_enemy",
+  targetSelection: "enemy",
+  execute: (caster, target, allies, enemies, battleLog) => {
+    if (!target || !target.isAlive) return false;
 
-      // 1. 시전자 체력 소모 (최대 체력의 15%)
-      const selfDamage = Math.round(caster.maxHp * 0.15);
-      caster.takeDamage(selfDamage, battleLog, null);
-      battleLog(`✦소모✦ ${caster.name}: 스킬 대가로 ${selfDamage}의 피해를 입습니다.`);
+    // 1. 시전자 체력 소모 (최대 체력의 15%)
+    const selfDamage = Math.round(caster.maxHp * 0.15);
+    caster.takeDamage(selfDamage, battleLog, null);
+    battleLog(`✦소모✦ ${caster.name}: 스킬 대가로 ${selfDamage}의 피해를 입습니다.`);
 
-      if (!caster.isAlive) return true;
+    if (!caster.isAlive) return true;
+    target.takeDamage(selfDamage, battleLog, caster); 
+    battleLog(`✦피해✦ ${target.name}: [보상]의 여파로 ${selfDamage}의 고정 피해를 입었습니다.`);
 
-      // 2. 적에게 [전이] 디버프 부여
-      target.addDebuff("transfer", "[전이]", 2, {
-        description: "피격 시 공격자를 (자신의 공격력x100%)만큼 회복시킴.",
-        casterId: caster.id,
-      });
-      battleLog(`✦디버프✦ ${target.name}: [전이] 상태 부여 (2턴).`);
+    // 3. 적에게 [전이] 디버프 부여 (기존 로직)
+    target.addDebuff("transfer", "[전이]", 2, {
+      description: "피격 시 공격자를 (자신의 공격력x100%)만큼 회복시킴.",
+      casterId: caster.id,
+    });
+    battleLog(`✦디버프✦ ${target.name}: [전이] 상태 부여 (2턴).`);
 
-      return true;
-    },
+    return true;
   },
+},
 
   // [침전]
   SKILL_SEDIMENTATION: {
