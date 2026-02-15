@@ -194,7 +194,7 @@ function prepareNextTurnCycle() {
         const skillData = MONSTER_SKILLS[nextSkillId];
         if (skillData) {
         // script가 없으면 name을 출력하거나 빈 문자열 처리하여 undefined 방지
-        const scriptText = skillData.script || `\n<pre>${skillData.name} 준비 중...</pre>\n`;
+        const scriptText = skillData.script || `\n<pre>${skillData.name} 태세를 취합니다. (관련 내용 없어 누락됨)</pre>\n`;
         log(`\n\n${scriptText}\n\n`);
 
       log(`\n\n ☂︎ 전원, 5 분 동안 행동해 주세요. \n\n`);
