@@ -26,7 +26,7 @@ export const BattleEngine = {
         // 2. 상성 판정
         let typeModifier = 1.0;
         
-        // [수정] attacker 객체 존재 여부와 hasDebuff 메서드 확인 로직 강화
+        // attacker 객체 존재 여부와 hasDebuff 메서드 확인 로직 강화
         // 공격자가 [우울 낙인] 상태가 아닐 때만 공격 상성 우위(1.3배)가 적용됩니다.
         const canApplyAdvantage = attacker && typeof attacker.hasDebuff === 'function' && !attacker.hasDebuff("melancholy_brand");
 
@@ -39,7 +39,7 @@ export const BattleEngine = {
         // 3. 기믹 판정 (대지의 수호 등 안전지대 메커니즘)
         let finalSkillPower = skillPower;
         
-        // [수정] defender 객체와 activeGimmick 속성 접근 안전성 강화
+        // defender 객체와 activeGimmick 속성 접근 안전성 강화
         if (defender && defender.activeGimmick && defender.activeGimmick.startsWith("GIMMICK_Aegis_of_Earth")) {
             const currentGimmick = gimmickData ? gimmickData[defender.activeGimmick] : null;
             
@@ -58,7 +58,7 @@ export const BattleEngine = {
         }
 
         // 4. 공격자 상태 보정 ([쇠약] 적용)
-        // [수정] attacker.debuffs 배열 존재 여부 확인
+        // attacker.debuffs 배열 존재 여부 확인
         if (attacker && Array.isArray(attacker.debuffs)) {
             const weakness = attacker.debuffs.find(d => d.id === "weakness");
             if (weakness && weakness.effect) {
@@ -87,9 +87,14 @@ export const BattleEngine = {
         damage = Math.max(0, damage);
 
         // 7. 방어자 상태 보정 ([침묵/그로기] 시 10% 추가 피해)
-        if (defender && typeof defender.hasDebuff === 'function' && defender.hasDebuff("groggy")) {
-            damage *= 1.1;
+        if (defender && Array.isArray(defender.debuffs)) {
+        const weakness = defender.debuffs.find(d => d.id === "weakness");
+        if (weakness) {
+            const fixedBonus = Math.round(attacker.getEffectiveStat("atk") * 0.3);
+            damage += fixedBonus;
+            if (battleLog) battleLog(`✦쇠약 효과✦ ${defender.name}의 약점을 찔러 ${fixedBonus}의 추가 피해를 입혔습니다.`);
         }
+    }
 
         return Math.round(damage);
     },
