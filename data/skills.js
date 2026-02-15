@@ -573,7 +573,7 @@ SKILL_RUPTURE: {
     battleLog(`✦스킬✦ ${caster.name}, [파열] 사용. 주 대상: ${mainTarget.name}.`);
 
     // 1. 주 대상 공격 (210%)
-    const dMain = calculateDamage(caster, mainTarget, 2.1, damageType, statType);
+    const dMain = calculateDamage(caster, mainTarget, 2.1, damageType, { statTypeToUse: statType });
     mainTarget.takeDamage(dMain, battleLog, caster);
     battleLog(`  ✦피해✦ [파열 주 대상] ${mainTarget.name}: ${dMain} ${damageTypeKr} 피해.`);
 
