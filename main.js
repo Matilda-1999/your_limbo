@@ -323,21 +323,23 @@ async function executeBattleTurn() {
             // 인자가 5개면 (caster, allies, enemies, log, params) -> target 제외
             // 인자가 6개면 (caster, target, allies, enemies, log, params) -> target 포함
             if (skill.execute.length === 5) {
-                skill.execute(
-                    caster, 
-                    state.allyCharacters, 
-                    state.enemyCharacters, 
-                    log, 
-                    skillParams
-                );
-            } else {
-                skill.execute(
-                    caster, 
-                    target, 
-                    state.allyCharacters, 
-                    state.enemyCharacters, 
-                    log, 
-                    skillParams
+               skill.execute(
+                    caster,               // 1. caster
+                    target,               // 2. target (근성 등에서 안 쓰더라도 자리는 채워야 함)
+                    state.allyCharacters,  // 3. allies
+                    state.enemyCharacters, // 4. enemies
+                    log,                  // 5. battleLog (이것이 skills.js의 battleLog 함수가 됨)
+                    {                     // 6. state (마지막 객체 인자)
+                        currentTurn: state.currentTurn,
+                        applyHeal: BattleEngine.applyHeal,
+                        calculateDamage: (a, d, p, t, o) => BattleEngine.calculateDamage(a, d, p, t, {
+                            ...o, 
+                            gimmickData: MONSTER_SKILLS, 
+                            parseSafeCoords: Utils.parseSafeCoords
+                        }),
+                        displayCharacters: syncUI,
+                        mapObjects: state.mapObjects
+                    }
                 );
             }
             
