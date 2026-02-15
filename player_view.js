@@ -21,7 +21,34 @@ const DOM = {
     mapContainer: document.getElementById("mapGridContainer"),
     allyDisplay: document.getElementById("allyCharacters"),
     enemyDisplay: document.getElementById("enemyCharacters"),
-    battleLog: document.getElementById("battleLog")
+};
+
+const reconstructCharacter = (data) => {
+    const char = new Character(data.name, data.type, data.job, data.maxHp);
+    Object.assign(char, data);
+    return char;
+};
+
+const createEnemySpectatorCard = (character) => {
+    const card = document.createElement("div");
+    card.className = "character-stats enemy-spectator";
+    
+    card.innerHTML = `
+        <p>
+            <span class="material-icons-outlined" style="font-size: 1.1em; color: var(--color-accent-red);">
+                sentiment_very_dissatisfied
+            </span>
+            <strong>${character.name}</strong>
+        </p>
+        <p>속성: <strong style="color: var(--color-primary-gold-lighter);">${character.type}</strong></p>
+        <div class="status-effects" style="margin-top: 8px;">
+            <p style="font-size: 0.9em; margin-bottom: 4px;">상태 이상 및 강화:</p>
+            ${character.buffs.length > 0 ? `<p style="color: #4db8ff;">버프: ${character.buffs.map(b => `${b.name}(${b.turnsLeft}턴)`).join(", ")}</p>` : ""}
+            ${character.debuffs.length > 0 ? `<p style="color: #ff4d4d;">디버프: ${character.debuffs.map(d => `${d.name}(${d.turnsLeft}턴)`).join(", ")}</p>` : ""}
+            ${character.buffs.length === 0 && character.debuffs.length === 0 ? '<p style="color: #888;">특이사항 없음</p>' : ""}
+        </div>
+    `;
+    return card;
 };
 
 // Firebase 데이터 실시간 감시
@@ -30,18 +57,32 @@ onValue(battleRef, (snapshot) => {
     const data = snapshot.val();
     if (!data) return;
 
-    // 1. 맵 그리드 렌더링
-    UI.renderMapGrid(DOM.mapContainer, data.allyCharacters, data.enemyCharacters, data.mapObjects, null, data.mapWidth, data.mapHeight);
+    // 1. 데이터 복원 (아군과 적군 모두 Character 인스턴스로 변환)
+    const allies = (data.allyCharacters || []).map(reconstructCharacter);
+    const enemies = (data.enemyCharacters || []).map(reconstructCharacter);
+    const objects = data.mapObjects || [];
 
-    // 2. 아군 카드 리스트 렌더링
+    // 2. 맵 그리드 렌더링
+    UI.renderMapGrid(
+        DOM.mapContainer, 
+        allies, 
+        enemies, 
+        objects, 
+        null, 
+        data.mapWidth || 5, 
+        data.mapHeight || 5
+    );
+
+    // 3. 아군 카드 리스트 렌더링 (모든 정보 노출)
     DOM.allyDisplay.innerHTML = "";
-    data.allyCharacters.forEach(char => {
+    allies.forEach(char => {
         DOM.allyDisplay.appendChild(UI.createCharacterCard(char, "ally"));
     });
 
-    // 3. 적군 카드 리스트 렌더링
+    // 4. 적군 카드 리스트 렌더링 (속성 및 상태만 노출)
     DOM.enemyDisplay.innerHTML = "";
-    data.enemyCharacters.forEach(char => {
-        DOM.enemyDisplay.appendChild(UI.createCharacterCard(char, "enemy"));
+    enemies.forEach(char => {
+        DOM.enemyDisplay.appendChild(createEnemySpectatorCard(char));
     });
+    
 });
