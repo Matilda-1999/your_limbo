@@ -473,7 +473,7 @@ async function executeBattleTurn() {
               console.log(
                 `%c[아군 스킬 계산] %c${a.name} %c-> %c${d.name} | %c계수: ${p} | %c최종 대미지: ${finalDamage}`,
                 "color: #4da6ff; font-weight: bold;",
-                "color: white;",
+                "color: black;",
                 "color: gray;",
                 "color: #ffcc00;",
                 "color: #00ff00;",
@@ -629,6 +629,9 @@ async function performEnemyAction(enemy) {
   // 1. 도발 상태 확인 (단일 타겟 스킬이 필요한 경우를 대비)
   const provoke = enemy.debuffs.find((d) => d.id === "provoked");
   let target = provoke ? Utils.findCharacterById(provoke.effect.targetId, state.allyCharacters) : null;
+
+  // 적중한 대상이 있는지 확인하기 위한 카운터
+  let hitCount = 0;
   
   // 2. 확장된 state 준비 (BattleEngine 유틸리티 포함)
   const extendedState = {
@@ -638,11 +641,20 @@ async function performEnemyAction(enemy) {
         ...o, gimmickData: MONSTER_SKILLS, parseSafeCoords: Utils.parseSafeCoords, battleLog: log
       });
 
-    console.log(`%c[적군 공격] %c${a.name} %c의 ${actionData.name} -> %c${d.name}: %c${dmg} 피해`, 
-        'color: #ffaa00;', 'color: white;', 'color: gray;', 'color: #ff4d4d;', 'color: #ff0000; font-weight: bold;');
+    if (dmg > 0) {
+        // 적중 시 상세 피해 기록
+        log(`  ✦피해✦ ${d.name}에게 ${dmg}의 피해를 입혔습니다.`);
+        hitCount++; 
+      } else {
+        // 범위 내에 있으나 기믹 등으로 대미지가 0인 경우
+        log(`  ✦회피✦ ${d.name}, 공격을 완전히 상쇄하거나 회피했습니다.`);
+      }
+
+      console.log(`%c[적군 공격] %c${a.name} %c의 ${actionData.name} -> %c${d.name}: %c${dmg} 피해`, 
+        'color: #ffaa00;', 'color: black;', 'color: gray;', 'color: #ff4d4d;', 'color: #ff0000; font-weight: bold;');
+      
       return dmg;
     },
-    
     applyHeal: BattleEngine.applyHeal
   };
 
@@ -650,11 +662,15 @@ async function performEnemyAction(enemy) {
   // 보스 스킬은 대부분 target이 null이어도 내부의 hitArea를 사용하여 enemies를 순회합니다.
   const success = actionData.execute(enemy, state.allyCharacters, state.enemyCharacters, log, extendedState, target);
 
+  // 스킬 실행 후 아무도 맞지 않았다면 별도 로그 출력
+  if (success && hitCount === 0) {
+    log(`✦정보✦ 공격 범위 내에 대상이 없어 아무도 피해를 입지 않았습니다.`);
+  }
+
   if (!success) {
     log(`✦정보✦ ${enemy.name}의 주문이 적절한 대상을 찾지 못해 불발되었습니다.`);
   }
 }
-
 // 9. 초기화 및 전역 등록
 document.addEventListener("DOMContentLoaded", () => {
   syncUI();
