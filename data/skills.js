@@ -62,7 +62,7 @@ export const SKILLS = {
     targetType: "self",
     targetSelection: "self",
     cooldown: 2,
-    execute: (caster, allies, enemies, battleLog, state) => {
+    execute: (caster, target, allies, enemies, battleLog, state) => {
       const { currentTurn } = state;
       const skillId = "SKILL_COUNTER";
       const skillName = "반격";
@@ -118,7 +118,7 @@ export const SKILLS = {
     description: "받는 피해가 감소하고 모든 적의 타겟을 자신으로 고정합니다.",
     targetType: "self",
     targetSelection: "self",
-    execute: (caster, allies, enemies, battleLog) => {
+    execute: (caster, target, allies, enemies, battleLog, state) => {
       caster.addBuff("provoke_damage_reduction", "피해 감소 (도발)", 1, {
         damageReduction: 0.7,
       });
@@ -142,7 +142,7 @@ export const SKILLS = {
     targetType: "self",
     targetSelection: "self",
     cooldown: 2,
-    execute: (caster, allies, enemies, battleLog, state) => {
+    execute: (caster, target, allies, enemies, battleLog, state) => {
       const { currentTurn } = state;
       const skillId = "SKILL_REVERSAL";
 
@@ -238,7 +238,7 @@ export const SKILLS = {
     description: "아군의 디버프를 정화하고 무작위 이로운 효과를 부여합니다.",
     targetType: "single_ally",
     targetSelection: "ally",
-    execute: (caster, target, allies, enemies, battleLog, state) => {
+    xecute: (caster, allies, enemies, battleLog, state) => {
       if (!target) {
         battleLog(`✦정보✦ ${caster.name} [허무]: 스킬 대상을 찾을 수 없습니다.`);
         return false;
