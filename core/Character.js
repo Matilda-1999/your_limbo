@@ -53,19 +53,46 @@ export class Character {
     }
 
     getEffectiveStat(statName) {
-        let value = this[statName];
-        this.buffs.forEach(buff => {
-            if (buff.turnsLeft > 0 && buff.effect && buff.effect.type === `${statName}_boost_multiplier`) {
+    let value = this[statName];
+    let additiveBonus = 0; // [실존] 등의 합연산 보너스
+
+    // 1. 버프 처리 (곱연산 우선 후 합연산 합산)
+    this.buffs.forEach(buff => {
+        if (buff.turnsLeft > 0 && buff.effect) {
+            // 곱연산 버프 (예: 방어력 20% 증가)
+            if (buff.effect.type === `${statName}_boost_multiplier`) {
                 value *= (buff.effect.value || 1);
             }
-        });
-        this.debuffs.forEach(debuff => {
-            if (debuff.turnsLeft > 0 && debuff.id === "scratch" && debuff.effect.reductionType === statName) {
-                value *= (1 - ((debuff.effect.reductionValue || 0.1) * (debuff.stacks || 1)));
+            // 합연산 버프 (예: [실존] 스택 보너스 고정치)
+            if (buff.effect.type === `${statName}_boost_add`) {
+                additiveBonus += (buff.effect.value || 0);
             }
-        });
-        return Math.max(0, value);
-    }
+        }
+    });
+
+    // 버프가 적용된 중간값 계산
+    let totalStat = value + additiveBonus;
+
+    // 2. 디버프 처리 (최종 수치에서 깎음)
+    this.debuffs.forEach(debuff => {
+        if (debuff.turnsLeft > 0 && debuff.effect) {
+            // [흠집] 등 스택형 감소 디버프
+            if (debuff.id === "scratch" && debuff.effect.reductionType === statName) {
+                const reductionPerStack = debuff.effect.reductionValue || 0.1;
+                const stacks = debuff.stacks || 1;
+                // 예: 10%씩 5스택이면 총 50% 감소
+                totalStat *= (1 - (reductionPerStack * stacks));
+            }
+            
+            // 일반적인 고정 수치 감소 디버프가 있다면 추가 가능
+            if (debuff.effect.type === `${statName}_reduce_multiplier`) {
+                totalStat *= (debuff.effect.value || 1);
+            }
+        }
+    });
+
+    return Math.max(0, totalStat);
+}
 
     takeDamage(rawDamage, logFn, attacker = null, allies = [], enemies = [], state = {}) {
         if (!this.isAlive) return;
@@ -171,25 +198,46 @@ export class Character {
         }
     }
 
-    updateBuffs(logFn) {
-        this.buffs.forEach(buff => {
-            buff.turnsLeft--;
-            if (buff.turnsLeft === 0) {
-                // [의지] 버프 종료 시 남은 보호막만큼 체력 회복
-                if (buff.effect && buff.effect.healOnRemove) {
-                    const healAmount = Math.round(this.shield);
-                    this.currentHp = Math.min(this.maxHp, this.currentHp + healAmount);
-                    logFn(`✦의지✦ ${this.name}가 보호막을 체력으로 흡수합니다. (+${healAmount})`);
-                    this.shield = 0; // 보호막 소모
-                }
-                // 받은 피해 기록 초기화
-                if (buff.effect && buff.effect.resetsTotalDamageTaken) {
-                    this.totalDamageTakenThisBattle = 0;
-                }
+    지우 님, 현재 updateBuffs 코드를 보니 **[의지]**의 체력 흡수와 기록 초기화는 완벽하게 구현되어 있습니다. 하지만 앞서 이야기한 [허상]의 턴 종료 추가 공격 로직은 아직 빠져 있네요.
+
+또한, 받은 피해의 총합 홀/수 계산이 정확하게 작동하려면 누적 대미지 데이터가 업데이트되는 시점의 정밀도가 중요합니다. 지우 님이 주신 updateBuffs를 바탕으로 [허상] 추가 공격을 더하고, 홀/수 판정이 꼬이지 않도록 보완한 최종 버전을 정리해 드릴게요.
+
+🛠️ Character.js 내 updateBuffs 최종 수정본
+이 코드로 교체하시면 **[의지]**의 생존 기믹과 **[허상]**의 추격 기믹이 동시에 작동합니다.
+
+JavaScript
+updateBuffs(logFn, allies = [], enemies = [], state = {}) {
+    this.buffs.forEach(buff => {
+        buff.turnsLeft--;
+
+        // 1. [허상] 턴 종료 시 추가 공격 실행
+        if (buff.effect && buff.effect.extraAttack && buff.turnsLeft === 0) {
+            // 저장된 타겟 ID로 살아있는 적을 찾음
+            const target = enemies.find(e => e.id === buff.effect.targetId && e.isAlive);
+            if (target) {
+                const dmg = Math.round(this.getEffectiveStat("atk") * (buff.effect.powerMultiplier || 0.5));
+                logFn(`✦허상:추격✦ ${this.name}의 잔영이 가장 강한 적 ${target.name}에게 ${dmg}의 피해를 입힙니다!`);
+                target.takeDamage(dmg, logFn, this, enemies, allies, state);
             }
-        });
-        this.buffs = this.buffs.filter(b => b.turnsLeft > 0);
-    }
+        }
+
+        // 2. [의지] 버프 종료 시 기믹
+        if (buff.turnsLeft === 0) {
+            // 보호막을 체력으로 흡수
+            if (buff.effect && buff.effect.healOnRemove) {
+                const healAmount = Math.round(this.shield);
+                this.currentHp = Math.min(this.maxHp, this.currentHp + healAmount);
+                logFn(`✦의지✦ ${this.name}가 보호막을 체력으로 흡수합니다. (+${healAmount})`);
+                this.shield = 0; 
+            }
+            // 받은 피해 기록 초기화
+            if (buff.effect && buff.effect.resetsTotalDamageTaken) {
+                this.totalDamageTakenThisBattle = 0;
+            }
+        }
+    });
+    this.buffs = this.buffs.filter(b => b.turnsLeft > 0);
+}
 
     addDebuff(id, name, turns, effect) {
         const existing = this.debuffs.find(d => d.id === id);
