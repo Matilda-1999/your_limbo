@@ -339,8 +339,3 @@ export const MONSTER_SKILLS = {
     }
   }
 };
-  
-
-
-
-};
