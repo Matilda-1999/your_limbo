@@ -381,9 +381,6 @@ function confirmAction() {
   const action = state.selectedAction;
   const { caster, type } = action;
 
-  const action = state.selectedAction;
-  const { caster, type } = action;
-
   // --- 아군 행동 예약 콘솔 로그 ---
   console.group(`%c[행동 예약] ${caster.name}`, 'color: #4da6ff; font-weight: bold;');
   if (type === "skill") {
