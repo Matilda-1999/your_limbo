@@ -205,6 +205,7 @@ function prepareNextTurnCycle() {
   promptAllySelection();
   syncUI();
 }
+}
 
 function promptAllySelection() {
   DOM.allySelectDiv.innerHTML = "";
@@ -411,44 +412,57 @@ async function executeBattleTurn() {
     log(`\n\n☂︎ 지금부터 5 분 동안 행동을 게시해 주세요.\n\n`);
 
     // [2] 아군 행동 실행 (이때 안전지대 판정이 실시간으로 적용됨)
+    // [2] 아군 행동 실행 (이때 안전지대 판정이 실시간으로 적용됨)
     for (const action of state.playerActionsQueue) {
       const { caster, skill, targetId, moveDelta } = action;
       if (!caster.isAlive) continue;
-
+    
       if (action.type === "skill") {
-        const target = Utils.findCharacterById(targetId, state.allyCharacters, state.enemyCharacters, state.mapObjects);
-        log(`✦ ${caster.name}, [${skill.name}] 시전.`);
-
-        skill.execute(caster, target, state.allyCharacters, state.enemyCharacters, log, {
-          ...state,
-          currentTurn: state.currentTurn,
-          applyHeal: BattleEngine.applyHeal,
-          calculateDamage: (a, d, p, t, o = {}) => {
-            // 실제 계산 엔진 호출
-            const finalDamage = BattleEngine.calculateDamage(a, d, p, t, {
-              ...o,
-              gimmickData: MONSTER_SKILLS,
-              parseSafeCoords: Utils.parseSafeCoords,
-              battleLog: log
-            });
-
-        console.log(
-          `%c[아군 스킬 계산] %c${a.name} %c-> %c${d.name} | %c계수: ${p} | %c최종 대미지: ${finalDamage}`,
-          'color: #4da6ff; font-weight: bold;', // [아군 스킬 계산]
-          'color: white;',                     // 아군 이름
-          'color: gray;',                      // ->
-          'color: #ffcc00;',                   // 적군 이름
-          'color: #00ff00;',                   // 계수
-          'color: #ff0000; font-weight: bold;' // 최종 대미지
+        const target = Utils.findCharacterById(
+          targetId,
+          state.allyCharacters,
+          state.enemyCharacters,
+          state.mapObjects
         );
-
-            return finalDamage;
-      },
-          
-          displayCharacters: syncUI,
-          mapObjects: state.mapObjects
-        });
-        
+        log(`✦ ${caster.name}, [${skill.name}] 시전.`);
+    
+        skill.execute(
+          caster,
+          target,
+          state.allyCharacters,
+          state.enemyCharacters,
+          log,
+          {
+            ...state,
+            currentTurn: state.currentTurn,
+            applyHeal: BattleEngine.applyHeal,
+            calculateDamage: (a, d, p, t, o = {}) => {
+              // 실제 계산 엔진 호출
+              const finalDamage = BattleEngine.calculateDamage(a, d, p, t, {
+                ...o,
+                gimmickData: MONSTER_SKILLS,
+                parseSafeCoords: Utils.parseSafeCoords,
+                battleLog: log,
+              });
+    
+              console.log(
+                `%c[아군 스킬 계산] %c${a.name} %c-> %c${d.name} | %c계수: ${p} | %c최종 대미지: ${finalDamage}`,
+                "color: #4da6ff; font-weight: bold;", // [아군 스킬 계산]
+                "color: white;", // 아군 이름
+                "color: gray;", // ->
+                "color: #ffcc00;", // 적군 이름
+                "color: #00ff00;", // 계수
+                "color: #ff0000; font-weight: bold;" // 최종 대미지
+              );
+    
+              return finalDamage;
+            },
+    
+            displayCharacters: syncUI,
+            mapObjects: state.mapObjects,
+          }
+        );
+    
         if (!caster.lastSkillTurn) caster.lastSkillTurn = {};
         caster.lastSkillTurn[skill.id] = state.currentTurn;
       } else if (action.type === "move") {
@@ -462,6 +476,7 @@ async function executeBattleTurn() {
       syncUI();
       await new Promise((r) => setTimeout(r, 600));
     }
+
 
     // [3] 적군 공격 및 마무리 단계
     resolveMinionGimmicks();
