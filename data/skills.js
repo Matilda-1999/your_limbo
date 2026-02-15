@@ -189,7 +189,7 @@ export const SKILLS = {
       if (caster.id === target.id) {
         // 자신에게 사용 시 회복
         let healAmount = Math.round(caster.getEffectiveStat("atk") * 0.5);
-        applyHeal(caster, healAmount, battleLog, "허상");
+        state.applyHeal(caster, healAmount, battleLog, "허상");
       } else {
         // 다른 아군에게 사용 시 체력 소모 및 버프 부여
         const hpLoss = Math.round(caster.getEffectiveStat("atk") * 0.2);
@@ -636,7 +636,7 @@ export const SKILLS = {
         battleLog(`✦직군 효과✦ [은총의 방패] 발동. 회복량 10% 증가.`);
       }
 
-      applyHeal(target, healAmount, battleLog, "공명");
+      state.applyHeal(target, healAmount, battleLog, "공명");
 
       if (target.debuffs.length > 0) {
         target.debuffs = [];
@@ -702,7 +702,7 @@ export const SKILLS = {
       allies.filter((a) => a.isAlive && a.id !== caster.id).forEach((ally) => {
         const lostHp = ally.maxHp - ally.currentHp;
         if (lostHp > 0) {
-          applyHeal(ally, Math.round(lostHp * 0.7), battleLog, "침전");
+          state.applyHeal(ally, Math.round(lostHp * 0.7), battleLog, "침전");
         }
         ally.addBuff("immunity", "[면역]", 2, { singleUse: true });
         battleLog(`✦버프✦ ${ally.name}: [면역](1회) 획득.`);
@@ -745,7 +745,7 @@ export const SKILLS = {
       battleLog(`✦스킬✦ [차연]의 여파가 적들에게 전해졌습니다.`);
 
       // 2. 시전자 회복 및 아군 [흔적] 부여
-      applyHeal(caster, Math.round(caster.maxHp * 0.3), battleLog, "차연");
+      state.applyHeal(caster, Math.round(caster.maxHp * 0.3), battleLog, "차연");
 
       allies.filter(a => a.isAlive).forEach(ally => {
         ally.addBuff("trace", "[흔적]", 3, {
