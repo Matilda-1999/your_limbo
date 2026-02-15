@@ -93,5 +93,28 @@ export const BattleEngine = {
 
         return Math.round(damage);
     },
-    // ... 나머지 함수들 (applyHeal, checkBattleEnd)은 기존과 동일
+
+    /**
+     * applyHeal: 캐릭터의 체력을 회복시키고 로그를 남깁니다.
+     */
+    applyHeal(target, amount, logFn, skillName = "회복") {
+        if (!target || !target.isAlive) return;
+        const oldHp = target.currentHp;
+        target.currentHp = Math.min(target.maxHp, target.currentHp + amount);
+        const actualHeal = target.currentHp - oldHp;
+        logFn(`✦회복✦ ${target.name}, [${skillName}]으로 체력 +${Math.round(actualHeal)} 회복. (현재 HP: ${Math.round(target.currentHp)})`);
+    },
+
+    /**
+     * checkBattleEnd: 전투 종료 여부를 판정합니다.
+     */
+    checkBattleEnd(allyCharacters, enemyCharacters) {
+        const allAlliesDead = allyCharacters.every(c => !c.isAlive);
+        const allEnemiesDead = enemyCharacters.every(c => !c.isAlive);
+
+        if (allAlliesDead) return "LOSE";
+        if (allEnemiesDead) return "WIN";
+        return null; 
+    }
+    
 };
