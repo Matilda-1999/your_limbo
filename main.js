@@ -201,9 +201,11 @@ function startCharacterAction(char) {
         const btn = document.createElement("button");
         btn.textContent = skill.name;
         
-        // 쿨다운 계산
+        // lastUsed가 0이 아닐 때(즉, 한 번이라도 썼을 때)만 쿨다운을 계산합니다.
         const lastUsed = char.lastSkillTurn ? (char.lastSkillTurn[skillId] || 0) : 0;
-        const isOnCooldown = skill.cooldown && (state.currentTurn - lastUsed < skill.cooldown);
+        const isOnCooldown = skill.cooldown && 
+                             lastUsed !== 0 && 
+                             (state.currentTurn - lastUsed < skill.cooldown);
         
         if (isOnCooldown) { 
             btn.disabled = true; 
