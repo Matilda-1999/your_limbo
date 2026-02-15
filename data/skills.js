@@ -587,7 +587,7 @@ SKILL_RUPTURE: {
     // 2. 부가 대상 공격 (140%)
     const subTargets = enemies.filter(e => e.isAlive && e.id !== mainTarget.id);
     subTargets.forEach(sub => {
-      const dSub = calculateDamage(caster, sub, 1.4, damageType, statType);
+      const dSub = calculateDamage(caster, sub, 1.4, damageType, { statTypeToUse: statType });
       sub.takeDamage(dSub, battleLog, caster);
       battleLog(`    ✦피해✦ [파열 부 대상] ${sub.name}: ${dSub} ${damageTypeKr} 피해.`);
 
