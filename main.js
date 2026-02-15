@@ -10,7 +10,7 @@ import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.22.1
 import { Character } from './core/Character.js';
 import { BattleEngine } from './core/BattleEngine.js';
 import { Utils } from './core/Utils.js';
-import { UI } from './ui/renderUI.js';
+import { UI } from './core/renderUI.js';
 
 import { SKILLS } from './data/skills.js';
 import { MONSTER_SKILLS } from './data/monsterSkills.js';
