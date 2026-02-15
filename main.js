@@ -307,41 +307,26 @@ async function executeBattleTurn() {
             const target = Utils.findCharacterById(targetId, state.allyCharacters, state.enemyCharacters, state.mapObjects);
             log(`✦ ${caster.name}, [${skill.name}] 시전.`);
             
-            const skillParams = {
-                currentTurn: state.currentTurn,
-                applyHeal: BattleEngine.applyHeal,
-                calculateDamage: (a, d, p, t, o) => BattleEngine.calculateDamage(a, d, p, t, {
-                    ...o, 
-                    gimmickData: MONSTER_SKILLS, 
-                    parseSafeCoords: Utils.parseSafeCoords
-                }),
-                displayCharacters: syncUI,
-                mapObjects: state.mapObjects
-            };
-
-            // [핵심 수정] 스킬의 인자 개수(length)에 따라 호출 방식을 다르게 합니다.
-            // 인자가 5개면 (caster, allies, enemies, log, params) -> target 제외
-            // 인자가 6개면 (caster, target, allies, enemies, log, params) -> target 포함
-            if (skill.execute.length === 5) {
-               skill.execute(
-                    caster,               // 1. caster
-                    target,               // 2. target (근성 등에서 안 쓰더라도 자리는 채워야 함)
-                    state.allyCharacters,  // 3. allies
-                    state.enemyCharacters, // 4. enemies
-                    log,                  // 5. battleLog (이것이 skills.js의 battleLog 함수가 됨)
-                    {                     // 6. state (마지막 객체 인자)
-                        currentTurn: state.currentTurn,
-                        applyHeal: BattleEngine.applyHeal,
-                        calculateDamage: (a, d, p, t, o) => BattleEngine.calculateDamage(a, d, p, t, {
-                            ...o, 
-                            gimmickData: MONSTER_SKILLS, 
-                            parseSafeCoords: Utils.parseSafeCoords
-                        }),
-                        displayCharacters: syncUI,
-                        mapObjects: state.mapObjects
-                    }
-                );
-            }
+            skill.execute(
+                caster,               // 1. 시전자
+                target,               // 2. 대상 (근성 등 자가버프 시에는 본인이 들어감)
+                state.allyCharacters,  // 3. 아군 목록
+                state.enemyCharacters, // 4. 적군 목록
+                log,                  // 5. 로그 함수 (★여기가 battleLog 자리입니다)
+                {                     // 6. 기타 데이터 (state)
+                    currentTurn: state.currentTurn,
+                    applyHeal: BattleEngine.applyHeal,
+                    calculateDamage: (a, d, p, t, o) => BattleEngine.calculateDamage(a, d, p, t, {
+                        ...o, 
+                        gimmickData: MONSTER_SKILLS, 
+                        parseSafeCoords: Utils.parseSafeCoords
+                    }),
+                    displayCharacters: syncUI,
+                    mapObjects: state.mapObjects
+                }
+            );
+            caster.lastSkillTurn[skill.id] = state.currentTurn;
+        }
             
             caster.lastSkillTurn[skill.id] = state.currentTurn;
         } else if (action.type === "move") { 
