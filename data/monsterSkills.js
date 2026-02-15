@@ -71,6 +71,7 @@ export const MONSTER_SKILLS = {
      hitTargets.forEach(target => {
        const damage = state.calculateDamage(caster, target, 1.2, "magical");
        target.takeDamage(damage, battleLog, caster);
+      battleLog(`✦피해✦ 솟구친 덩굴이 ${target.name}의 발목을 옥죄어 ${damage}의 피해를 입혔습니다.`);
      });
      return true;
    },
