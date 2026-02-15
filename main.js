@@ -307,13 +307,22 @@ async function executeBattleTurn() {
             const target = Utils.findCharacterById(targetId, state.allyCharacters, state.enemyCharacters, state.mapObjects);
             log(`✦ ${caster.name}, [${skill.name}] 시전.`);
             
-            skill.execute(caster, target, state.allyCharacters, state.enemyCharacters, log, {
-                calculateDamage: (a, d, p, t, o) => BattleEngine.calculateDamage(a, d, p, t, {
-                    ...o, 
-                    gimmickData: MONSTER_SKILLS, 
-                    parseSafeCoords: Utils.parseSafeCoords
-                })
-            });
+            skill.execute(
+                caster, 
+                target, 
+                state.allyCharacters, 
+                state.enemyCharacters, 
+                log, // 이 log가 skills.js의 battleLog 매개변수로 들어갑니다.
+                {
+                    calculateDamage: (a, d, p, t, o) => BattleEngine.calculateDamage(a, d, p, t, {
+                        ...o, 
+                        gimmickData: MONSTER_SKILLS, 
+                        parseSafeCoords: Utils.parseSafeCoords
+                    }),
+                    applyHeal: BattleEngine.applyHeal // 힐 스킬 등이 있다면 함께 전달
+                }
+            );
+                        
             caster.lastSkillTurn[skill.id] = state.currentTurn;
         } else if (action.type === "move") {
             const oldPos = `${caster.posX},${caster.posY}`;
