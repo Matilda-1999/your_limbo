@@ -356,6 +356,14 @@ async function executeBattleTurn() {
         calculateDamage: (a, d, p, t, o = {}) => {
           const finalDamage = BattleEngine.calculateDamage(a, d, p, t, { ...o, gimmickData: MONSTER_SKILLS, parseSafeCoords: Utils.parseSafeCoords, battleLog: log });
           console.log(`%c[아군 스킬 계산] %c${a.name} -> %c${d.name} | %c피해: ${finalDamage}`, 'color: #4da6ff; font-weight: bold;', 'color: black;', 'color: #ffcc00;', 'color: #ff0000;');
+
+          if (finalDamage > 0 && d.debuffs && d.debuffs.some(deb => deb.id === "transfer")) {
+            // 회복량 설정 (공격력의 100% 혹은 50% 등 지우 님의 선택)
+            const healAmount = a.atk;
+          BattleEngine.applyHeal(a, healAmount, log, "전이"); 
+          }
+            
+
           return finalDamage;
         },
         displayCharacters: syncUI,
@@ -385,13 +393,17 @@ async function executeBattleTurn() {
   }
 
   [...state.allyCharacters, ...state.enemyCharacters].forEach((c) => {
-    if (c.isAlive) {
-      c.buffs.forEach((b) => { if (!b.unremovable) b.turnsLeft--; });
-      c.debuffs.forEach((d) => d.turnsLeft--);
-      c.buffs = c.buffs.filter((b) => b.turnsLeft > 0 || b.unremovable);
-      c.debuffs = c.debuffs.filter((d) => d.turnsLeft > 0);
-    }
-  });
+  if (c.isAlive) {
+    // 턴 감소 (1턴 종료 직후 실행되어 2->1이 됨)
+    c.buffs.forEach((b) => { if (!b.unremovable) b.turnsLeft--; });
+    c.debuffs.forEach((d) => { d.turnsLeft--; });
+    c.buffs = c.buffs.filter((b) => b.turnsLeft > 0 || b.unremovable);
+    c.debuffs = c.debuffs.filter((d) => d.turnsLeft > 0);
+  }
+});
+
+log(`<b>☂︎ ${state.currentTurn} 턴의 모든 행동이 종료되었습니다.</b>`);
+log(`\n<pre>--------------------------------</pre>`);
 
   checkMapShrink();
 
