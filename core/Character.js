@@ -3,6 +3,16 @@
  * 원본 script.js의 모든 전투 메커니즘과 직군 특성을 통합한 클래스입니다.
  */
 
+export const TYPE_RELATIONSHIPS = {
+    "천체": "암석",
+    "암석": "야수",
+    "야수": "나무",
+    "나무": "천체"
+};
+
+export const TYPE_ADVANTAGE_MODIFIER = 1.3;    // 상성 우위 시 데미지 배율
+export const TYPE_DISADVANTAGE_MODIFIER = 0.7; // 상성 열위 시 데미지 배율
+
 export class Character {
     constructor(name, type, job, currentHpOverride = null) {
         this.id = Math.random().toString(36).substring(2, 11);
