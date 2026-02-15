@@ -176,11 +176,18 @@ function prepareNextTurnCycle() {
   DOM.executeBtn.style.display = "none";
   log(`\n --- ${state.currentTurn} 턴 행동 선택 시작 --- \n`);
 
-  const boss = state.enemyCharacters.find((e) => e.isAlive);
-  if (boss) {
-    const skillId = boss.skills[Math.floor(Math.random() * boss.skills.length)];
-    state.enemyPreviewAction = { skillId, hitArea: [] };
-  }
+  const boss = state.enemyCharacters.find(e => e.isAlive && (e.name.includes("테르모르") || e.name.includes("카르나블룸")));
+    if (boss && boss.skills && boss.skills.length > 0) {
+        // 보스의 첫 번째 스킬 혹은 특정 로직으로 스킬 선택
+        const skillId = boss.skills[0]; 
+        const skillData = MONSTER_SKILLS[skillId]; // monsterSkills.js에서 데이터 참조
+        
+        if (skillData) {
+            state.enemyPreviewAction = { skillId, targetArea: [] }; // 예고 상태 저장
+            // 스킬에 정의된 script(대사)를 로그에 출력
+            log(`<b>[예고] ${boss.name}:</b> "${skillData.script || "..."}"`); 
+        }
+    }
 
   promptAllySelection();
   syncUI();
