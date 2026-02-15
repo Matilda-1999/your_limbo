@@ -174,21 +174,21 @@ function prepareNextTurnCycle() {
   state.actedAlliesThisTurn = [];
   state.playerActionsQueue = [];
   DOM.executeBtn.style.display = "none";
-  log(`\n --- ${state.currentTurn} 턴 행동 선택 시작 --- \n`);
-
+  
+  // (1) 적군 보스 찾기 및 스킬 대사 예고
   const boss = state.enemyCharacters.find(e => e.isAlive && (e.name.includes("테르모르") || e.name.includes("카르나블룸")));
-    if (boss && boss.skills && boss.skills.length > 0) {
-        // 보스의 첫 번째 스킬 혹은 특정 로직으로 스킬 선택
-        const skillId = boss.skills[0]; 
-        const skillData = MONSTER_SKILLS[skillId]; // monsterSkills.js에서 데이터 참조
-        
-        if (skillData) {
-            state.enemyPreviewAction = { skillId, targetArea: [] }; // 예고 상태 저장
-            // 스킬에 정의된 script(대사)를 로그에 출력
-            log(`<b>[예고] ${boss.name}:</b> "${skillData.script || "..."}"`); 
-        }
-    }
+  if (boss && boss.skills && boss.skills.length > 0) {
+      const skillId = boss.skills[0]; 
+      const skillData = MONSTER_SKILLS[skillId]; 
+      
+      if (skillData) {
+          state.enemyPreviewAction = { skillId, targetArea: [] };
+          // 스킬의 script(대사)를 로그에 가장 먼저 출력
+          log(`\n<b>[예고] ${boss.name}:</b> "${skillData.script || "..."}"`); 
+      }
+  }
 
+  log(`\n --- ${state.currentTurn} 턴 아군 행동 선택 시작 --- \n`);
   promptAllySelection();
   syncUI();
 }
@@ -365,12 +365,6 @@ function confirmAction() {
   syncUI();
 }
 
-지우 님, 올려주신 코드의 흐름은 의도하신 대로 (2) 아군 행동 완료 후 (3) 적군 행동으로 이어지는 순서가 아주 잘 잡혔습니다. 다만, 현재 코드에 중복 선언과 오타가 섞여 있어 이대로 실행하면 다시 에러가 날 수 있습니다.
-
-아래 코드에서 중복된 부분을 제거하고 깔끔하게 정리해 드릴 테니, 이 버전으로 executeBattleTurn 함수를 교체해 주세요.
-
-🛠️ 수정 및 정리된 executeBattleTurn
-JavaScript
 async function executeBattleTurn() {
   DOM.executeBtn.style.display = "none";
   log(`\n\n☂︎  지금부터 5 분 동안 행동을 게시해 주세요.\n\n`); // 아군 턴임을 명시
