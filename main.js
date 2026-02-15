@@ -179,6 +179,8 @@ function prepareNextTurnCycle() {
   state.actedAlliesThisTurn = [];
   state.playerActionsQueue = [];
   DOM.executeBtn.style.display = "none";
+
+  const boss = state.enemyCharacters.find(e => e.isAlive && (e.name.includes("테르모르") || e.name.includes("카르나블룸")));
   
   if (boss) {
     // 1. 사용할 스킬 결정
