@@ -301,7 +301,7 @@ export const SKILLS = {
       const { currentTurn } = state;
       const skillId = "SKILL_REALITY";
       
-      // 1. 연속 사용 제한 체크
+      // 1. 연속 사용 제한 체크 (기존 로직 유지)
       const realityBuff = caster.buffs.find((b) => b.id === "reality_stacks");
       const prevConsecutiveCount = (realityBuff && realityBuff.lastAppliedTurn === currentTurn - 1) 
         ? (realityBuff.consecutiveCount || 1) 
@@ -312,9 +312,7 @@ export const SKILLS = {
         return false;
       }
 
-      battleLog(`✦스킬✦ ${caster.name}, [실존] 사용: 모든 아군에게 [실재] 효과를 부여합니다.`);
-
-      // 2. 스택 및 연속 사용 횟수 결정
+      // 2. 스택 및 연속 사용 횟수 결정 (기존 로직 유지)
       let realityStacks = 4;
       let newConsecutiveCount = 1;
       if (prevConsecutiveCount > 0) {
@@ -323,18 +321,24 @@ export const SKILLS = {
         battleLog(`✦효과✦ ${caster.name} [실존] 연속 사용: [실재] 6스택 효과 적용.`);
       }
 
-      // 3. 아군 전체 버프 적용
+      // 3. [수정됨] 아군 전체 버프 적용
       allies.filter(a => a.isAlive).forEach(ally => {
-        // 기본 방어/마방 30% 증가
-        ally.addBuff("reality_base_def_boost", "[실존] 기본 강화(물리)", 2, { type: "def_boost_multiplier", value: 1.3 });
-        ally.addBuff("reality_base_mdef_boost", "[실존] 기본 강화(마법)", 2, { type: "mdef_boost_multiplier", value: 1.3 });
+        // A. 기본 방어/마방 20% 증가 (곱연산)
+        ally.addBuff("reality_def_mult", "[실존:기본]", 2, { type: "def_boost_multiplier", value: 1.2 });
+        ally.addBuff("reality_mdef_mult", "[실존:기본]", 2, { type: "mdef_boost_multiplier", value: 1.2 });
 
-        // 실재 보너스 수치 계산 (강화된 수치 기준)
-        const baseStat = Math.max(ally.getEffectiveStat('def'), ally.getEffectiveStat('mdef'));
-        const boostValue = baseStat * 0.2 * realityStacks;
+        // B. 실재 보너스 수치 계산 (강화된 수치 기준 합연산)
+        // 높은 쪽 방어력의 20% * 실재 스택
+        const currentDef = ally.getEffectiveStat('def');
+        const currentMdef = ally.getEffectiveStat('mdef');
+        const higherStat = Math.max(currentDef, currentMdef);
+        const boostValue = Math.round((higherStat * 0.2) * realityStacks);
         
-        ally.addBuff("reality_ally_boost", "[실재]", 2, { type: "reality_boost", value: boostValue }, false); 
-        battleLog(`✦버프✦ ${ally.name}: 방어 능력 강화 및 [실재] 보너스 +${Math.round(boostValue)} (2턴).`);
+        // Character.js의 getEffectiveStat에서 'def_boost_add'를 처리하도록 했으므로 타입을 맞춥니다.
+        ally.addBuff("reality_def_add", "[실재]", 2, { type: "def_boost_add", value: boostValue });
+        ally.addBuff("reality_mdef_add", "[실재]", 2, { type: "mdef_boost_add", value: boostValue });
+        
+        battleLog(`✦버프✦ ${ally.name}: 방어 20% 증가 및 [실재] 보너스 +${boostValue} (2턴).`);
       });
 
       // 4. 시전자 스택 갱신
