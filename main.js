@@ -377,9 +377,33 @@ function selectTarget(targetId) {
 
 function confirmAction() {
   if (!state.selectedAction) return;
-  state.playerActionsQueue.push(state.selectedAction);
-  state.actedAlliesThisTurn.push(state.selectedAction.caster.id);
+
+  const action = state.selectedAction;
+  const { caster, type } = action;
+
+  const action = state.selectedAction;
+  const { caster, type } = action;
+
+  // --- 아군 행동 예약 콘솔 로그 ---
+  console.group(`%c[행동 예약] ${caster.name}`, 'color: #4da6ff; font-weight: bold;');
+  if (type === "skill") {
+    console.log(`타입: 스킬 사용`);
+    console.log(`스킬명: ${action.skill.name} (ID: ${action.skill.id})`);
+    
+    // 타겟 정보 확인
+    const target = Utils.findCharacterById(action.targetId, state.allyCharacters, state.enemyCharacters, state.mapObjects);
+    console.log(`대상: ${target ? target.name : "대상 없음(또는 범위)"}`);
+  } else if (type === "move") {
+    console.log(`타입: 위치 이동`);
+    console.log(`이동량: dx(${action.moveDelta.dx}), dy(${action.moveDelta.dy})`);
+    console.log(`목표 좌표: (${caster.posX + action.moveDelta.dx}, ${caster.posY + action.moveDelta.dy})`);
+  }
+  console.groupEnd();
+
+  state.playerActionsQueue.push(action);
+  state.actedAlliesThisTurn.push(caster.id);
   state.selectedAction = null;
+  
   promptAllySelection();
   syncUI();
 }
