@@ -456,7 +456,10 @@ async function executeBattleTurn() {
 
   checkMapShrink();
 
-  const result = BattleEngine.checkBattleEnd(state.allyCharacters, state.enemyCharacters);
+  const result = (typeof BattleEngine.checkBattleEnd === 'function') 
+    ? BattleEngine.checkBattleEnd(state.allyCharacters, state.enemyCharacters)
+    : null;
+  
   if (result) {
     log(`\n\n【 전투 종료: ${result === "WIN" ? "승리" : "패배"} 】`);
     state.isBattleStarted = false;
