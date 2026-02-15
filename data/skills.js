@@ -201,7 +201,7 @@ export const SKILLS = {
           type: `${statType}_boost_multiplier`,
           value: 2.0, // 2배 증가
         });
-        battleLog(`✦허상✦ ${caster.name}이 체력을 소모하여 ${target.name}의 ${statName}을 2배 증가시킵니다!`);
+        battleLog(`✦스킬✦ ${caster.name}: [허상], 체력을 소비하여 ${target.name}의 ${statName}을 2배 증가.`);
       }
 
       // 4. 턴 종료 시 추가 공격 예약 (가장 체력이 높은 적 타겟팅)
