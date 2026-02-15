@@ -337,6 +337,7 @@ async function executeBattleTurn() {
         syncUI();
         await new Promise(r => setTimeout(r, 600));
     }
+}
 
     resolveMinionGimmicks(); 
 
