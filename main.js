@@ -367,10 +367,33 @@ function confirmAction() {
 }
 
 async function executeBattleTurn() {
+  async function executeBattleTurn() {
   DOM.executeBtn.style.display = "none";
-  log(`\n\n☂︎  지금부터 5 분 동안 행동을 게시해 주세요.\n\n`); // 아군 턴임을 명시
+  
+  // [1] 기믹성 스킬 우선 발동 (아군 행동 전)
+  // 예고된 스킬이 기믹(GIMMICK_)이거나 특정 디버프형이면 즉시 실행합니다.
+  const actionId = state.enemyPreviewAction?.skillId;
+  const actionData = MONSTER_SKILLS[actionId];
+  
+  const activeBoss = state.enemyCharacters.find(e => e.isAlive && (e.name.includes("테르모르") || e.name.includes("카르나블룸")));
 
-  // (2) 아군 행동 실행
+  if (activeBoss && actionData && (actionId.startsWith("GIMMICK_") || actionData.type?.includes("디버프"))) {
+    log(`\n<b>[태세 전환] ${activeBoss.name}:</b> ${actionData.name}`);
+    actionData.execute(activeBoss, state.allyCharacters, state.enemyCharacters, log, {
+      ...state,
+      calculateDamage: (a, d, p, t, o = {}) => BattleEngine.calculateDamage(a, d, p, t, {
+        ...o, gimmickData: MONSTER_SKILLS, parseSafeCoords: Utils.parseSafeCoords, battleLog: log
+      }),
+      applyHeal: BattleEngine.applyHeal,
+      utils: Utils
+    });
+    syncUI();
+    await new Promise((r) => setTimeout(r, 600));
+  }
+
+  log(`\n\n☂︎ 지금부터 5 분 동안 행동을 게시해 주세요.\n\n`);
+
+  // [2] 아군 행동 실행 (이때 안전지대 판정이 실시간으로 적용됨)
   for (const action of state.playerActionsQueue) {
     const { caster, skill, targetId, moveDelta } = action;
     if (!caster.isAlive) continue;
@@ -380,19 +403,15 @@ async function executeBattleTurn() {
       log(`✦ ${caster.name}, [${skill.name}] 시전.`);
       
       skill.execute(caster, target, state.allyCharacters, state.enemyCharacters, log, {
+        ...state,
         currentTurn: state.currentTurn,
         applyHeal: BattleEngine.applyHeal,
         calculateDamage: (a, d, p, t, o = {}) => BattleEngine.calculateDamage(a, d, p, t, {
-          ...o, 
-          gimmickData: MONSTER_SKILLS, 
-          parseSafeCoords: Utils.parseSafeCoords,
-          battleLog: log // 로그 연동
+          ...o, gimmickData: MONSTER_SKILLS, parseSafeCoords: Utils.parseSafeCoords, battleLog: log
         }),
         displayCharacters: syncUI,
         mapObjects: state.mapObjects
       });
-
-      // lastSkillTurn 객체 초기화 확인 및 기록
       if (!caster.lastSkillTurn) caster.lastSkillTurn = {};
       caster.lastSkillTurn[skill.id] = state.currentTurn;
     } else if (action.type === "move") {
@@ -407,6 +426,13 @@ async function executeBattleTurn() {
     await new Promise((r) => setTimeout(r, 600));
   }
 
+  // [3] 적군 공격 스킬 실행 (아군 행동 후 반격)
+  if (activeBoss && actionData && actionId.startsWith("SKILL_")) {
+    log(`\n\n☂︎ ${activeBoss.name}의 반격이 시작됩니다.\n\n`);
+    await performEnemyAction(activeBoss); 
+    syncUI();
+    await new Promise(r => setTimeout(r, 600));
+  }
   // (3) 적군 행동 실행
   resolveMinionGimmicks();
 
