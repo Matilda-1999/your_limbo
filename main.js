@@ -535,32 +535,35 @@ function checkMapShrink() {
 }
 
 async function performEnemyAction(enemy) {
-  // 1. 타겟 선정 (도발 상태 우선 확인)
-  const provoke = enemy.debuffs.find((d) => d.id === "provoked");
-  let target = provoke ? Utils.findCharacterById(provoke.effect.targetId, state.allyCharacters) : null;
-  if (!target || !target.isAlive) target = state.allyCharacters.find((a) => a.isAlive);
-
-  // 2. 예약된 행동 가져오기 (턴 시작 시 예고된 스킬)
   const actionId = state.enemyPreviewAction?.skillId;
   const actionData = MONSTER_SKILLS[actionId];
 
-  // 3. 행동 실행 및 실패 묘사
-  if (target && actionData) {
-    log(`\n<b>[행동] ${enemy.name}:</b> ${actionData.name}`);
-    
-    // 실제 스킬 로직 실행
-    const success = actionData.execute(enemy, state.allyCharacters, state.enemyCharacters, log, state);
-    
-    if (!success) {
-      log(`✦정보✦ ${enemy.name}의 공격이 빗나갔습니다. 의도했던 파괴는 일어나지 않았습니다.`);
-    }
-  } else {
-    // 아무도 공격하지 못하거나 행동 데이터가 없을 때의 내러티브
-    if (!target) {
-      log(`✦정보✦ 아무도 공격하지 못했습니다. ${enemy.name}의 서늘한 기운만이 허공을 맴돌며 공격에 실패합니다.`);
-    } else {
-      log(`✦정보✦ ${enemy.name}은(는) 아무 행동도 취하지 않고 움직이지 않습니다. 정적만이 전장을 채웁니다.`);
-    }
+  if (!actionData) return;
+
+  log(`\n<b>[행동] ${enemy.name}:</b> ${actionData.name}`);
+
+  // 1. 도발 상태 확인 (단일 타겟 스킬이 필요한 경우를 대비)
+  const provoke = enemy.debuffs.find((d) => d.id === "provoked");
+  let target = provoke ? Utils.findCharacterById(provoke.effect.targetId, state.allyCharacters) : null;
+  
+  // 2. 확장된 state 준비 (BattleEngine 유틸리티 포함)
+  const extendedState = {
+    ...state,
+    calculateDamage: (a, d, p, t, o = {}) => BattleEngine.calculateDamage(a, d, p, t, {
+      ...o,
+      gimmickData: MONSTER_SKILLS,
+      parseSafeCoords: Utils.parseSafeCoords,
+      battleLog: log
+    }),
+    applyHeal: BattleEngine.applyHeal
+  };
+
+  // 3. 실행 (target은 null일 수 있음을 execute가 알고 있어야 함)
+  // 보스 스킬은 대부분 target이 null이어도 내부의 hitArea를 사용하여 enemies를 순회합니다.
+  const success = actionData.execute(enemy, state.allyCharacters, state.enemyCharacters, log, extendedState, target);
+
+  if (!success) {
+    log(`✦정보✦ ${enemy.name}의 주문이 적절한 대상을 찾지 못해 불발되었습니다.`);
   }
 }
 
