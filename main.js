@@ -171,6 +171,8 @@ function startBattle() {
     if (config) {
       log(`\n<pre>${config.flavorText}</pre>\n`); // 설정된 flavorText 출력
     }
+  prepareNextTurnCycle(); 
+}
 
 function prepareNextTurnCycle() {
   state.currentTurn++;
