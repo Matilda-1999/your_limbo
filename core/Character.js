@@ -48,6 +48,7 @@ export class Character {
         this.debuffs = [];
 
         this.totalDamageTakenThisBattle = 0;
+        this.provokeDamage = 0;
         this.lastSkillTurn = {};
     }
 
@@ -69,6 +70,14 @@ export class Character {
     takeDamage(rawDamage, logFn, attacker = null, allies = [], enemies = [], state = {}) {
         if (!this.isAlive) return;
         let finalDamage = rawDamage;
+
+        // 내가 아닌 아군이 맞았을 때, 파티에 [철옹성] 버프를 가진 인원이 있는지 확인
+        const protector = allies.find(a => a.isAlive && a.hasBuff("iron_fortress"));
+        if (protector && protector.id !== this.id) {
+            logFn(`✦스킬✦ ${protector.name}, ${this.name} 대신 공격을 막아섭니다.`);
+            protector.takeDamage(rawDamage, logFn, attacker, [this, ...allies.filter(a => a.id !== protector.id)], enemies, state);
+            return; // 원래 대상의 피해 처리는 중단
+        }
 
         // 보호막 처리
         if (this.shield > 0) {
@@ -140,9 +149,36 @@ export class Character {
     }
 
     addBuff(id, name, turns, effect) {
+        // 1. 기존에 같은 ID를 가진 버프가 있다면 먼저 제거 (중복 방지)
         this.buffs = this.buffs.filter(b => b.id !== id);
+    
+        // 2. 새로운 버프 추가
         this.buffs.push({ id, name, turnsLeft: turns, effect });
-        if (effect.shieldAmount) this.shield += effect.shieldAmount;
+    
+        // 3. 버프 부여 시 보호막 합산
+        if (effect && effect.shieldAmount) {
+            this.shield += effect.shieldAmount;
+        }
+    }
+
+    updateBuffs(logFn) {
+        this.buffs.forEach(buff => {
+            buff.turnsLeft--;
+            if (buff.turnsLeft === 0) {
+                // [의지] 버프 종료 시 남은 보호막만큼 체력 회복
+                if (buff.effect && buff.effect.healOnRemove) {
+                    const healAmount = Math.round(this.shield);
+                    this.currentHp = Math.min(this.maxHp, this.currentHp + healAmount);
+                    logFn(`✦의지✦ ${this.name}가 보호막을 체력으로 흡수합니다. (+${healAmount})`);
+                    this.shield = 0; // 보호막 소모
+                }
+                // 받은 피해 기록 초기화
+                if (buff.effect && buff.effect.resetsTotalDamageTaken) {
+                    this.totalDamageTakenThisBattle = 0;
+                }
+            }
+        });
+        this.buffs = this.buffs.filter(b => b.turnsLeft > 0);
     }
 
     addDebuff(id, name, turns, effect) {
