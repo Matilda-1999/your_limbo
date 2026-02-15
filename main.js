@@ -642,8 +642,6 @@ async function performEnemyAction(enemy) {
       });
 
     if (dmg > 0) {
-        // 적중 시 상세 피해 기록
-        log(`  ✦피해✦ ${d.name}에게 ${dmg}의 피해를 입혔습니다.`);
         hitCount++; 
       } else {
         // 범위 내에 있으나 기믹 등으로 대미지가 0인 경우
