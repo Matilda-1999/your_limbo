@@ -76,6 +76,29 @@ export const MONSTER_SKILLS = {
     },
   },
 
+  SKILL_Spores_of_Silence: {
+    id: "SKILL_Spores_of_Silence",
+    name: "침묵의 포자",
+    type: "광역 디버프",
+    hitArea: [
+      {x:0,y:0}, {x:1,y:0}, {x:2,y:0}, {x:3,y:0}, {x:4,y:0},
+      {x:0,y:2}, {x:1,y:2}, {x:3,y:2}, {x:4,y:2},
+      {x:0,y:4}, {x:1,y:4}, {x:2,y:4}, {x:3,y:4}, {x:4,y:4}
+    ],
+    script: `\n<pre>고운 꽃가루가 하늘을 뒤덮는다.\n생경한 아름다움은 고요한 찬사만을 강요한다.\n"많은 말은 필요하지 않은 법."</pre>\n`,
+    execute: (caster, allies, enemies, battleLog, state) => {
+      const area = MONSTER_SKILLS.SKILL_Spores_of_Silence.hitArea;
+      const hitTargets = allies.filter(t => t.isAlive && area.some(p => p.x === t.posX && p.y === t.posY));
+      if (hitTargets.length > 0) {
+        hitTargets.forEach(t => {
+          t.addDebuff("disarm", "[무장 해제]", hitTargets.length, { description: "공격 스킬 사용 불가" });
+          battleLog(`✦광역 디버프✦ ${t.name}이 포자에 노출되어 무장이 해제됩니다.`);
+        });
+      }
+      return true;
+    },
+  },
+
   SKILL_Seeds_Wrath: {
     id: "SKILL_Seeds_Wrath",
     name: "씨앗의 분노",
@@ -185,6 +208,21 @@ export const MONSTER_SKILLS = {
     execute: (caster, allies, enemies, battleLog, state) => {
       caster.activeGimmick = "GIMMICK_Aegis_of_Earth4";
       battleLog(`✦기믹 발동✦ ${caster.name}가 북쪽 성벽을 세웁니다.`);
+      return true;
+    },
+  },
+
+  GIMMICK_Path_of_Ruin: {
+    id: "GIMMICK_Path_of_Ruin",
+    name: "균열의 길",
+    hitArea: [
+      {x:2,y:0}, {x:2,y:1}, {x:2,y:2}, {x:2,y:3}, {x:2,y:4},
+      {x:0,y:2}, {x:1,y:2}, {x:3,y:2}, {x:4,y:2}
+    ],
+    script: `<pre>\n"균열이 퍼지며, 땅 아래서 검은 뿌리가 꿈틀댄다.\n 번져오는 재해 앞에서 길을 찾아야 한다.\n생명의 뿌리를 꺾을 수 있다고 믿는가?"\n</pre>`,
+    execute: (caster, allies, enemies, battleLog, state) => {
+      caster.addBuff("path_of_ruin_telegraph", "균열의 길 예고", 2, {});
+      battleLog(`✦기믹 발동✦ ${caster.name}이 전장에 깊은 균열을 새깁니다. 다음 턴에 해당 구역에 폭발이 일어납니다.`);
       return true;
     },
   },
