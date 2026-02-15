@@ -539,187 +539,67 @@ export const SKILLS = {
     },
   },
 
-  // [파열]
-  SKILL_RUPTURE: {
-    id: "SKILL_RUPTURE",
-    name: "파열",
-    type: "광역 공격",
-    description: "주 목표와 주변 적들에게 피해를 입힙니다. [쇠약] 상태인 적에게는 추가 고정 피해를 입힙니다.",
-    targetType: "single_enemy",
-    targetSelection: "enemy",
-    cooldown: 2,
-    execute: (caster, mainTarget, allies, enemies, battleLog, state) => {
-      const { currentTurn, calculateDamage } = state;
-      const skillId = "SKILL_RUPTURE";
+  // [파열] - 이 버전을 남기세요
+SKILL_RUPTURE: {
+  id: "SKILL_RUPTURE",
+  name: "파열",
+  type: "광역 공격",
+  // 팁: 두 번째 버전의 멋진 설명을 여기에 합칠 수 있습니다.
+  description: "균열은 가장 고요한 순간에 일어난다.<br><br>주 목표와 주변 적들에게 피해를 입힙니다. [쇠약] 상태인 적에게는 추가 고정 피해를 입힙니다.",
+  targetType: "single_enemy",
+  targetSelection: "enemy",
+  cooldown: 2,
+  execute: (caster, mainTarget, allies, enemies, battleLog, state) => {
+    const { currentTurn, calculateDamage } = state; // state를 통해 안전하게 데이터 참조
+    const skillId = "SKILL_RUPTURE";
 
-      if (!mainTarget || !mainTarget.isAlive) return false;
+    if (!mainTarget || !mainTarget.isAlive) return false;
 
+    // 쿨타임 체크 및 남은 턴 계산 로직
       const lastUsed = caster.lastSkillTurn[skillId] || 0;
-      if (lastUsed !== 0 && currentTurn - lastUsed < 2) {
-        battleLog(`✦정보✦ ${caster.name}, [파열] 쿨타임 중...`);
+      if (lastUsed !== 0 && currentTurn - lastUsed < cooldownPeriod) {
+        const remainingTurns = cooldownPeriod - (currentTurn - lastUsed);
+        battleLog(`✦정보✦ ${caster.name}, [파열] 사용 불가: 쿨타임 ${remainingTurns}턴 남음.`);
         return false;
       }
 
-      let statType = (caster.type === "암석" || caster.type === "야수") ? "atk" : "matk";
-      let damageType = statType === "atk" ? "physical" : "magical";
-      const damageTypeKr = damageType === "physical" ? "물리" : "마법";
+    // 캐릭터 타입에 따른 스탯 결정 로직
+    let statType = (caster.type === "암석" || caster.type === "야수") ? "atk" : "matk";
+    let damageType = statType === "atk" ? "physical" : "magical";
+    const damageTypeKr = damageType === "physical" ? "물리" : "마법";
 
-      battleLog(`✦스킬✦ ${caster.name}, [파열] 사용. 주 대상: ${mainTarget.name}.`);
+    battleLog(`✦스킬✦ ${caster.name}, [파열] 사용. 주 대상: ${mainTarget.name}.`);
 
-      // 1. 주 대상 공격 (210%) + 쇠약 추가타
-      const dMain = calculateDamage(caster, mainTarget, 2.1, damageType, statType);
-      mainTarget.takeDamage(dMain, battleLog, caster);
-      battleLog(`  ✦피해✦ [파열 주 대상] ${mainTarget.name}: ${dMain} ${damageTypeKr} 피해.`);
+    // 1. 주 대상 공격 (210%)
+    const dMain = calculateDamage(caster, mainTarget, 2.1, damageType, statType);
+    mainTarget.takeDamage(dMain, battleLog, caster);
+    battleLog(`  ✦피해✦ [파열 주 대상] ${mainTarget.name}: ${dMain} ${damageTypeKr} 피해.`);
 
-      if (mainTarget.isAlive && mainTarget.hasDebuff("weakness")) {
-        const bonus = calculateDamage(caster, mainTarget, 0.3, "fixed", statType);
-        mainTarget.takeDamage(bonus, battleLog, caster);
-        battleLog(`  ✦추가 피해✦ ${mainTarget.name} ([쇠약] 대상): ${bonus} 추가 고정 피해.`);
+    // 쇠약 상태 고정 피해 (30%)
+    if (mainTarget.isAlive && mainTarget.hasDebuff("weakness")) {
+      const bonus = calculateDamage(caster, mainTarget, 0.3, "fixed", statType);
+      mainTarget.takeDamage(bonus, battleLog, caster);
+      battleLog(`  ✦추가 피해✦ ${mainTarget.name} ([쇠약] 대상): ${bonus} 추가 고정 피해.`);
+    }
+
+    // 2. 부가 대상 공격 (140%)
+    const subTargets = enemies.filter(e => e.isAlive && e.id !== mainTarget.id);
+    subTargets.forEach(sub => {
+      const dSub = calculateDamage(caster, sub, 1.4, damageType, statType);
+      sub.takeDamage(dSub, battleLog, caster);
+      battleLog(`    ✦피해✦ [파열 부 대상] ${sub.name}: ${dSub} ${damageTypeKr} 피해.`);
+
+      if (sub.isAlive && sub.hasDebuff("weakness")) {
+        const bSub = calculateDamage(caster, sub, 0.3, "fixed", statType);
+        sub.takeDamage(bSub, battleLog, caster);
+        battleLog(`    ✦추가 피해✦ ${sub.name} ([쇠약] 대상): ${bSub} 추가 고정 피해.`);
       }
+    });
 
-      // 2. 부가 대상 공격 (140%) + 쇠약 추가타
-      const subTargets = enemies.filter(e => e.isAlive && e.id !== mainTarget.id);
-      subTargets.forEach(sub => {
-        const dSub = calculateDamage(caster, sub, 1.4, damageType, statType);
-        sub.takeDamage(dSub, battleLog, caster);
-        battleLog(`    ✦피해✦ [파열 부 대상] ${sub.name}: ${dSub} ${damageTypeKr} 피해.`);
-
-        if (sub.isAlive && sub.hasDebuff("weakness")) {
-          const bSub = calculateDamage(caster, sub, 0.3, "fixed", statType);
-          sub.takeDamage(bSub, battleLog, caster);
-          battleLog(`    ✦추가 피해✦ ${sub.name} ([쇠약] 대상): ${bSub} 추가 고정 피해.`);
-        }
-      });
-
-      caster.lastSkillTurn[skillId] = currentTurn;
-      return true;
-    },
+    caster.lastSkillTurn[skillId] = currentTurn;
+    return true;
   },
-
-  // [파열]
-  SKILL_RUPTURE: {
-    id: "SKILL_RUPTURE",
-    name: "파열",
-    type: "광역 공격",
-    description:
-      "균열은 가장 고요한 순간에 일어난다.<br><br> 시전자 타입 기반 주 목표에게 공/마공 210% 피해, 주 목표 제외 모든 적에게 공/마공 140% 피해. [쇠약] 상태 적에게 적중 시 추가로 공/마공 30% 고정 피해. (쿨타임 2턴)",
-    targetType: "single_enemy",
-    targetSelection: "enemy",
-    cooldown: 2,
-    execute: (caster, mainTarget, allies, enemies, battleLog) => {
-      if (!mainTarget) {
-        battleLog(`✦정보✦ ${caster.name} [파열]: 주 대상을 찾을 수 없습니다.`);
-        return false;
-      }
-      if (!mainTarget.isAlive) {
-        battleLog(
-          `✦정보✦ ${caster.name} [파열]: 주 대상 ${mainTarget.name}은(는) 이미 쓰러져 있습니다.`
-        );
-        return false;
-      }
-
-      const lastUsed = caster.lastSkillTurn[SKILLS.SKILL_RUPTURE.id] || 0;
-      if (
-        lastUsed !== 0 &&
-        currentTurn - lastUsed < SKILLS.SKILL_RUPTURE.cooldown
-      ) {
-        battleLog(
-          `✦정보✦ ${caster.name}, [파열] 사용 불가: 쿨타임 ${
-            SKILLS.SKILL_RUPTURE.cooldown - (currentTurn - lastUsed)
-          }턴 남음.`
-        );
-        return false;
-      }
-
-      let statTypeToUse;
-      let damageType;
-      if (caster.type === "암석" || caster.type === "야수") {
-        statTypeToUse = "atk";
-        damageType = "physical";
-      } else if (caster.type === "천체" || caster.type === "나무") {
-        statTypeToUse = "matk";
-        damageType = "magical";
-      } else {
-        statTypeToUse =
-          caster.getEffectiveStat("atk") >= caster.getEffectiveStat("matk")
-            ? "atk"
-            : "matk";
-        damageType = statTypeToUse === "atk" ? "physical" : "magical";
-      }
-      const damageTypeKorean = damageType === "physical" ? "물리" : "마법";
-
-      battleLog(
-        `✦스킬✦ ${caster.name}, [파열] 사용. 주 대상: ${mainTarget.name}.`
-      );
-
-      const mainSkillPower = 2.1;
-      const mainDamage = calculateDamage(
-        caster,
-        mainTarget,
-        mainSkillPower,
-        damageType,
-        statTypeToUse
-      );
-      mainTarget.takeDamage(mainDamage, battleLog, caster);
-      battleLog(
-        `  ✦피해✦ [파열 주 대상] ${mainTarget.name}: ${mainDamage} ${damageTypeKorean} 피해.`
-      );
-
-      if (mainTarget.isAlive && mainTarget.hasDebuff("weakness")) {
-        const bonusFixedDamageValue =
-          caster.getEffectiveStat(statTypeToUse) * 0.3;
-        const actualBonusFixedDamage = calculateDamage(
-          caster,
-          mainTarget,
-          bonusFixedDamageValue,
-          "fixed"
-        );
-        mainTarget.takeDamage(actualBonusFixedDamage, battleLog, caster);
-        battleLog(
-          `  ✦추가 피해✦ ${mainTarget.name} ([쇠약] 대상): ${actualBonusFixedDamage} 추가 고정 피해.`
-        );
-      }
-
-      const subTargets = enemies.filter(
-        (e) => e.isAlive && e.id !== mainTarget.id
-      );
-      if (subTargets.length > 0) {
-        battleLog(`  ✦파열 부가 대상 공격 시작 (총 ${subTargets.length}명)`);
-        const subSkillPower = 1.4;
-        subTargets.forEach((subTarget) => {
-          if (!subTarget.isAlive) return;
-          const subDamage = calculateDamage(
-            caster,
-            subTarget,
-            subSkillPower,
-            damageType,
-            statTypeToUse
-          );
-          subTarget.takeDamage(subDamage, battleLog, caster);
-          battleLog(
-            `    ✦피해✦ [파열 부 대상] ${subTarget.name}: ${subDamage} ${damageTypeKorean} 피해.`
-          );
-
-          if (subTarget.isAlive && subTarget.hasDebuff("weakness")) {
-            const bonusFixedDamageValueSub =
-              caster.getEffectiveStat(statTypeToUse) * 0.3;
-            const actualBonusFixedDamageSub = calculateDamage(
-              caster,
-              subTarget,
-              bonusFixedDamageValueSub,
-              "fixed"
-            );
-            subTarget.takeDamage(actualBonusFixedDamageSub, battleLog, caster);
-            battleLog(
-              `    ✦추가 피해✦ ${subTarget.name} ([쇠약] 대상): ${actualBonusFixedDamageSub} 추가 고정 피해.`
-            );
-          }
-        });
-      }
-      caster.lastSkillTurn[SKILLS.SKILL_RUPTURE.id] = currentTurn;
-      return true;
-    },
-  },
+},
 
 // [공명]
   SKILL_RESONANCE: {
