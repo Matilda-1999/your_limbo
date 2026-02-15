@@ -381,7 +381,6 @@ async function executeBattleTurn() {
       skill.execute(caster, target, state.allyCharacters, state.enemyCharacters, log, {
         currentTurn: state.currentTurn,
         applyHeal: BattleEngine.applyHeal,
-        // calculateDamage 인자 형식을 BattleEngine.js 수정안에 맞게 최적화
         calculateDamage: (a, d, p, t, o = {}) => BattleEngine.calculateDamage(a, d, p, t, {
           ...o, 
           gimmickData: MONSTER_SKILLS, 
@@ -426,12 +425,34 @@ async function executeBattleTurn() {
   // 마무리 (상태이상 갱신 및 다음 턴 준비)
   [...state.allyCharacters, ...state.enemyCharacters].forEach((c) => {
     if (c.isAlive) {
-      c.buffs.forEach((b) => { if (!b.unremovable) b.turnsLeft--; });
-      c.debuffs.forEach((d) => d.turnsLeft--);
-      c.buffs = c.buffs.filter((b) => b.turnsLeft > 0 || b.unremovable);
-      c.debuffs = c.debuffs.filter((d) => d.turnsLeft > 0);
-    }
-  });
+    // 1. [추가] 사라질 버프들을 먼저 식별하여 특수 효과(체력 흡수 등) 처리
+    c.buffs.forEach((b) => {
+      // 이번 턴이 끝나면 사라질 버프 (제거 직전 상태)
+      if (!b.unremovable && b.turnsLeft === 1) { 
+        
+        // [의지] 효과: 남은 보호막만큼 체력 흡수
+        if (b.effect && b.effect.healOnRemove) {
+          const healAmount = Math.round(c.shield);
+          c.currentHp = Math.min(c.maxHp, c.currentHp + healAmount);
+          log(`✦효과 종료✦ ${c.name}, [${b.name}]이 해제되며 체력을 ${healAmount}만큼 흡수합니다.`);
+          c.shield = 0; // 흡수 후 보호막 초기화
+        }
+
+        // [의지] 효과: 누적 대미지 데이터 초기화
+        if (b.effect && b.effect.resetsTotalDamageTaken) {
+          c.totalDamageTakenThisBattle = 0;
+        }
+      }
+    });
+
+    // 2. 실제 턴 수 감소 및 필터링
+    c.buffs.forEach((b) => { if (!b.unremovable) b.turnsLeft--; });
+    c.debuffs.forEach((d) => d.turnsLeft--);
+    
+    c.buffs = c.buffs.filter((b) => b.turnsLeft > 0 || b.unremovable);
+    c.debuffs = c.debuffs.filter((d) => d.turnsLeft > 0);
+  }
+});
 
   checkMapShrink();
 
