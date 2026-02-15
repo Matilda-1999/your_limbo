@@ -410,7 +410,7 @@ function addCharacterAtPos(templateId, pos) {
     state.characterPositions[`${pos.x},${pos.y}`] = monster.id;
 }
 
-// 9. 초기화
+// 9. 초기화 및 전역 등록
 document.addEventListener("DOMContentLoaded", () => {
     syncUI();
 });
@@ -437,7 +437,7 @@ function syncUI() {
     updateFirebaseState();
 }
 
-const updateFirebaseState = async () => {
+async function updateFirebaseState() {
     try {
         const battleRef = ref(db, 'liveBattle/currentSession');
         await set(battleRef, {
@@ -453,9 +453,9 @@ const updateFirebaseState = async () => {
     } catch (e) {
         console.error("관전자 데이터 전송 실패:", e);
     }
-};
+}
 
-// HTML 전역 호출 가능하도록 설정
+// HTML의 onclick에서 호출할 수 있도록 window 객체에 할당
 window.loadSelectedMap = loadSelectedMap;
 window.addCharacter = addCharacter;
 window.startBattle = startBattle;
