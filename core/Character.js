@@ -137,6 +137,7 @@ export class Character {
             this.isAlive = false;
             logFn(`✦☠️✦ ${this.name}, 쓰러집니다.`);
         }
+    }
 
     addBuff(id, name, turns, effect) {
         this.buffs = this.buffs.filter(b => b.id !== id);
