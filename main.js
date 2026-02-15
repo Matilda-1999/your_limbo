@@ -485,7 +485,7 @@ async function performEnemyAction(enemy) {
   const extendedState = {
     ...state,
     calculateDamage: (a, d, p, t, o = {}) => {
-      const dmg = BattleEngine.calculateDamage(a, d, p, t, { ...o, gimmickData: MONSTER_SKILLS, parseSafeCoords: Utils.parseSafeCoords, battleLog: log });
+      const dmg = BattleEngine.calculateDamage(a, d, p, t, { ...o, state: state, gimmickData: MONSTER_SKILLS, parseSafeCoords: Utils.parseSafeCoords, battleLog: log });
       if (dmg > 0) hitCount++;
       else log(`✦회피✦ ${d.name}, 공격을 완전히 상쇄하거나 회피했습니다.`);
       console.log(`%c[적군 공격] %c${a.name} -> %c${d.name}: %c${dmg} 피해`, 'color: #ffaa00;', 'color: black;', 'color: #ff4d4d;', 'color: #ff0000; font-weight: bold;');
