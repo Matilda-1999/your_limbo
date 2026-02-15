@@ -450,3 +450,62 @@ function addCharacterAtPos(templateId, pos) {
 document.addEventListener("DOMContentLoaded", () => {
     syncUI();
 });
+
+
+/**
+ * UI를 갱신하고 최신 상태를 Firebase에 업로드하여 관전자가 볼 수 있게 합니다.
+ */
+const syncUI = () => {
+    // 1. 맵 그리드 렌더링
+    UI.renderMapGrid(
+        DOM.mapContainer, 
+        state.allyCharacters, 
+        state.enemyCharacters, 
+        state.mapObjects, 
+        state.enemyPreviewAction, 
+        state.mapWidth, 
+        state.mapHeight
+    );
+    
+    // 2. 아군 카드 리스트 렌더링
+    DOM.allyDisplay.innerHTML = "";
+    state.allyCharacters.forEach(char => {
+        const isSelected = state.selectedAction?.targetId === char.id;
+        const card = UI.createCharacterCard(char, "ally", isSelected, state.isBattleStarted ? null : (id) => deleteChar(id, "ally"));
+        card.onclick = () => selectTarget(char.id);
+        DOM.allyDisplay.appendChild(card);
+    });
+
+    // 3. 적군 카드 리스트 렌더링
+    DOM.enemyDisplay.innerHTML = "";
+    state.enemyCharacters.forEach(char => {
+        const isSelected = state.selectedAction?.targetId === char.id;
+        const card = UI.createCharacterCard(char, "enemy", isSelected);
+        card.onclick = () => selectTarget(char.id);
+        DOM.enemyDisplay.appendChild(card);
+    });
+
+    // 4. 관전자를 위해 Firebase에 현재 상태 업로드
+    updateFirebaseState();
+};
+
+/**
+ * 실시간 데이터베이스에 현재 전투 상태를 저장합니다.
+ */
+const updateFirebaseState = async () => {
+    try {
+        const battleRef = ref(db, 'liveBattle/currentSession');
+        await set(battleRef, {
+            allyCharacters: state.allyCharacters,
+            enemyCharacters: state.enemyCharacters,
+            mapObjects: state.mapObjects,
+            currentTurn: state.currentTurn,
+            mapWidth: state.mapWidth,
+            mapHeight: state.mapHeight,
+            isBattleStarted: state.isBattleStarted,
+            lastUpdateTime: Date.now()
+        });
+    } catch (e) {
+        console.error("관전자 데이터 전송 실패:", e);
+    }
+};
