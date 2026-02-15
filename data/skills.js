@@ -228,61 +228,31 @@ export const SKILLS = {
     targetType: "single_ally",
     targetSelection: "ally",
     execute: (caster, target, allies, enemies, battleLog, state) => {
-      if (!target) {
-        battleLog(`✦정보✦ ${caster.name} [허무]: 스킬 대상을 찾을 수 없습니다.`);
-        return false;
-      }
-      battleLog(`✦스킬✦ ${caster.name}, ${target.name}에게 [허무] 사용: 디버프 정화 및 랜덤 버프 부여.`);
-
-      // 1. 디버프 정화 로직 (랜덤 2개)
-      const removableCategories = ["상태 이상", "제어", "속성 감소"];
-      const removableDebuffs = target.debuffs.filter((d) =>
-        removableCategories.includes(d.effect.category || "기타")
-      );
-      
-      // 피셔-예이츠 셔플로 랜덤 정화 대상 선정
-      for (let i = removableDebuffs.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [removableDebuffs[i], removableDebuffs[j]] = [removableDebuffs[j], removableDebuffs[i]];
+      // 1. 랜덤 디버프 2개 정화
+      if (target.debuffs.length > 0) {
+        // 디버프 목록을 섞어서 앞의 2개를 제거
+        const shuffled = [...target.debuffs].sort(() => 0.5 - Math.random());
+        const removed = shuffled.slice(0, 2);
+        const removedIds = removed.map(d => d.id);
+        
+        target.debuffs = target.debuffs.filter(d => !removedIds.includes(d.id));
+        battleLog(`✦정화✦ ${target.name}의 디버프(${removed.map(d => d.name).join(", ")})가 정화되었습니다.`);
       }
 
-      const toRemove = removableDebuffs.slice(0, 2);
-      toRemove.forEach(debuff => {
-        target.removeDebuffById(debuff.id);
-        battleLog(`✦정화✦ ${target.name}: [${debuff.name}] 디버프 정화됨.`);
-      });
-
-      if (removableDebuffs.length === 0) {
-        battleLog(`✦정보✦ ${target.name}: 정화할 수 있는 디버프가 없습니다.`);
-      }
-
-      // 2. 랜덤 버프 부여
+      // 2. 랜덤 버프 결정 (시전 시 1회 추첨, 2턴 유지)
       const buffChoices = [
-        {
-          id: "nihility_heal_hot",
-          name: "턴 시작 시 HP 회복 (허무)",
-          effect: { type: "turn_start_heal", value: Math.round(caster.getEffectiveStat("atk") * 0.5) },
-        },
-        {
-          id: "nihility_reflect_dmg",
-          name: "피해 반사 (허무)",
-          effect: { type: "damage_reflect", value: 0.3 },
-        },
-        {
-          id: "nihility_def_boost",
-          name: "방어력 증가 (허무)",
-          effect: { type: "def_boost_multiplier", value: 1.3 },
-        },
-        {
-          id: "nihility_atk_boost",
-          name: "공격력 증가 (허무)",
-          effect: { type: "atk_boost_multiplier", value: 1.5 },
-        },
+        { id: "void_heal", name: "회복(허무)", effect: { type: "turn_start_heal", value: 0.5 } },
+        { id: "void_reflect", name: "반사(허무)", effect: { type: "damage_reflect", value: 0.3 } },
+        { id: "void_def", name: "경화(허무)", effect: { type: "def_boost_multiplier", value: 1.3 } },
+        { id: "void_atk", name: "고양(허무)", effect: { type: "atk_boost_multiplier", value: 2.5 } } // 150% 증가 = 2.5배
       ];
       
       const chosen = buffChoices[Math.floor(Math.random() * buffChoices.length)];
-      target.addBuff(chosen.id, chosen.name, 2, chosen.effect);
-      battleLog(`✦버프✦ ${target.name}: [허무] 효과로 [${chosen.name}] 획득(2턴).`);
+      
+      // 버프 부여
+      target.addBuff(chosen.id, `[${chosen.name}]`, 2, chosen.effect);
+      
+      battleLog(`✦허무✦ ${target.name}에게 2턴간 ${chosen.name} 효과를 부여합니다.`);
 
       caster.checkSupporterPassive(battleLog);
       return true;
