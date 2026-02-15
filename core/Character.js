@@ -72,14 +72,24 @@ export class Character {
         let finalDamage = rawDamage;
 
         // 내가 아닌 아군이 맞았을 때, 파티에 [철옹성] 버프를 가진 인원이 있는지 확인
-        const protector = allies.find(a => a.isAlive && a.hasBuff("iron_fortress"));
+        const protector = allies.find(a => 
+            a.isAlive && (a.hasBuff("iron_fortress") || a.hasDebuff("provoked_self"))
+        );
+        
         if (protector && protector.id !== this.id) {
-            logFn(`✦스킬✦ ${protector.name}, ${this.name} 대신 공격을 막아섭니다.`);
+        logFn(`✦방어✦ ${protector.name}이(가) 공격을 가로채 대신 맞습니다!`);
+            // protector가 대신 대미지를 입음
             protector.takeDamage(rawDamage, logFn, attacker, [this, ...allies.filter(a => a.id !== protector.id)], enemies, state);
-            return; // 원래 대상의 피해 처리는 중단
+            return; 
         }
 
-        // 보호막 처리
+        // 2. [도발 감쇄] 본인이 도발 상태라면 피해량 70% 감소 (30%만 받음)
+        if (this.hasDebuff("provoked_self")) {
+            finalDamage *= 0.3;
+            logFn(`✦스킬✦ ${this.name}: 도발 효과로 피해량이 70% 감소합니다.`);
+        }
+
+        // 3. 보호막 처리
         if (this.shield > 0) {
             const absorbed = Math.min(finalDamage, this.shield);
             this.shield -= absorbed;
@@ -87,12 +97,12 @@ export class Character {
             logFn(`✦보호막✦ ${this.name}: 피해 ${Math.round(absorbed)} 흡수.`);
         }
 
-        // 2. 체력 차감 및 피해 기록
+        // 4. 체력 차감 및 피해 기록
         this.currentHp = Math.max(0, this.currentHp - finalDamage);
         this.totalDamageTakenThisBattle += finalDamage;
 
-        // 도발 중이라면 받은 피해를 저장
-        if (this.hasDebuff && this.hasDebuff("provoked_self")) {
+        // 도발 혹은 철옹성 상태일 때 받은 실질 피해 누적
+        if (this.hasDebuff("provoked_self") || this.hasBuff("iron_fortress")) {
             this.provokeDamage = (this.provokeDamage || 0) + finalDamage;
         }
 
