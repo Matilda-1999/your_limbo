@@ -171,61 +171,50 @@ export const SKILLS = {
     description: "자신에겐 회복을, 아군에겐 조건부 공격력 증폭을 부여합니다. 턴 종료 시 추가 공격을 수행합니다.",
     targetType: "single_ally_or_self",
     targetSelection: "ally_or_self",
-    execute: (caster, target, allies, enemies, battleLog, state) => {
-      const { currentTurn, applyHeal } = state;
+    const { currentTurn } = state;
 
-      if (!target) {
-        battleLog(`✦정보✦ ${caster.name} [허상]: 스킬 대상을 찾을 수 없습니다.`);
+      // 1. 첫 턴 제약: 다른 아군에게 사용 불가
+      if (caster.id !== target.id && currentTurn === 1) {
+        battleLog(`✦정보✦ ${caster.name} [허상]: 첫 번째 턴에는 다른 아군에게 사용할 수 없습니다.`);
         return false;
       }
 
-      // 1. 사용 조건 체크: 첫 턴에 다른 아군에게 사용 불가
-      if (caster.id !== target.id && currentTurn <= 1) {
-        battleLog(`✦정보✦ ${caster.name} [허상]: 첫 턴에는 다른 아군에게 사용할 수 없습니다.`);
-        return false;
-      }
+      const isSelf = caster.id === target.id;
 
-      // 2. 효과 적용
-      if (caster.id === target.id) {
-        // 자신에게 사용 시 회복
-        let healAmount = Math.round(caster.getEffectiveStat("atk") * 0.5);
+      if (isSelf) {
+        // 2. 자신 사용: (공격) x 0.5 회복
+        const healAmount = Math.round(caster.getEffectiveStat("atk") * 0.5);
         state.applyHeal(caster, healAmount, battleLog, "허상");
       } else {
-        // 다른 아군에게 사용 시 체력 소모 및 버프 부여
+        // 3. 아군 사용: (공격) x 0.2 체력 소모 및 공격 스탯 2배(100% 증가)
         const hpLoss = Math.round(caster.getEffectiveStat("atk") * 0.2);
         caster.currentHp = Math.max(1, caster.currentHp - hpLoss);
-        battleLog(`✦소모✦ ${caster.name}, [허상] 사용: 체력 ${hpLoss} 소모. (HP: ${caster.currentHp.toFixed(0)})`);
+        
+        const totalDamage = caster.totalDamageTakenThisBattle || 0;
+        const isEven = totalDamage % 2 === 0;
+        const statType = isEven ? "matk" : "atk";
+        const statName = isEven ? "마법 공격력" : "공격력";
 
-        // 받은 피해 총합의 홀짝에 따라 버프 종류 결정
-        const totalDamageTaken = caster.totalDamageTakenThisBattle;
-        if (totalDamageTaken % 2 === 0) {
-          target.addBuff("illusion_matk_boost", "마법 공격력 증가 (허상)", 2, {
-            type: "matk_boost_multiplier",
-            value: 2.0,
-          });
-          battleLog(`✦버프✦ ${target.name}: [허상 효과] 마법 공격력 2배 증가 (2턴).`);
-        } else {
-          target.addBuff("illusion_atk_boost", "공격력 증가 (허상)", 2, {
-            type: "atk_boost_multiplier",
-            value: 2.0,
-          });
-          battleLog(`✦버프✦ ${target.name}: [허상 효과] 공격력 2배 증가 (2턴).`);
-        }
-      }
-
-      // 3. 턴 종료 추가 공격 예약
-      const firstAliveEnemy = enemies.find((e) => e.isAlive);
-      if (firstAliveEnemy) {
-        caster.addBuff("illusion_end_turn_attack", "턴 종료 추가 공격 (허상)", 1, {
-          attackerId: caster.id,
-          originalTargetId: target.id,
-          enemyTargetId: firstAliveEnemy.id,
-          power: 0.5,
-          damageType: "physical",
+        target.addBuff(`illusion_${statType}_boost`, `[허상:${statName}]`, 2, {
+          type: `${statType}_boost_multiplier`,
+          value: 2.0, // 2배 증가
         });
+        battleLog(`✦허상✦ ${caster.name}이 체력을 소모하여 ${target.name}의 ${statName}을 2배 증가시킵니다!`);
       }
 
-      caster.checkSupporterPassive(battleLog);
+      // 4. 턴 종료 시 추가 공격 예약 (가장 체력이 높은 적 타겟팅)
+      const targetEnemy = [...enemies]
+          .filter(e => e.isAlive)
+          .sort((a, b) => b.currentHp - a.currentHp)[0]; // 체력 내림차순 정렬 후 첫 번째
+      
+      if (targetEnemy) {
+          caster.addBuff("illusion_extra_hit", "[허상:추격]", 1, {
+              extraAttack: true,
+              targetId: targetEnemy.id,
+              powerMultiplier: 0.5
+          });
+      }
+
       return true;
     },
   },
