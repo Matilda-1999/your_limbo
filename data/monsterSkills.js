@@ -128,17 +128,20 @@ export const MONSTER_SKILLS = {
     }
   },
 
- // --- [4] 맵 기믹 데이터 ---
+// --- [4] 맵 기믹 데이터 ---
 
   GIMMICK_Aegis_of_Earth1: {
     id: "GIMMICK_Aegis_of_Earth1",
     name: "대지의 수호(동)",
-    // UI 예고 및 BattleEngine 판정용 좌표
-    hitArea: [{x:3,y:1},{x:3,y:2},{x:3,y:3},{x:4,y:0},{x:4,y:1},{x:4,y:2},{x:4,y:3},{x:4,y:4}],
-    script: `<pre>"무딘 칼날로 대지를 가를 수 있겠는가?"</pre>\n`,
+    // hitArea를 비워두어 UI(renderUI.js)에서 바닥에 파란색 칸이 생기지 않도록 합니다.
+    hitArea: [], 
+    // 실제 대미지 계산 시 내부적으로만 참조할 좌표 문자열
+    coords: "3,1;3,2;3,3;4,0;4,1;4,2;4,3;4,4",
+    script: `<pre>우리가 상대할 것은 대지, 그 자체였을까.\n절벽이 앞을 가로막는다.\n허나 무너뜨릴 수 없을 듯하던 동쪽 성벽 또한 작은 균열 하나에 허물어지는 법.\n"무딘 칼날로 대지를 가를 수 있겠는가?"</pre>\n`,
     execute: (caster, allies, enemies, battleLog, state) => {
+      // BattleEngine.js가 이 ID를 확인하여 안전지대 판정을 수행합니다.
       caster.activeGimmick = "GIMMICK_Aegis_of_Earth1"; 
-      battleLog(`✦기믹 발동✦ ${caster.name}이 [대지의 수호(동)] 태세를 갖춥니다. 동쪽 구역(파란색)이 안전지대가 됩니다.`);
+      battleLog(`✦기믹 발동✦ ${caster.name}이 동쪽 성벽을 세웁니다. 안전한 곳을 찾으세요!`);
       return true;
     },
   },
@@ -146,11 +149,12 @@ export const MONSTER_SKILLS = {
   GIMMICK_Aegis_of_Earth2: {
     id: "GIMMICK_Aegis_of_Earth2",
     name: "대지의 수호(서)",
-    hitArea: [{x:0,y:0},{x:0,y:1},{x:0,y:2},{x:0,y:3},{x:0,y:4},{x:1,y:1},{x:1,y:2},{x:1,y:3}],
-    script: `<pre>"무딘 칼날로 대지를 가를 수 있겠는가?"</pre>\n`,
+    hitArea: [],
+    coords: "0,0;0,1;0,2;0,3;0,4;1,1;1,2;1,3",
+    script: `<pre>우리가 상대할 것은 대지, 그 자체였을까.\n절벽이 앞을 가로막는다.\n허나 무너뜨릴 수 없을 듯하던 서쪽 성벽 또한 작은 균열 하나에 허물어지는 법.\n"무딘 칼날로 대지를 가를 수 있겠는가?"</pre>\n`,
     execute: (caster, allies, enemies, battleLog, state) => {
       caster.activeGimmick = "GIMMICK_Aegis_of_Earth2";
-      battleLog(`✦기믹 발동✦ ${caster.name}이 [대지의 수호(서)] 태세를 갖춥니다. 서쪽 구역(파란색)이 안전지대가 됩니다.`);
+      battleLog(`✦기믹 발동✦ ${caster.name}이 서쪽 성벽을 세웁니다. 안전한 곳을 찾으세요!`);
       return true;
     },
   },
@@ -158,11 +162,12 @@ export const MONSTER_SKILLS = {
   GIMMICK_Aegis_of_Earth3: {
     id: "GIMMICK_Aegis_of_Earth3",
     name: "대지의 수호(남)",
-    hitArea: [{x:1,y:3},{x:2,y:3},{x:3,y:3},{x:0,y:4},{x:1,y:4},{x:2,y:4},{x:3,y:4},{x:4,y:4}],
-    script: `<pre>"무딘 칼날로 대지를 가를 수 있겠는가?"</pre>\n`,
+    hitArea: [],
+    coords: "1,3;2,3;3,3;0,4;1,4;2,4;3,4;4,4",
+    script: `<pre>우리가 상대할 것은 대지, 그 자체였을까.\n절벽이 앞을 가로막는다.\n허나 무너뜨릴 수 없을 듯하던 남쪽 성벽 또한 작은 균열 하나에 허물어지는 법.\n"무딘 칼날로 대지를 가를 수 있겠는가?"</pre>\n`,
     execute: (caster, allies, enemies, battleLog, state) => {
       caster.activeGimmick = "GIMMICK_Aegis_of_Earth3";
-      battleLog(`✦기믹 발동✦ ${caster.name}이 [대지의 수호(남)] 태세를 갖춥니다. 남쪽 구역(파란색)이 안전지대가 됩니다.`);
+      battleLog(`✦기믹 발동✦ ${caster.name}이 남쪽 성벽을 세웁니다. 안전한 곳을 찾으세요!`);
       return true;
     },
   },
@@ -170,11 +175,12 @@ export const MONSTER_SKILLS = {
   GIMMICK_Aegis_of_Earth4: {
     id: "GIMMICK_Aegis_of_Earth4",
     name: "대지의 수호(북)",
-    hitArea: [{x:0,y:0},{x:1,y:0},{x:2,y:0},{x:3,y:0},{x:4,y:0},{x:1,y:1},{x:2,y:1},{x:3,y:1}],
-    script: `<pre>"무딘 칼날로 대지를 가를 수 있겠는가?"</pre>\n`,
+    hitArea: [],
+    coords: "0,0;1,0;2,0;3,0;4,0;1,1;2,1;3,1",
+    script: `<pre>우리가 상대할 것은 대지, 그 자체였을까.\n절벽이 앞을 가로막는다.\n허나 무너뜨릴 수 없을 듯하던 북쪽 성벽 또한 작은 균열 하나에 허물어지는 법.\n"무딘 칼날로 대지를 가를 수 있겠는가?"</pre>\n`,
     execute: (caster, allies, enemies, battleLog, state) => {
       caster.activeGimmick = "GIMMICK_Aegis_of_Earth4";
-      battleLog(`✦기믹 발동✦ ${caster.name}이 [대지의 수호(북)] 태세를 갖춥니다. 북쪽 구역(파란색)이 안전지대가 됩니다.`);
+      battleLog(`✦기믹 발동✦ ${caster.name}이 북쪽 성벽을 세웁니다. 안전한 곳을 찾으세요!`);
       return true;
     },
   },
