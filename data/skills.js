@@ -730,7 +730,7 @@ SKILL_RUPTURE: {
     description: "체력을 소모하여 자신을 회복하고 적에게 피해를 입히며, 아군에게 [흔적]을 남깁니다.",
     targetType: "all_allies",
     targetSelection: "all_allies",
-    execute: (caster, allies, enemies, battleLog, state) => {
+    execute: (caster, target, allies, enemies, battleLog, state) => {
       const { applyHeal } = state;
 
       // 1. 시전자 코스트 및 적군 고정 피해
