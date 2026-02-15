@@ -86,36 +86,57 @@ export class Character {
         if (this.hasDebuff && this.hasDebuff("provoked_self")) {
             this.provokeDamage = (this.provokeDamage || 0) + finalDamage;
         }
-        
+
+        // 3. [반격/역습] 통합 판정 로직
+        // 턴 수 및 속성 정보 (공통)
+        const isOddTurn = (state.currentTurn || 1) % 2 !== 0;
+
+        // A. 역습
         const reversalBuff = this.buffs.find(b => b.id === "reversal_active");
         if (reversalBuff && attacker && finalDamage > 0) {
-            // 턴 수에 따른 속성 결정 (홀수: 물리 / 짝수: 마법)
-            const isOddTurn = (state.currentTurn || 1) % 2 !== 0;
             const damageType = isOddTurn ? "physical" : "magical";
             const typeName = isOddTurn ? "물리" : "마법";
-    
-            // 공격 스탯 결정
             const atkStat = this.getEffectiveStat("atk");
             const storedDmg = this.provokeDamage || 0;
-    
-            // 공식: (공격 스탯 + 도발 저장 피해) × 1.5
             const counterDamage = Math.round((atkStat + storedDmg) * 1.5);
             
-            // 반격 실행
-            logFn(`✦역습 발동✦ ${this.name}이(가) ${typeName} 속성으로 반격합니다! (저장된 피해: ${storedDmg})`);
-            attacker.takeDamage(counterDamage, logFn, this);
-            logFn(`✦피해✦ ${attacker.name}에게 ${counterDamage}의 ${typeName} 피해를 입혔습니다.`);
+            logFn(`✦피해✦ ${this.name}, 반격. (저장된 피해: ${storedDmg})`);
+            attacker.takeDamage(counterDamage, logFn, this, allies, enemies, state);
             
-            // 발동 후 버프 및 저장된 도발 피해 초기화
             this.buffs = this.buffs.filter(b => b.id !== "reversal_active");
             this.provokeDamage = 0; 
         }
-        
+
+        // B. 반격
+        const counterProvider = [this, ...allies].find(member => 
+            member.isAlive && member.buffs && member.buffs.some(b => b.id === "counter_active")
+        );
+
+        if (counterProvider && attacker && finalDamage > 0) {
+            const isSelfHit = (counterProvider.id === this.id);
+            const multiplier = isSelfHit ? 1.5 : 0.5; // 본인 피격 시 1.5배, 아군 피격 시 0.5배
+            const counterDamage = Math.round(finalDamage * multiplier);
+
+            if (isOddTurn) {
+                // [홀수 턴: 응수] 체력이 가장 높은 적에게 단일 반격
+                const targetEnemy = [...enemies].filter(e => e.isAlive).sort((a, b) => b.currentHp - a.currentHp)[0];
+                if (targetEnemy) {
+                    logFn(`✦응수✦ ${counterProvider.name}의 보복! ${this.name}을(를) 위해 ${targetEnemy.name}에게 ${counterDamage} 피해.`);
+                    targetEnemy.takeDamage(counterDamage, logFn, counterProvider, enemies, allies, state);
+                }
+            } else {
+                // [짝수 턴: 격노] 모든 적에게 광역 반격
+                logFn(`✦격노✦ ${counterProvider.name}의 광역 반격! 모든 적에게 피해를 입힙니다.`);
+                enemies.filter(e => e.isAlive).forEach(enemy => {
+                    enemy.takeDamage(counterDamage, logFn, counterProvider, enemies, allies, state);
+                });
+            }
+        }
+
         if (this.currentHp <= 0) {
             this.isAlive = false;
             logFn(`✦☠️✦ ${this.name}, 쓰러집니다.`);
         }
-    }
 
     addBuff(id, name, turns, effect) {
         this.buffs = this.buffs.filter(b => b.id !== id);
