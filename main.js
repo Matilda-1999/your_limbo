@@ -182,10 +182,12 @@ function prepareNextTurnCycle() {
         const nextSkillId = available[Math.floor(Math.random() * available.length)];
         state.enemyPreviewAction = { skillId: nextSkillId }; // 예약
 
-      log(`\n --- ${state.currentTurn} 턴 아군 행동 선택 시작 --- \n`);
+      log(`\n\n ☂︎ --- ${state.currentTurn} 턴을 시작합니다.\n\n`);
       
         const skillData = MONSTER_SKILLS[nextSkillId];
         log(`\n\n"${skillData.script}"\n\n`); 
+
+      log(`\n\n ☂︎ 전원, 5 분 동안 행동해 주세요. \n\n`);
     }
 
   promptAllySelection();
