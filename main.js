@@ -166,9 +166,11 @@ function startBattle() {
   state.currentTurn = 0;
   DOM.startBtn.style.display = "none";
   log("\n【전투 시작】\n");
-  log("\n\n거대한 바위가 자연의 중심처럼 눌러앉아 있다.\n그것은 그저 풍경처럼 존재했으나, 땅이 울리고, 균열이 일어나면, 바위의 틈 사이로 희미한 숨결이 들려온다. \n  대지는 이미 깨어나고 있다.\n "그 누가 잠든 대지를 일깨우느냐.""\n\n");
-  prepareNextTurnCycle();
-}
+  
+  const config = MAP_CONFIGS[state.selectedMapId]; // 현재 선택된 맵의 정보를 가져옴
+    if (config) {
+      log(`\n<pre>${config.flavorText}</pre>\n`); // 설정된 flavorText 출력
+    }
 
 function prepareNextTurnCycle() {
   state.currentTurn++;
