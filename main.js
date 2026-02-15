@@ -182,12 +182,12 @@ function prepareNextTurnCycle() {
         const nextSkillId = available[Math.floor(Math.random() * available.length)];
         state.enemyPreviewAction = { skillId: nextSkillId }; // 예약
 
+      log(`\n --- ${state.currentTurn} 턴 아군 행동 선택 시작 --- \n`);
+      
         const skillData = MONSTER_SKILLS[nextSkillId];
-        log(`\n<b>[예고] ${boss.name}:</b> "${skillData.script}"`); 
+        log(`\n\n"${skillData.script}"\n\n`); 
     }
-}
 
-  log(`\n --- ${state.currentTurn} 턴 아군 행동 선택 시작 --- \n`);
   promptAllySelection();
   syncUI();
 }
