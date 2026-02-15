@@ -182,7 +182,7 @@ function prepareNextTurnCycle() {
       const skillData = MONSTER_SKILLS[skillId]; 
       
       if (skillData) {
-          state.enemyPreviewAction = { skillId, targetArea: [] };
+          state.enemyPreviewAction = { skillId, hitArea: [] };
           // 스킬의 script(대사)를 로그에 가장 먼저 출력
           log(`\n<b>[예고] ${boss.name}:</b> "${skillData.script || "..."}"`); 
       }
