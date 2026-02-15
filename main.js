@@ -534,29 +534,29 @@ function checkMapShrink() {
 }
 
 async function performEnemyAction(enemy) {
+  // 1. 타겟 선정 (도발 여부 확인)
   const provoke = enemy.debuffs.find((d) => d.id === "provoked");
-  let target = provoke
-    ? Utils.findCharacterById(provoke.effect.targetId, state.allyCharacters)
-    : null;
-  if (!target || !target.isAlive) {
-    target = state.allyCharacters.find((a) => a.isAlive);
-  }
-  if (target) {
-    if (provoke)
-      log(`✦도발✦ ${enemy.name}이(가) ${target.name}에게 고정됩니다.`);
-    const dmg = BattleEngine.calculateDamage(enemy, target, 1.0, "physical", {
-        battleLog: log
-    });
-    target.takeDamage(
-      dmg,
-      log,
-      enemy,
-      state.allyCharacters,
-      state.enemyCharacters,
-      {
-        applyHeal: BattleEngine.applyHeal,
-      }
-    );
+  let target = provoke ? Utils.findCharacterById(provoke.effect.targetId, state.allyCharacters) : null;
+  if (!target || !target.isAlive) target = state.allyCharacters.find((a) => a.isAlive);
+
+  if (!target) return;
+
+  // 2. 랜덤 행동 선택 (보유한 skills + gimmicks 합치기)
+  const availableActions = [...(enemy.skills || []), ...(enemy.gimmicks || [])];
+  
+  if (availableActions.length > 0) {
+    const randomActionId = availableActions[Math.floor(Math.random() * availableActions.length)];
+    const actionData = MONSTER_SKILLS[randomActionId];
+
+    if (actionData && typeof actionData.execute === 'function') {
+      // 3. 스킬/기믹 실행
+      log(`\n<b>[행동] ${enemy.name}:</b> ${actionData.name}`);
+      if (actionData.script) log(actionData.script);
+      
+      actionData.execute(enemy, state.allyCharacters, state.enemyCharacters, log, state);
+    }
+  } else {
+    log(`✦정보✦ ${enemy.name}이(가) 취할 수 있는 행동이 없습니다.`);
   }
 }
 
