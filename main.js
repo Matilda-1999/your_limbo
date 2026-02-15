@@ -76,6 +76,27 @@ const DOM = {
 const log = (msg) => UI.logToBattleLog(DOM.battleLog, msg);
 
 // 6. 전투 준비 및 캐릭터 관리
+function addCharacterAtPos(templateId, pos) {
+  if (!pos) return;
+  const template = MONSTER_TEMPLATES[templateId];
+  if (!template) return;
+  const monster = new Character(template.name, template.type, null);
+  Object.assign(monster, {
+    maxHp: template.maxHp,
+    currentHp: template.maxHp,
+    atk: template.atk,
+    matk: template.matk,
+    def: template.def,
+    mdef: template.mdef,
+    skills: template.skills,
+    gimmicks: template.gimmicks,
+    posX: pos.x,
+    posY: pos.y,
+  });
+  state.enemyCharacters.push(monster);
+  state.characterPositions[`${pos.x},${pos.y}`] = monster.id;
+}
+
 function loadSelectedMap() {
   if (state.isBattleStarted)
     return alert("전투 중에는 맵을 변경할 수 없습니다.");
@@ -516,27 +537,6 @@ async function performEnemyAction(enemy) {
       }
     );
   }
-}
-
-function addCharacterAtPos(templateId, pos) {
-  if (!pos) return;
-  const template = MONSTER_TEMPLATES[templateId];
-  if (!template) return;
-  const monster = new Character(template.name, template.type, null);
-  Object.assign(monster, {
-    maxHp: template.maxHp,
-    currentHp: template.maxHp,
-    atk: template.atk,
-    matk: template.matk,
-    def: template.def,
-    mdef: template.mdef,
-    skills: template.skills,
-    gimmicks: template.gimmicks,
-    posX: pos.x,
-    posY: pos.y,
-  });
-  state.enemyCharacters.push(monster);
-  state.characterPositions[`${pos.x},${pos.y}`] = monster.id;
 }
 
 // 9. 초기화 및 전역 등록
