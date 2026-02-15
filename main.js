@@ -304,24 +304,30 @@ async function executeBattleTurn() {
         if (!caster.isAlive) continue;
 
         if (action.type === "skill") {
-            const target = Utils.findCharacterById(targetId, state.allyCharacters, state.enemyCharacters, state.mapObjects);
-            log(`✦ ${caster.name}, [${skill.name}] 시전.`);
-            
-            skill.execute(
-                caster, 
-                target, 
-                state.allyCharacters, 
-                state.enemyCharacters, 
-                log, // 이 log가 skills.js의 battleLog 매개변수로 들어갑니다.
-                {
-                    calculateDamage: (a, d, p, t, o) => BattleEngine.calculateDamage(a, d, p, t, {
-                        ...o, 
-                        gimmickData: MONSTER_SKILLS, 
-                        parseSafeCoords: Utils.parseSafeCoords
-                    }),
-                    applyHeal: BattleEngine.applyHeal // 힐 스킬 등이 있다면 함께 전달
-                }
-            );
+    const target = Utils.findCharacterById(targetId, state.allyCharacters, state.enemyCharacters, state.mapObjects);
+    log(`✦ ${caster.name}, [${skill.name}] 시전.`);
+    
+    // skills.js의 각 스킬 execute 구조에 맞게 인자를 재구성하여 전달합니다.
+    skill.execute(
+        caster, 
+        // 스킬이 단일 타겟팅인 경우 target을 전달, 광역인 경우 allies/enemies를 우선하도록 구성됨
+        skill.targetSelection === "enemy" || skill.targetSelection === "ally_or_self" ? target : state.allyCharacters,
+        skill.targetSelection === "enemy" ? state.enemyCharacters : state.enemyCharacters,
+        log, // 이 log 함수가 skills.js의 battleLog 매개변수로 들어갑니다.
+        {
+            currentTurn: state.currentTurn,
+            applyHeal: BattleEngine.applyHeal,
+            calculateDamage: (a, d, p, t, o) => BattleEngine.calculateDamage(a, d, p, t, {
+                ...o, 
+                gimmickData: MONSTER_SKILLS, 
+                parseSafeCoords: Utils.parseSafeCoords
+            }),
+            displayCharacters: syncUI, // UI 갱신 함수 전달
+            mapObjects: state.mapObjects
+        }
+    );
+    caster.lastSkillTurn[skill.id] = state.currentTurn;
+}
                         
             caster.lastSkillTurn[skill.id] = state.currentTurn;
         } else if (action.type === "move") {
