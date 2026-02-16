@@ -112,13 +112,9 @@ export const UI = {
                     // 1. 이름이 없거나 빈 문자열인 버프는 노출되지 않음
                     if (!b.name || b.name.trim() === "") return;
             
-                    // 2. 스택 정보가 있으면 (스택)으로, 없으면 (턴)으로 표시
-                    let label;
-                    if (b.effect && b.effect.stacks) {
-                        label = `${b.name}(${b.effect.stacks}스택)`;
-                    } else {
-                        label = `${b.name}(${b.turnsLeft}턴)`;
-                    }
+                    // 2. [n스택(n턴)] 형식으로 표시 (스택이 없으면 기본 1스택)
+                    const stacks = (b.effect && b.effect.stacks) ? b.effect.stacks : 1;
+                    const label = `[${stacks}스택(${b.turnsLeft}턴)] ${b.name}`;
                     
                     if (!uniqueBuffLabels.includes(label)) uniqueBuffLabels.push(label);
                 });
@@ -128,10 +124,14 @@ export const UI = {
             ${(() => {
                 const uniqueDebuffLabels = [];
                 character.debuffs.forEach(d => {
-                    if (d.name && d.name.trim() !== "") {
-                        const label = `${d.name}(${d.turnsLeft}턴)`;
-                        if (!uniqueDebuffLabels.includes(label)) uniqueDebuffLabels.push(label);
-                    }
+                    // 1. 이름이 없으면 제외
+                    if (!d.name || d.name.trim() === "") return;
+
+                    // 2. 디버프도 [n스택(n턴)] 형식으로 표시 (d.stacks 참조)
+                    const stacks = d.stacks || 1;
+                    const label = `[${stacks}스택(${d.turnsLeft}턴)] ${d.name}`;
+                    
+                    if (!uniqueDebuffLabels.includes(label)) uniqueDebuffLabels.push(label);
                 });
                 return uniqueDebuffLabels.length > 0 ? `<p>디버프: ${uniqueDebuffLabels.join(", ")}</p>` : "";
             })()}
