@@ -109,10 +109,18 @@ export const UI = {
             ${(() => {
                 const uniqueBuffLabels = [];
                 character.buffs.forEach(b => {
-                    if (b.name && b.name.trim() !== "") {
-                        const label = `${b.name}(${b.turnsLeft}턴)`;
-                        if (!uniqueBuffLabels.includes(label)) uniqueBuffLabels.push(label);
+                    // 1. 이름이 없거나 빈 문자열인 버프는 노출되지 않음
+                    if (!b.name || b.name.trim() === "") return;
+            
+                    // 2. 스택 정보가 있으면 (스택)으로, 없으면 (턴)으로 표시
+                    let label;
+                    if (b.effect && b.effect.stacks) {
+                        label = `${b.name}(${b.effect.stacks}스택)`;
+                    } else {
+                        label = `${b.name}(${b.turnsLeft}턴)`;
                     }
+                    
+                    if (!uniqueBuffLabels.includes(label)) uniqueBuffLabels.push(label);
                 });
                 return uniqueBuffLabels.length > 0 ? `<p>버프: ${uniqueBuffLabels.join(", ")}</p>` : "";
             })()}
