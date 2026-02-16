@@ -317,8 +317,8 @@ SKILL_REALITY: {
       const higherStat = Math.max(allyDef, allyMdef);
       const boostValue = Math.round((higherStat * 0.2) * realityStacks);
       
-      ally.addBuff("reality_def_add", "[실재 효과]", 2, { type: "def_boost_add", value: boostValue });
-      ally.addBuff("reality_mdef_add", "[실재 효과]", 2, { type: "mdef_boost_add", value: boostValue });
+      ally.addBuff("reality_def_add", "", 2, { type: "def_boost_add", value: boostValue });
+      ally.addBuff("reality_mdef_add", "", 2, { type: "mdef_boost_add", value: boostValue });
       
       battleLog(`✦버프✦ ${ally.name}: 시전자의 [실재] 영향으로 방어 성능이 강화됩니다. (+${boostValue})`);
     });
