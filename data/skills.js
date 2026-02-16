@@ -274,9 +274,9 @@ SKILL_REALITY: {
     const skillId = "SKILL_REALITY";
     
     // 1. 시전자의 연속 사용 제한 체크
-    const realityBuff = caster.buffs.find((b) => b.id === "reality_stacks");
-    const prevConsecutiveCount = (realityBuff && realityBuff.lastAppliedTurn === currentTurn - 1) 
-      ? (realityBuff.consecutiveCount || 1) 
+    const existingReality = caster.buffs.find((b) => b.id === "reality_stacks");
+    const prevConsecutiveCount = (existingReality && existingReality.lastAppliedTurn === currentTurn - 1) 
+      ? (existingReality.consecutiveCount || 1) 
       : 0;
 
     if (prevConsecutiveCount >= 2) {
@@ -284,41 +284,43 @@ SKILL_REALITY: {
       return false;
     }
 
-    // 2. [실재] 스택 결정 (연속 사용 시 4 -> 6)
+    // 2. [실재] 스택 결정
     let realityStacks = 4;
     let newConsecutiveCount = 1;
+    
     if (prevConsecutiveCount > 0) {
-      realityStacks = 6;
+      realityStacks = 6; // 연속 사용 시 4 -> 6스택으로 강화
       newConsecutiveCount = prevConsecutiveCount + 1;
-      battleLog(`✦효과✦ ${caster.name} [실존] 연속 사용: [실재] 6스택 효과로 강화됩니다.`);
+      battleLog(`✦효과✦ ${caster.name} [실존] 연속 사용: [실재]가 6스택으로 강화됩니다.`);
+    } else {
+      battleLog(`✦효과✦ ${caster.name} [실존] 사용: [실재] 4스택을 획득합니다.`);
     }
 
-    // 3. 아군 전체 버프 적용
-    allies.filter(a => a.isAlive).forEach(ally => {
-      // A. [내부 적용] 방어/마방 20% 증가 (이름을 ""로 설정하여 UI 미노출)
+    // 3. 시전자 본인에게 [실재] 스택 부여 (2턴 유지)
+    caster.addBuff("reality_stacks", "[실재]", 2, {
+      stacks: realityStacks,
+      unremovable: true,
+      lastAppliedTurn: currentTurn,
+      consecutiveCount: newConsecutiveCount,
+      isStackManager: true // 시전자는 효과를 받지 않고 스택만 관리함
+    });
+
+    // 4. 아군 전체 버프 적용 (시전자의 [실재] 스택 수치에 기반)
+    allies.filter(a => a.isAlive && a.id !== caster.id).forEach(ally => {
+      // 방어/마방 20% 기본 증가
       ally.addBuff("reality_def_mult_hidden", "", 2, { type: "def_boost_multiplier", value: 1.2 });
       ally.addBuff("reality_mdef_mult_hidden", "", 2, { type: "mdef_boost_multiplier", value: 1.2 });
 
-      // B. [실재] 보너스 수치 계산 (합연산)
-      // 공식: (각 아군의 높은 스탯 * 0.2) * 시전자의 [실재] 스택 수
+      // 보너스 수치 계산: (아군의 높은 스탯 * 0.2) * 시전자의 [실재] 스택
       const allyDef = ally.getEffectiveStat('def');
       const allyMdef = ally.getEffectiveStat('mdef');
       const higherStat = Math.max(allyDef, allyMdef);
       const boostValue = Math.round((higherStat * 0.2) * realityStacks);
       
-      // 아군 상태창에는 [실재] 보너스 수치만 표시됨
-      ally.addBuff("reality_def_add", "[실재]", 2, { type: "def_boost_add", value: boostValue });
-      ally.addBuff("reality_mdef_add", "[실재]", 2, { type: "mdef_boost_add", value: boostValue });
+      ally.addBuff("reality_def_add", "[실재 효과]", 2, { type: "def_boost_add", value: boostValue });
+      ally.addBuff("reality_mdef_add", "[실재 효과]", 2, { type: "mdef_boost_add", value: boostValue });
       
-      battleLog(`✦버프✦ ${ally.name}: [실재] 효과로 방어력/마법 방어력 +${boostValue} 증가 (2턴).`);
-    });
-
-    // 4. 시전자 본인에게 [실재 스택] 부여 (관리 및 UI 표시용)
-    caster.addBuff("reality_stacks", "[실재 스택]", 2, {
-      stacks: realityStacks,
-      unremovable: true,
-      lastAppliedTurn: currentTurn,
-      consecutiveCount: newConsecutiveCount
+      battleLog(`✦버프✦ ${ally.name}: 시전자의 [실재] 영향으로 방어 성능이 강화됩니다. (+${boostValue})`);
     });
 
     caster.lastSkillTurn[skillId] = currentTurn;
