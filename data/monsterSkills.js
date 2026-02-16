@@ -140,6 +140,76 @@ export const MONSTER_SKILLS = {
    }
  },
 
+ SKILL_Slapstick_Comdey_C: {
+   id: "SKILL_Slapstick_Comdey_C",
+   name: "슬랩스틱 코미디(클라운)",
+   execute: (caster, allies, enemies, battleLog, state) => {
+     const offsets = [{ dx: -2, dy: 0 }, { dx: -1, dy: 0 }, { dx: 1, dy: 0 }, { dx: 2, dy: 0 }];
+     allies.filter(t => t.isAlive).forEach(target => {
+       if (offsets.some(o => caster.posX + o.dx === target.posX && caster.posY + o.dy === target.posY)) {
+         const d = state.calculateDamage(caster, target, 1.0, "magical");
+         target.takeDamage(d, battleLog, caster, allies, enemies, state); // 파라미터 수정됨
+         if (caster.hasBuff("duet_enrage") && state.applyRandomBrand) state.applyRandomBrand(target);
+       }
+     });
+     return true;
+   }
+ },
+
+ SKILL_Get_a_Present_P: {
+   id: "SKILL_Get_a_Present_P",
+   name: "선물 받아!(피에로)",
+   execute: (caster, allies, enemies, battleLog, state) => {
+     const offsets = [{dx:-1,dy:-1},{dx:-1,dy:0},{dx:-1,dy:1},{dx:0,dy:-1},{dx:0,dy:1},{dx:1,dy:-1},{dx:1,dy:0},{dx:1,dy:1}];
+     allies.filter(t => t.isAlive).forEach(target => {
+       if (offsets.some(o => caster.posX + o.dx === target.posX && caster.posY + o.dy === target.posY)) {
+         const d = state.calculateDamage(caster, target, 1.0, "physical");
+         target.takeDamage(d, battleLog, caster, allies, enemies, state); // 파라미터 수정됨
+         if (caster.hasBuff("duet_enrage") && state.applyRandomBrand) state.applyRandomBrand(target);
+       }
+     });
+     return true;
+   }
+ },
+
+ SKILL_Get_a_Present_C: {
+   id: "SKILL_Get_a_Present_C",
+   name: "선물 받아!(클라운)",
+   execute: (caster, allies, enemies, battleLog, state) => {
+     const offsets = [{dx:-2,dy:-2},{dx:-2,dy:2},{dx:-1,dy:-1},{dx:-1,dy:1},{dx:1,dy:-1},{dx:1,dy:1},{dx:2,dy:-2},{dx:2,dy:2}];
+     allies.filter(t => t.isAlive).forEach(target => {
+       if (offsets.some(o => caster.posX + o.dx === target.posX && caster.posY + o.dy === target.posY)) {
+         const d = state.calculateDamage(caster, target, 1.0, "magical");
+         target.takeDamage(d, battleLog, caster, allies, enemies, state); // 파라미터 수정됨
+         if (caster.hasBuff("duet_enrage") && state.applyRandomBrand) state.applyRandomBrand(target);
+       }
+     });
+     return true;
+   }
+ },
+
+ GIMMICK_Laugh_of: {
+   id: "GIMMICK_Laugh_of",
+   name: "광대의 웃음",
+   execute: (caster, allies, enemies, battleLog, state) => {
+     if (state.activeGimmickState && state.activeGimmickState.type.startsWith("clown_emotion")) return false;
+     battleLog("✦기믹 발생✦ [광대의 웃음]: 3턴 안에, 클라운을 5회 이상, 피에로를 5회 이하로 공격해야 합니다.");
+     state.activeGimmickState = { type: "clown_emotion_laugh", turnStart: state.currentTurn, duration: 3, clownHits: 0, pierrotHits: 0 };
+     return true;
+   }
+ },
+
+ GIMMICK_Tears_of: {
+   id: "GIMMICK_Tears_of",
+   name: "광대의 눈물",
+   execute: (caster, allies, enemies, battleLog, state) => {
+     if (state.activeGimmickState && state.activeGimmickState.type.startsWith("clown_emotion")) return false;
+     battleLog("✦기믹 발생✦ [광대의 눈물]: 3턴 안에, 피에로를 5회 이상, 클라운을 5회 이하로 공격해야 합니다.");
+     state.activeGimmickState = { type: "clown_emotion_tear", turnStart: state.currentTurn, duration: 3, clownHits: 0, pierrotHits: 0 };
+     return true;
+   }
+ },
+
  // --- [3] 카르나블룸 스킬 (Stage B) ---
  SKILL_Play1: {
    id: "SKILL_Play1",
@@ -157,6 +227,69 @@ export const MONSTER_SKILLS = {
    }
  },
 
+ SKILL_Thread_of_Emotion: {
+   id: "SKILL_Thread_of_Emotion",
+   name: "감정의 실",
+   execute: (caster, allies, enemies, battleLog, state) => {
+     const hitArea = "0,0;1,0;1,1;2,0;2,1;2,2;3,0;3,1;3,2;3,3;4,0;4,1;4,2;4,3;5,0;5,1;5,2;5,3;6,0;6,1;6,2;7,0;7,1;8,0;0,8;1,7;1,8;2,6;2,7;2,8;3,5;3,6;3,7;3,8;4,5;4,6;4,7;4,8;5,5;5,6;5,7;5,8;6,6;6,7;6,8;7,7;7,8;8,8".split(";").map(s => s.split(",").map(Number));
+     allies.filter(t => t.isAlive).forEach(target => {
+       if (hitArea.some(pos => pos[0] === target.posX && pos[1] === target.posY)) {
+         battleLog(` ↪︎ [감정의 실]이 ${target.name}을(를) 휘감습니다.`);
+         target.addDebuff("melancholy_brand", "[우울 낙인]", 99, {});
+         target.addDebuff("ecstasy_brand", "[환희 낙인]", 99, {});
+         target.addDebuff("nightmare", "[악몽]", 99, {});
+       }
+     });
+     return true;
+   }
+ },
+
+ SKILL_Play2: {
+   id: "SKILL_Play2",
+   name: "유희(2,4타)",
+   execute: (caster, allies, enemies, battleLog, state) => {
+     const hitArea = "0,0;1,1;2,2;3,3;5,5;6,6;7,7;8,8;0,8;1,7;2,6;3,5;5,3;6,2;7,1;8,0".split(";").map(s => s.split(",").map(Number));
+     allies.filter(t => t.isAlive).forEach(target => {
+       if (hitArea.some(pos => pos[0] === target.posX && pos[1] === target.posY)) {
+         const d = state.calculateDamage(caster, target, 1.1, "magical");
+         target.takeDamage(d, battleLog, caster, allies, enemies, state); // 파라미터 수정됨
+       }
+     });
+     return true;
+   }
+ },
+
+ SKILL_Crimson: {
+   id: "SKILL_Crimson",
+   name: "진홍",
+   execute: (caster, allies, enemies, battleLog, state) => {
+     const debuffArea = "0,0;0,1;0,2;0,3;0,4;0,5;0,6;0,7;0,8;1,0;1,8;2,0;2,8;3,0;3,8;4,0;4,8;5,0;5,8;6,0;6,8;7,0;7,8;8,0;8,1;8,2;8,3;8,4;8,5;8,6;8,7;8,8;3,3;3,5;5,3;5,5".split(";").map(s => s.split(",").map(Number));
+     const damageArea = "1,1;1,7;2,2;2,3;2,5;2,6;3,2;3,4;3,6;4,3;4,5;5,2;5,4;5,6;6,2;6,3;6,5;6,6;7,1;7,7".split(";").map(s => s.split(",").map(Number));
+     allies.filter(t => t.isAlive).forEach(target => {
+       if (debuffArea.some(pos => pos[0] === target.posX && pos[1] === target.posY)) {
+         target.addDebuff("melancholy_brand", "[우울 낙인]", 99, { unremovable: false });
+         target.addDebuff("ecstasy_brand", "[환희 낙인]", 99, { unremovable: false });
+         target.addDebuff("nightmare", "[악몽]", 99, { unremovable: false });
+       }
+       if (damageArea.some(pos => pos[0] === target.posX && pos[1] === target.posY)) {
+         const d = state.calculateDamage(caster, target, 1.0, "magical");
+         target.takeDamage(d, battleLog, caster, allies, enemies, state); // 파라미터 수정됨
+       }
+     });
+     return true;
+   }
+ },
+
+ SKILL_Silence: {
+   id: "SKILL_Silence",
+   name: "침묵",
+   execute: (caster, allies, enemies, battleLog, state) => {
+     battleLog(`✦특수 패턴✦ ${caster.name}이 맹공에 정신을 차리지 못하고 [침묵] 상태에 빠집니다.`);
+     caster.addDebuff("groggy", "[침묵](그로기)", 2, { description: "행동 불가 및 받는 피해 증가" });
+     return true;
+   }
+ }
+  
 // --- [4] 맵 기믹 데이터 ---
 
  GIMMICK_Aegis_of_Earth1: {
