@@ -35,9 +35,9 @@ export const MONSTER_SKILLS = {
      if (hitTargets.length > 0) {
        hitTargets.forEach(t => {
          const duration = hitTargets.length + 1;
-         t.addDebuff("silence", "[침묵]", hitTargets.length, { description: `주문 사용 불가` });
-         battleLog(`✦광역 디버프✦ ${caster.name}의 메아리가 ${t.name}에게 적중합니다.`);
-       });
+         t.addDebuff("silence", "[침묵]", 2, { description: `주문 사용 불가` });
+         battleLog(`✦광역 디버프✦ ${caster.name}의 메아리가 ${t.name}에게 적중하여 [침묵]을 부여합니다.`);
+       })
      }
      return true;
    },
