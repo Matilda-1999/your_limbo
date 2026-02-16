@@ -245,13 +245,16 @@ function startCharacterAction(char) {
     btn.onclick = () => {
       state.selectedAction = { type: "skill", skill, caster: char, targetId: null };
       UI.renderSkillDescription(DOM.description, skill);
-      if (skill.targetSelection === "self" || (skill.targetType && skill.targetType.startsWith("all_"))) {
+
+      // 수정된 조건문: 오직 시전자 자신(self)만 타겟인 경우와 아군 전체(all_allies)인 경우만 즉시 발동 처리
+      if (skill.targetSelection === "self" || skill.targetType === "all_allies") {
         state.selectedAction.targetId = char.id;
-        DOM.targetName.textContent = "즉시 발동";
+        DOM.targetName.textContent = "즉시 발동 (자신)";
         DOM.confirmBtn.style.display = "block";
       } else {
+        // [허상]처럼 '자신 혹은 아군(ally_or_self)'을 선택해야 하는 경우 타겟 선택 대기 상태로 진입
         DOM.confirmBtn.style.display = "none";
-        DOM.targetName.textContent = "대상을 선택하세요";
+        DOM.targetName.textContent = "대상을 선택하세요 (아군 혹은 자신)";
       }
       syncUI();
     };
