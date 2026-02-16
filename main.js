@@ -257,6 +257,31 @@ function startCharacterAction(char) {
     };
     DOM.skillButtons.appendChild(btn);
   });
+
+  // [행동 포기] 버튼 추가
+  const skipBtn = document.createElement("button");
+  skipBtn.textContent = "행동 포기";
+  skipBtn.className = "button";
+  skipBtn.style.backgroundColor = "#990000";
+  skipBtn.style.marginTop = "10px";
+
+  skipBtn.onclick = () => {
+    if (confirm(`${char.name}의 이번 턴 행동을 포기하시겠습니까?`)) {
+      log(`✦정보✦ ${char.name}, 이번 턴 행동을 포기했습니다.`);
+      
+      // 즉시 행동 완료 처리
+      state.actedAlliesThisTurn.push(char.id);
+      state.selectedAction = null;
+      
+      // 다음 아군 선택 화면으로 이동
+      promptAllySelection();
+      syncUI();
+    }
+  };
+  
+  DOM.skillButtons.appendChild(document.createElement("br"));
+  DOM.skillButtons.appendChild(skipBtn);
+  
   renderMovementControls(char);
 }
 
@@ -319,31 +344,6 @@ function selectTarget(targetId) {
   DOM.targetName.textContent = target.name;
   DOM.confirmBtn.style.display = "block";
   syncUI();
-}
-
-const skipBtn = document.createElement("button");
-  skipBtn.textContent = "행동 포기";
-  skipBtn.className = "button";
-  skipBtn.style.backgroundColor = "#990000";
-  skipBtn.style.marginTop = "10px";
-
-  skipBtn.onclick = () => {
-    if (confirm(`${char.name}의 이번 턴 행동을 포기하시겠습니까?`)) {
-      log(`✦정보✦ ${char.name}, 이번 턴 행동을 포기했습니다.`);
-      
-      // 행동 완료 처리
-      state.actedAlliesThisTurn.push(char.id);
-      state.selectedAction = null;
-      
-      // 다음 아군 선택 화면으로 이동
-      promptAllySelection();
-      syncUI();
-    }
-  };
-  DOM.skillButtons.appendChild(document.createElement("br")); // 줄바꿈 후 배치
-  DOM.skillButtons.appendChild(skipBtn);
-
-  renderMovementControls(char);
 }
 
 function confirmAction() {
