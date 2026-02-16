@@ -612,6 +612,8 @@ SKILL_REALITY: {
         healPower: Math.round(caster.getEffectiveStat("def") * 0.6),
       });
 
+      battleLog(`✦버프✦ ${caster.name}: [환원] 상태가 되어 3턴간 스킬 사용 시 아군을 추가 회복합니다.`);
+      
       caster.checkSupporterPassive(battleLog);
       return true;
     },
