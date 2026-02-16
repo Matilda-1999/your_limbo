@@ -181,7 +181,8 @@ export const SKILLS = {
         return false;
       }
 
-      const isSelf = caster.id === target.id;
+      // 2. 엄격한 ID 비교를 통한 자신/타인 판정
+    const isSelf = (caster.id === target.id);
 
       if (isSelf) {
         // 2. 자신 사용: (공격) x 0.5 회복
@@ -201,8 +202,10 @@ export const SKILLS = {
           type: `${statType}_boost_multiplier`,
           value: 2.0, // 2배 증가
         });
-        battleLog(`✦스킬✦ ${caster.name}: [허상], 체력을 소비하여 ${target.name}의 ${statName}을 2배 증가.`);
-      }
+        // 로그에서 시전자(caster)와 대상(target)을 명확히 분리하여 출력
+      battleLog(`✦스킬✦ ${caster.name}이(가) ${target.name}에게 [허상]을 시전합니다.`);
+      battleLog(`✦효과✦ ${target.name}의 ${statName}이 2배 증가하고, ${caster.name}의 체력이 소모됩니다.`);
+    }
 
       // 4. 턴 종료 시 추가 공격 예약 (가장 체력이 높은 적 타겟팅)
       const targetEnemy = [...enemies]
