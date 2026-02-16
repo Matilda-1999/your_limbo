@@ -193,7 +193,7 @@ export const MONSTER_SKILLS = {
    name: "광대의 웃음",
    execute: (caster, allies, enemies, battleLog, state) => {
      if (state.activeGimmickState && state.activeGimmickState.type.startsWith("clown_emotion")) return false;
-     battleLog("✦기믹 발생✦ [광대의 웃음]: 3턴 안에, 클라운을 5회 이상, 피에로를 5회 이하로 공격해야 합니다.");
+     battleLog("✦기믹 발생✦ 광대가 웃음을 터트립니다.");
      state.activeGimmickState = { type: "clown_emotion_laugh", turnStart: state.currentTurn, duration: 3, clownHits: 0, pierrotHits: 0 };
      return true;
    }
@@ -204,7 +204,7 @@ export const MONSTER_SKILLS = {
    name: "광대의 눈물",
    execute: (caster, allies, enemies, battleLog, state) => {
      if (state.activeGimmickState && state.activeGimmickState.type.startsWith("clown_emotion")) return false;
-     battleLog("✦기믹 발생✦ [광대의 눈물]: 3턴 안에, 피에로를 5회 이상, 클라운을 5회 이하로 공격해야 합니다.");
+     battleLog("✦기믹 발생✦ 광대가 눈물을 흘립니다.");
      state.activeGimmickState = { type: "clown_emotion_tear", turnStart: state.currentTurn, duration: 3, clownHits: 0, pierrotHits: 0 };
      return true;
    }
