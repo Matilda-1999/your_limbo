@@ -246,7 +246,7 @@ function startCharacterAction(char) {
       state.selectedAction = { type: "skill", skill, caster: char, targetId: null };
       UI.renderSkillDescription(DOM.description, skill);
 
-      // 수정된 조건문: 오직 시전자 자신(self)만 타겟인 경우와 아군 전체(all_allies)인 경우만 즉시 발동 처리
+      // 오직 시전자 자신(self)만 타겟인 경우와 아군 전체(all_allies)인 경우만 즉시 발동 처리
       if (skill.targetSelection === "self" || skill.targetType === "all_allies") {
         state.selectedAction.targetId = char.id;
         DOM.targetName.textContent = "즉시 발동 (자신)";
