@@ -397,6 +397,24 @@ async function executeBattleTurn() {
     if (action.type === "skill") {
       const target = Utils.findCharacterById(targetId, state.allyCharacters, state.enemyCharacters, state.mapObjects);
       log(`✦ ${caster.name}, [${skill.name}] 시전.`);
+
+      // [환원]
+      if (caster.hasBuff("restoration")) {
+        const restorationBuff = caster.buffs.find((b) => b.id === "restoration");
+        if (restorationBuff && restorationBuff.effect && restorationBuff.effect.healPower) {
+          const aliveAllies = state.allyCharacters.filter((a) => a.isAlive);
+          if (aliveAllies.length > 0) {
+            let lowestHpAlly = aliveAllies[0];
+            for (let i = 1; i < aliveAllies.length; i++) {
+              if (aliveAllies[i].currentHp < lowestHpAlly.currentHp) {
+                lowestHpAlly = aliveAllies[i];
+              }
+            }
+            BattleEngine.applyHeal(lowestHpAlly, restorationBuff.effect.healPower, log, "환원"); 
+          }
+        }
+      }
+      
       skill.execute(caster, target, state.allyCharacters, state.enemyCharacters, log, {
         ...state,
         applyHeal: BattleEngine.applyHeal,
@@ -405,7 +423,7 @@ async function executeBattleTurn() {
           console.log(`%c[아군 스킬 계산] %c${a.name} -> %c${d.name} | %c피해: ${finalDamage}`, 'color: #4da6ff; font-weight: bold;', 'color: black;', 'color: #ffcc00;', 'color: #ff0000;');
 
           if (finalDamage > 0 && d.debuffs && d.debuffs.some(deb => deb.id === "transfer")) {
-            // 회복량 설정 (공격력의 100% 혹은 50% 등 지우 님의 선택)
+          
             const healAmount = a.atk;
           BattleEngine.applyHeal(a, healAmount, log, "전이"); 
           }
