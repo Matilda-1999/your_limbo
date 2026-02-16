@@ -114,7 +114,7 @@ export const UI = {
             
                     // 2. [n스택(n턴)] 형식으로 표시 (스택이 없으면 기본 1스택)
                     const stacks = (b.effect && b.effect.stacks) ? b.effect.stacks : 1;
-                    const label = `[${stacks}스택(${b.turnsLeft}턴)] ${b.name}`;
+                    const label = `${b.name}(${stacks}스택(${b.turnsLeft}턴))`;
                     
                     if (!uniqueBuffLabels.includes(label)) uniqueBuffLabels.push(label);
                 });
@@ -129,7 +129,7 @@ export const UI = {
 
                     // 2. 디버프도 [n스택(n턴)] 형식으로 표시 (d.stacks 참조)
                     const stacks = d.stacks || 1;
-                    const label = `[${stacks}스택(${d.turnsLeft}턴)] ${d.name}`;
+                    const label = `${d.name}(${stacks}스택(${d.turnsLeft}턴))`;
                     
                     if (!uniqueDebuffLabels.includes(label)) uniqueDebuffLabels.push(label);
                 });
