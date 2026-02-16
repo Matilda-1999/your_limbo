@@ -16,7 +16,7 @@ export const MONSTER_SKILLS = {
      
      hitTargets.forEach(target => {
        const damage = state.calculateDamage(caster, target, 1.0, "physical");
-       target.takeDamage(damage, battleLog, caster);
+       target.takeDamage(damage, battleLog, caster, allies, enemies, state);
        battleLog(`✦피해✦ ${caster.name}의 진동이 ${target.name}에게 적중하여 ${damage}의 피해를 입혔습니다.`);
      });
      return true;
@@ -54,7 +54,7 @@ export const MONSTER_SKILLS = {
 
      hitTargets.forEach(target => {
        const damage = state.calculateDamage(caster, target, 1.2, "physical");
-       target.takeDamage(damage, battleLog, caster);
+       target.takeDamage(damage, battleLog, caster, allies, enemies, state);
        battleLog(`✦피해✦ 하늘에서 떨어진 석괴가 ${target.name}에게 적중하여 ${damage}의 피해를 입혔습니다.`);
      });
      return true;
@@ -71,7 +71,7 @@ export const MONSTER_SKILLS = {
      const hitTargets = allies.filter(t => t.isAlive && area.some(p => p.x === t.posX && p.y === t.posY));
      hitTargets.forEach(target => {
        const damage = state.calculateDamage(caster, target, 1.2, "magical");
-       target.takeDamage(damage, battleLog, caster);
+       target.takeDamage(damage, battleLog, caster, allies, enemies, state);
       battleLog(`✦피해✦ 솟구친 덩굴이 ${target.name}의 발목을 옥죄어 ${damage}의 피해를 입혔습니다.`);
      });
      return true;
