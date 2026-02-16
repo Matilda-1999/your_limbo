@@ -293,6 +293,25 @@ function renderMovementControls(char) {
 }
 
 function selectTarget(targetId) {
+  // 1. 이미 행동을 확정한 아군 카드를 다시 클릭한 경우 (행동 취소 및 재설정)
+  const actedIdx = state.actedAlliesThisTurn.indexOf(targetId);
+  if (actedIdx > -1) {
+    if (confirm("해당 캐릭터의 행동 예약을 취소하고 다시 설정하시겠습니까?")) {
+      // 행동 완료 목록에서 제거
+      state.actedAlliesThisTurn.splice(actedIdx, 1);
+      
+      // 실행 큐(playerActionsQueue)에서 해당 캐릭터의 액션 제거
+      state.playerActionsQueue = state.playerActionsQueue.filter(action => action.caster.id !== targetId);
+      
+      // 해당 캐릭터를 대상으로 다시 스킬 선택창 활성화
+      const char = state.allyCharacters.find(a => a.id === targetId);
+      startCharacterAction(char);
+      syncUI();
+      return;
+    }
+  }
+
+  // 2. 기존의 타겟 선택 로직 (스킬 사용 중 대상 지정)
   if (!state.selectedAction || state.selectedAction.type !== "skill") return;
   const target = Utils.findCharacterById(targetId, state.allyCharacters, state.enemyCharacters, state.mapObjects);
   if (!target || !target.isAlive) return;
@@ -300,6 +319,31 @@ function selectTarget(targetId) {
   DOM.targetName.textContent = target.name;
   DOM.confirmBtn.style.display = "block";
   syncUI();
+}
+
+const skipBtn = document.createElement("button");
+  skipBtn.textContent = "행동 포기";
+  skipBtn.className = "button";
+  skipBtn.style.backgroundColor = "#990000";
+  skipBtn.style.marginTop = "10px";
+
+  skipBtn.onclick = () => {
+    if (confirm(`${char.name}의 이번 턴 행동을 포기하시겠습니까?`)) {
+      log(`✦정보✦ ${char.name}, 이번 턴 행동을 포기했습니다.`);
+      
+      // 행동 완료 처리
+      state.actedAlliesThisTurn.push(char.id);
+      state.selectedAction = null;
+      
+      // 다음 아군 선택 화면으로 이동
+      promptAllySelection();
+      syncUI();
+    }
+  };
+  DOM.skillButtons.appendChild(document.createElement("br")); // 줄바꿈 후 배치
+  DOM.skillButtons.appendChild(skipBtn);
+
+  renderMovementControls(char);
 }
 
 function confirmAction() {
