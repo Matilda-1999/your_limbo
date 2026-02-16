@@ -524,21 +524,30 @@ async function performEnemyAction(enemy) {
   const actionData = MONSTER_SKILLS[actionId];
   if (!actionData) return;
 
-  log(`\n<b>[행동] ${enemy.name}:</b> ${actionData.name}`);
-  let hitCount = 0;
+  log(`\n<b>→→→→[행동] ${enemy.name}:</b> ${actionData.name}`);
+  let effectTriggered = false;
+
   const extendedState = {
     ...state,
     calculateDamage: (a, d, p, t, o = {}) => {
       const dmg = BattleEngine.calculateDamage(a, d, p, t, { ...o, state: state, gimmickData: MONSTER_SKILLS, parseSafeCoords: Utils.parseSafeCoords, battleLog: log });
-      if (dmg > 0) hitCount++;
-      else log(`✦회피✦ ${d.name}, 공격을 완전히 상쇄하거나 회피했습니다.`);
-      console.log(`%c[적군 공격] %c${a.name} -> %c${d.name}: %c${dmg} 피해`, 'color: #ffaa00;', 'color: black;', 'color: #ff4d4d;', 'color: #ff0000; font-weight: bold;');
+      
+      if (dmg > 0) {
+        effectTriggered = true; // 피해가 발생하면 효과가 있었음으로 간주
+      } else {
+        log(`✦회피✦ ${d.name}, 공격을 완전히 상쇄하거나 회피했습니다.`);
+      }
       return dmg;
     },
     applyHeal: BattleEngine.applyHeal
   };
+  
   const success = actionData.execute(enemy, state.allyCharacters, state.enemyCharacters, log, extendedState);
-  if (success && hitCount === 0) log(`✦정보✦ 아무 일도 일어나지 않았습니다.`);
+  const isDebuffSkill = actionData.type?.includes("디버프") || actionId.includes("SILENCE") || actionId.includes("SPORES");
+
+  if (success && !effectTriggered && !isDebuffSkill) {
+    log(`✦정보✦ 아무 일도 일어나지 않았습니다.`);
+  }
 }
 
 // 9. 초기화 및 전역 등록
