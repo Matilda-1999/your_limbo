@@ -402,12 +402,23 @@ function confirmAction() {
 async function executeBattleTurn() {
   DOM.executeBtn.style.display = "none";
   
-  const actionId = state.enemyPreviewAction?.skillId;
-  const actionData = MONSTER_SKILLS[actionId];
+  // 1. 보스 탐색
   const activeBoss = state.enemyCharacters.find(e => e.isAlive && (e.name.includes("테르모르") || e.name.includes("카르나블룸")));
 
-  if (activeBoss && actionData && (actionId.startsWith("GIMMICK_") || actionData.type?.includes("디버프"))) {
-    // 이미 이번 턴에 기믹 로그가 출력되었다면 중복 실행하지 않음
+  // 2. 실행할 액션 결정 (폭발 예고 체크)
+  let actionId = state.enemyPreviewAction?.skillId;
+  
+  if (activeBoss && activeBoss.hasBuff("path_of_ruin_telegraph")) {
+    // 보스에게 예고 버프가 있다면 강제로 폭발 스킬 할당
+    actionId = "SKILL_Ruin_Explosion";
+    // 폭발 직전 예고 버프 제거
+    activeBoss.removeBuffById("path_of_ruin_telegraph");
+  }
+
+  const actionData = MONSTER_SKILLS[actionId];
+
+  // 3. 기믹/디버프 즉시 실행 로직
+  if (activeBoss && actionData && (actionId.startsWith("GIMMICK_") || actionId === "SKILL_Ruin_Explosion" || actionData.type?.includes("디버프"))) {
     if (!state.bossGimmickExecuted) {
       
       actionData.execute(activeBoss, null, state.allyCharacters, state.enemyCharacters, log, {
@@ -424,11 +435,11 @@ async function executeBattleTurn() {
       
       state.bossGimmickExecuted = true;
       syncUI();
-      await new Promise((r) => setTimeout(r, 600));
+      await new Promise((r) => setTimeout(r, 700));
     }
   }
 
-  log(`\n\n<b>☂︎ 아군의 행동을 개시합니다.</b>\n\n`);
+  log(`\n\n<b>☂︎ 아군의 행동을 개시합니다.</b>\n`);
 
   for (const action of state.playerActionsQueue) {
     const { caster, skill, targetId, moveDelta } = action;
