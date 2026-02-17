@@ -36,7 +36,7 @@ export const MONSTER_SKILLS = {
      if (hitTargets.length > 0) {
        hitTargets.forEach(t => {
          const duration = hitTargets.length + 1;
-         t.addDebuff("silence", "[침묵]", 2, { description: `주문 사용 불가` });
+         t.addDebuff("silence", "[침묵]", 2, { description: "주문 사용 불가" });
          battleLog(`✦광역 디버프✦ ${caster.name}의 메아리가 ${t.name}에게 적중하여 [침묵]을 부여합니다.`);
        })
      }
@@ -372,13 +372,46 @@ export const MONSTER_SKILLS = {
      {x:2,y:0}, {x:2,y:1}, {x:2,y:2}, {x:2,y:3}, {x:2,y:4},
      {x:0,y:2}, {x:1,y:2}, {x:3,y:2}, {x:4,y:2}
    ],
-   script: `<pre>\n"균열이 퍼지며, 땅 아래서 검은 뿌리가 꿈틀댄다.\n 번져오는 재해 앞에서 길을 찾아야 한다.\n생명의 뿌리를 꺾을 수 있다고 믿는가?"\n</pre>`,
    execute: (caster, target, allies, enemies, battleLog, state) => {
-     caster.addBuff("path_of_ruin_telegraph", "폭발 예고", 2, {});
-     battleLog(`✦기믹 발동✦ ${caster.name}가 전장에 깊은 균열을 새깁니다. 다음 턴에 해당 구역에 폭발이 일어납니다.`);
-     return true;
-   },
- },
+        caster.addBuff("path_of_ruin_telegraph", "폭발 예고", 2, {});
+        
+        // 범위 내 아군에게 [흔적]을 남겨 다음 턴 위험을 예고합니다.
+        const area = MONSTER_SKILLS.GIMMICK_Path_of_Ruin.hitArea;
+        allies.filter(t => t.isAlive && area.some(p => p.x === t.posX && p.y === t.posY)).forEach(t => {
+            t.addDebuff("ruin_mark", "[균열의 흔적]", 2, { description: "다음 턴 폭발 대미지 대상" });
+            battleLog(`✦기믹✦ ${t.name}의 발치에 불길한 균열이 새겨졌습니다.`);
+        });
+        return true;
+    },
+},
+
+ SKILL_Ruin_Explosion: {
+  id: "SKILL_Ruin_Explosion",
+  name: "균열의 폭발",
+  execute: (caster, target, allies, enemies, battleLog, state) => {
+    // 1. 예고했던 범위(GIMMICK_Path_of_Ruin의 hitArea)를 가져옵니다.
+    const area = MONSTER_SKILLS.GIMMICK_Path_of_Ruin.hitArea;
+    
+    // 2. 해당 범위에 있는 아군들을 찾습니다.
+    const hitTargets = allies.filter(t => t.isAlive && area.some(p => p.x === t.posX && p.y === t.posY));
+    
+    if (hitTargets.length > 0) {
+      battleLog(`✦기믹✦ 지면에 새겨진 균열이 일제히 터집니다.`);
+      hitTargets.forEach(t => {
+        // [균열의 흔적]이 있는 대상에게는 더 큰 피해 (1.5배)
+        const multiplier = t.hasDebuff("ruin_mark") ? 2.5 : 1.5;
+        const damage = state.calculateDamage(caster, t, multiplier, "magical");
+        
+        t.takeDamage(damage, battleLog, caster);
+        battleLog(`✦피해✦ 폭발의 여파가 ${t.name}에게 ${damage}의 피해를 입혔습니다.`);
+        
+        // 폭발 후 흔적 제거
+        t.removeDebuffById("ruin_mark");
+      });
+    }
+    return true;
+  }
+},
 
  GIMMICK_Seed_of_Devour: {
    id: "GIMMICK_Seed_of_Devour",
