@@ -88,14 +88,7 @@ onValue(battleRef, (snapshot) => {
     
 });
 
- // 4. 적군 카드 리스트 렌더링 (속성 및 상태만 노출)
-    DOM.enemyDisplay.innerHTML = "";
-    enemies.forEach(char => {
-        DOM.enemyDisplay.appendChild(createEnemySpectatorCard(char));
-    }); 
-});
-
-// 2. 전투 로그 실시간 감시 (이 로직은 위 블록 바깥에 단독으로 위치해야 합니다)
+// 5. 전투 로그 실시간 감시 (onValue 블록 바깥에 단독으로 위치)
 const logRef = ref(db, 'liveBattle/currentSession/battleLog');
 onValue(logRef, (snapshot) => {
     const logs = snapshot.val();
