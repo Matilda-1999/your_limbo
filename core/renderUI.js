@@ -127,7 +127,7 @@ export const UI = {
                     // 1. 이름이 없으면 제외
                     if (!d.name || d.name.trim() === "") return;
 
-                    // 2. 디버프도 [n스택(n턴)] 형식으로 표시 (d.stacks 참조)
+                    // 2. [n스택(n턴)] 형식으로 표시 (d.stacks 참조)
                     const stacks = d.stacks || 1;
                     const label = `${d.name}(${stacks}스택(${d.turnsLeft}턴))`;
                     
@@ -136,34 +136,6 @@ export const UI = {
                 return uniqueDebuffLabels.length > 0 ? `<p>디버프: ${uniqueDebuffLabels.join(", ")}</p>` : "";
             })()}
         `;
-
-        // 디버그 컨트롤 영역 생성 (수정 버튼 포함)
-        const debugDiv = document.createElement("div");
-        debugDiv.className = "debug-controls";
-        debugDiv.style.cssText = "margin-top: 10px; border-top: 1px dotted #555; padding-top: 5px;";
-        debugDiv.innerHTML = `
-            <input type="number" class="hp-edit-input" style="width: 50px; background: #333; color: #fff; border: 1px solid var(--color-primary-gold);" placeholder="HP">
-            <button class="hp-edit-btn" style="cursor: pointer; background: var(--color-primary-gold-darker); border: none; padding: 2px 5px; font-size: 0.8em; color: white;">수정</button>
-        `;
-
-        card.appendChild(debugDiv);
-
-        // 버튼 클릭 이벤트 리스너 추가
-        const editBtn = card.querySelector('.hp-edit-btn');
-        const editInput = card.querySelector('.hp-edit-input');
-
-        editBtn.onclick = (e) => {
-            e.stopPropagation(); // 카드 선택 이벤트 방지
-            const newHp = parseInt(editInput.value);
-            if (!isNaN(newHp)) {
-                character.currentHp = Math.min(newHp, character.maxHp);
-                if (character.currentHp <= 0) character.isAlive = false;
-                else character.isAlive = true;
-                // 외부에서 전달받은 syncUI 호출 혹은 직접 처리
-                alert(`${character.name}의 체력이 ${character.currentHp}로 수정되었습니다.`);
-                if (window.syncUI) window.syncUI();
-            }
-        };
 
         // 삭제 버튼 (전투 시작 전 노출)
         if (onDelete) {
