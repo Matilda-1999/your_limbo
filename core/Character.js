@@ -289,7 +289,7 @@ export class Character {
     }
 }
 
-// [추가] 공격 가능 여부를 판단하는 Getter
+// 공격 가능 여부를 판단하는 Getter
 get canAttack() {
     // debuffs 배열에 'disarm' ID를 가진 디버프가 있는지 확인
     return !this.debuffs.some(d => d.id === "disarm");
