@@ -288,7 +288,7 @@ export const MONSTER_SKILLS = {
      caster.addDebuff("groggy", "[침묵](그로기)", 2, { description: "행동 불가 및 받는 피해 증가" });
      return true;
    }
- }
+ },
   
 // --- [4] 맵 기믹 데이터 ---
 
