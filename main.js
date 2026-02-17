@@ -264,7 +264,8 @@ function startCharacterAction(char) {
                 DOM.targetName.textContent = targetText;
             }
               syncUI();
-          };
+      DOM.skillButtons.appendChild(btn);
+    });
 
   // 2. [행동 포기] 버튼
   const skipBtn = document.createElement("button");
