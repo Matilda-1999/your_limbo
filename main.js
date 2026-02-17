@@ -245,32 +245,26 @@ function startCharacterAction(char) {
     }
 
     btn.onclick = () => {
-    state.selectedAction = { type: "skill", skill, caster: char, targetId: null };
-    UI.renderSkillDescription(DOM.description, skill);
+            state.selectedAction = { type: "skill", skill, caster: char, targetId: null };
+            UI.renderSkillDescription(DOM.description, skill);
 
-    if (skill.targetSelection === "self" || skill.targetType === "all_allies") {
-        state.selectedAction.targetId = char.id;
-        DOM.targetName.textContent = "즉시 발동 (자신)";
-        DOM.confirmBtn.style.display = "block";
-    } else {
-        DOM.confirmBtn.style.display = "none";
-        
-        // 스킬의 targetSelection 값에 따라 안내 텍스트 변경
-        let targetText = "대상을 선택하세요";
-        if (skill.targetSelection === "enemy") {
-            targetText += " (적군)";
-        } else if (skill.targetSelection === "ally") {
-            targetText += " (아군)";
-        } else if (skill.targetSelection === "ally_or_self") {
-            targetText += " (아군 혹은 자신)";
-        } else if (skill.targetSelection === "single_ally_or_gimmick") {
-            targetText += " (아군 혹은 오브젝트)";
-        }
-        
-        DOM.targetName.textContent = targetText;
-    }
-    syncUI();
-};
+            if (skill.targetSelection === "self" || skill.targetType === "all_allies") {
+                state.selectedAction.targetId = char.id;
+                DOM.targetName.textContent = "즉시 발동 (자신)";
+                DOM.confirmBtn.style.display = "block";
+            } else {
+                DOM.confirmBtn.style.display = "none";
+                
+                let targetText = "대상을 선택하세요";
+                if (skill.targetSelection === "enemy") targetText += " (적군)";
+                else if (skill.targetSelection === "ally") targetText += " (아군)";
+                else if (skill.targetSelection === "ally_or_self") targetText += " (아군 혹은 자신)";
+                else if (skill.targetSelection === "single_ally_or_gimmick") targetText += " (아군 혹은 기믹)";
+                
+                DOM.targetName.textContent = targetText;
+            }
+              syncUI();
+          };
 
   // 2. [행동 포기] 버튼
   const skipBtn = document.createElement("button");
@@ -298,6 +292,7 @@ function startCharacterAction(char) {
     
     // 3. 이동 컨트롤 호출
     renderMovementControls(char);
+  }
 }
 
 function renderMovementControls(char) {
