@@ -243,23 +243,32 @@ function startCharacterAction(char) {
     }
 
     btn.onclick = () => {
-      state.selectedAction = { type: "skill", skill, caster: char, targetId: null };
-      UI.renderSkillDescription(DOM.description, skill);
+    state.selectedAction = { type: "skill", skill, caster: char, targetId: null };
+    UI.renderSkillDescription(DOM.description, skill);
 
-      // 오직 시전자 자신(self)만 타겟인 경우와 아군 전체(all_allies)인 경우만 즉시 발동 처리
-      if (skill.targetSelection === "self" || skill.targetType === "all_allies") {
+    if (skill.targetSelection === "self" || skill.targetType === "all_allies") {
         state.selectedAction.targetId = char.id;
         DOM.targetName.textContent = "즉시 발동 (자신)";
         DOM.confirmBtn.style.display = "block";
-      } else {
-        // [허상]처럼 '자신 혹은 아군(ally_or_self)'을 선택해야 하는 경우 타겟 선택 대기 상태로 진입
+    } else {
         DOM.confirmBtn.style.display = "none";
-        DOM.targetName.textContent = "대상을 선택하세요 (아군 혹은 자신)";
-      }
-      syncUI();
-    };
-    DOM.skillButtons.appendChild(btn);
-  });
+        
+        // 스킬의 targetSelection 값에 따라 안내 텍스트 변경
+        let targetText = "대상을 선택하세요";
+        if (skill.targetSelection === "enemy") {
+            targetText += " (적군)";
+        } else if (skill.targetSelection === "ally") {
+            targetText += " (아군)";
+        } else if (skill.targetSelection === "ally_or_self") {
+            targetText += " (아군 혹은 자신)";
+        } else if (skill.targetSelection === "single_ally_or_gimmick") {
+            targetText += " (아군 혹은 오브젝트)";
+        }
+        
+        DOM.targetName.textContent = targetText;
+    }
+    syncUI();
+};
 
   // [행동 포기] 버튼 추가
   const skipBtn = document.createElement("button");
@@ -321,34 +330,35 @@ function renderMovementControls(char) {
 }
 
 function selectTarget(targetId) {
-  // 1. 이미 행동을 확정한 아군 카드를 다시 클릭한 경우 (행동 취소 및 재설정)
-  const actedIdx = state.actedAlliesThisTurn.indexOf(targetId);
-  if (actedIdx > -1) {
-    if (confirm("해당 캐릭터의 행동 예약을 취소하고 다시 설정하시겠습니까?")) {
-      // 행동 완료 목록에서 제거
-      state.actedAlliesThisTurn.splice(actedIdx, 1);
-      
-      // 실행 큐(playerActionsQueue)에서 해당 캐릭터의 액션 제거
-      state.playerActionsQueue = state.playerActionsQueue.filter(action => action.caster.id !== targetId);
-      
-      // 해당 캐릭터를 대상으로 다시 스킬 선택창 활성화
-      const char = state.allyCharacters.find(a => a.id === targetId);
-      startCharacterAction(char);
-      syncUI();
-      return;
+  // 1. 스킬 선택 모드인지 먼저 확인
+    const isSelectingTarget = state.selectedAction && state.selectedAction.type === "skill";
+
+    // 2. 행동이 이미 완료된 캐릭터인지 확인
+    const actedIdx = state.actedAlliesThisTurn.indexOf(targetId);
+
+    // 스킬 타겟을 고르는 중이 아닐 때만 취소 팝업을 띄움
+    if (!isSelectingTarget && actedIdx > -1) {
+        if (confirm("해당 캐릭터의 행동 예약을 취소하고 다시 설정하시겠습니까?")) {
+            state.actedAlliesThisTurn.splice(actedIdx, 1);
+            state.playerActionsQueue = state.playerActionsQueue.filter(action => action.caster.id !== targetId);
+            const char = state.allyCharacters.find(a => a.id === targetId);
+            startCharacterAction(char);
+            syncUI();
+        }
+        return;
     }
-  }
 
-  // 2. 기존의 타겟 선택 로직 (스킬 사용 중 대상 지정)
-  if (!state.selectedAction || state.selectedAction.type !== "skill") return;
-  const target = Utils.findCharacterById(targetId, state.allyCharacters, state.enemyCharacters, state.mapObjects);
-  if (!target || !target.isAlive) return;
-  state.selectedAction.targetId = targetId;
-  DOM.targetName.textContent = target.name;
-  DOM.confirmBtn.style.display = "block";
-  syncUI();
+    // 3. 스킬 타겟 지정 로직 (스킬 사용 중일 때)
+    if (isSelectingTarget) {
+        const target = Utils.findCharacterById(targetId, state.allyCharacters, state.enemyCharacters, state.mapObjects);
+        if (!target || !target.isAlive) return;
+
+        state.selectedAction.targetId = targetId;
+        DOM.targetName.textContent = target.name;
+        DOM.confirmBtn.style.display = "block"; // 행동 확정 버튼 노출
+        syncUI();
+    }
 }
-
 function confirmAction() {
   if (!state.selectedAction) return;
   const action = state.selectedAction;
