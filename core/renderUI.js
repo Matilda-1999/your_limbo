@@ -88,12 +88,13 @@ export const UI = {
         const card = document.createElement("div");
         card.className = `character-stats ${isSelected ? 'selected' : ''}`;
         
-        // 아군/적군에 따른 아이콘 설정
+        // 아군/적군에 따른 아이콘 및 정보 설정
         const teamIcon = team === "ally" ? "groups" : "sentiment_very_dissatisfied";
         const jobDisplay = team === "ally" ? ` (${character.job})` : "";
-        const shieldHtml = character.shield > 0 ? ` (+${Math.round(character.shield)}🛡️)` : "";
-
-        card.innerHTML = `
+        const shieldHtml = (team === "ally" && character.shield > 0) ? ` (+${Math.round(character.shield)}🛡️)` : "";
+    
+        // 1. 공통 상단 정보 (이름, 타입, 좌표)
+        let cardHtml = `
             <p>
                 <span class="material-icons-outlined" style="font-size: 1.1em; color: var(--color-primary-gold);">
                     ${teamIcon}
@@ -101,43 +102,51 @@ export const UI = {
                 <strong>${character.name} (${character.type})${jobDisplay}</strong> 
                 ${character.posX !== -1 ? `[${character.posX},${character.posY}]` : ""}
             </p>
-            <p>HP: ${Math.round(character.currentHp)} / ${character.maxHp}${shieldHtml}</p>
-            <p>공격력: ${character.getEffectiveStat("atk")} | 마법 공격력: ${character.getEffectiveStat("matk")}</p>
-            <p>방어력: ${character.getEffectiveStat("def")} | 마법 방어력: ${character.getEffectiveStat("mdef")}</p>
+        `;
+    
+        // 2. 팀별 상세 정보 분기
+        if (team === "ally") {
+            // 아군은 기존과 동일하게 모든 정보 노출
+            cardHtml += `
+                <p>HP: ${Math.round(character.currentHp)} / ${character.maxHp}${shieldHtml}</p>
+                <p>공격력: ${character.getEffectiveStat("atk")} | 마법 공격력: ${character.getEffectiveStat("matk")}</p>
+                <p>방어력: ${character.getEffectiveStat("def")} | 마법 방어력: ${character.getEffectiveStat("mdef")}</p>
+            `;
+        } else {
+            // 적군은 상세 수치 숨김 (뷰어 모드와 동일)
+            cardHtml += `<p style="color: #888;">[상세 정보 확인 불가]</p>`;
+        }
+    
+        // 3. 공통 하단 정보 (상태, 버프/디버프)
+        cardHtml += `
             <p>상태: ${character.isAlive ? "생존" : '<span style="color:var(--color-accent-red);">쓰러짐</span>'}</p>
             
             ${(() => {
                 const uniqueBuffLabels = [];
                 character.buffs.forEach(b => {
-                    // 1. 이름이 없거나 빈 문자열인 버프는 노출되지 않음
                     if (!b.name || b.name.trim() === "") return;
-            
-                    // 2. [n스택(n턴)] 형식으로 표시 (스택이 없으면 기본 1스택)
                     const stacks = (b.effect && b.effect.stacks) ? b.effect.stacks : 1;
                     const label = `${b.name}(${stacks}스택(${b.turnsLeft}턴))`;
-                    
                     if (!uniqueBuffLabels.includes(label)) uniqueBuffLabels.push(label);
                 });
                 return uniqueBuffLabels.length > 0 ? `<p>버프: ${uniqueBuffLabels.join(", ")}</p>` : "";
             })()}
-
+    
             ${(() => {
                 const uniqueDebuffLabels = [];
                 character.debuffs.forEach(d => {
-                    // 1. 이름이 없으면 제외
                     if (!d.name || d.name.trim() === "") return;
-
-                    // 2. [n스택(n턴)] 형식으로 표시 (d.stacks 참조)
                     const stacks = d.stacks || 1;
                     const label = `${d.name}(${stacks}스택(${d.turnsLeft}턴))`;
-                    
                     if (!uniqueDebuffLabels.includes(label)) uniqueDebuffLabels.push(label);
                 });
                 return uniqueDebuffLabels.length > 0 ? `<p>디버프: ${uniqueDebuffLabels.join(", ")}</p>` : "";
             })()}
         `;
-
-        // 삭제 버튼 (전투 시작 전 노출)
+    
+        card.innerHTML = cardHtml;
+    
+        // 삭제 버튼 (배치 단계에서만 노출)
         if (onDelete) {
             const delBtn = document.createElement("button");
             delBtn.className = "delete-char-button";
@@ -148,10 +157,9 @@ export const UI = {
             };
             card.appendChild(delBtn);
         }
-
+    
         return card;
     },
-
     /**
      * 전투 로그 출력: index.html의 .battle-log 영역에 메시지 추가
      */
