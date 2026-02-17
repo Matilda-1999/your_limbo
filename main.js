@@ -229,7 +229,7 @@ function startCharacterAction(char) {
   DOM.confirmBtn.style.display = "none";
   state.selectedAction = null;
 
-  // 1. 스킬 버튼 생성 루프
+  // 스킬 버튼 생성 루프
   Object.keys(SKILLS).forEach((skillId) => {
     const skill = SKILLS[skillId];
     if (!skill) return;
@@ -237,22 +237,25 @@ function startCharacterAction(char) {
     const btn = document.createElement("button");
     btn.textContent = skill.name;
 
-    // 스킬의 실행 코드(execute)를 분석하여 대미지 가함 여부 확인
+    // 1. 대미지 가함 여부 분석 (무장 해제 판정용)
     const skillCode = skill.execute.toString();
     const dealsDamage = skillCode.includes("calculateDamage") || skillCode.includes("takeDamage");
 
-    // 캐릭터가 무장 해제 상태(canAttack === false)이고, 대미지를 주는 스킬인 경우 비활성화
+    // 2. 쿨타임 변수 정의 (에러 해결 포인트)
+    const lastUsed = char.lastSkillTurn ? char.lastSkillTurn[skillId] || 0 : 0;
+    const isOnCooldown = skill.cooldown && lastUsed !== 0 && state.currentTurn - lastUsed < skill.cooldown;
+
+    // 3. 무장 해제 상태 및 대미지 스킬 여부 체크
     if (!char.canAttack && dealsDamage) {
         btn.disabled = true;
         btn.style.opacity = "0.5";
         btn.style.cursor = "not-allowed";
         btn.textContent += " (무장 해제)";
-    }
-
-    // 쿨타임 체크 및 onclick 로직
-    if (isOnCooldown) {
-      btn.disabled = true;
-      btn.textContent += ` (${skill.cooldown - (state.currentTurn - lastUsed)}턴)`;
+    } 
+    // 4. 쿨타임 상태 체크
+    else if (isOnCooldown) {
+        btn.disabled = true;
+        btn.textContent += ` (${skill.cooldown - (state.currentTurn - lastUsed)}턴)`;
     }
 
     btn.onclick = () => {
