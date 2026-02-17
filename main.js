@@ -423,17 +423,14 @@ async function executeBattleTurn() {
 
   const actionData = MONSTER_SKILLS[actionId];
 
-  // 3. 기믹/디버프 즉시 실행 로직
-  if (activeBoss && actionData && (actionId.startsWith("GIMMICK_") || actionId === "SKILL_Ruin_Explosion" || actionData.type?.includes("디버프"))) {
+  // 3. [선행 실행] 지형 형성 기믹 및 즉시 폭발만 처리 (디버프 제외)
+  // '대지의 수호' 같은 지형 기믹이나 예고된 폭발은 아군 행동 전에 전장에 반영되어야 합니다.
+  if (activeBoss && actionData && (actionId.startsWith("GIMMICK_") || actionId === "SKILL_Ruin_Explosion")) {
     if (!state.bossGimmickExecuted) {
-      
       actionData.execute(activeBoss, null, state.allyCharacters, state.enemyCharacters, log, {
         ...state,
         calculateDamage: (a, d, p, t, o = {}) => BattleEngine.calculateDamage(a, d, p, t, { 
-          ...o, 
-          gimmickData: MONSTER_SKILLS, 
-          parseSafeCoords: Utils.parseSafeCoords, 
-          battleLog: log 
+          ...o, gimmickData: MONSTER_SKILLS, parseSafeCoords: Utils.parseSafeCoords, battleLog: log 
         }),
         applyHeal: BattleEngine.applyHeal,
         utils: Utils
@@ -512,9 +509,9 @@ async function executeBattleTurn() {
     await new Promise((r) => setTimeout(r, 600));
   }
 
-  resolveMinionGimmicks();
+  resolveMinionGimmicks(); //
   const turnOwner = activeBoss ? activeBoss.name : "적군";
-  log(`\n\n☂︎ ${turnOwner}의 반격이 시작됩니다.\n\n`);
+  log(`\n\n<b>☂︎ ${turnOwner}의 턴. 반격이 시작됩니다.</b>\n\n`);
 
   for (const enemy of state.enemyCharacters.filter(e => e.isAlive)) {
     await performEnemyAction(enemy);
