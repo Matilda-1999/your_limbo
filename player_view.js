@@ -95,7 +95,7 @@ onValue(battleRef, (snapshot) => {
     }); 
 });
 
-// 2. 전투 로그 실시간 감시 (새로 추가된 로직)
+// 2. 전투 로그 실시간 감시 (이 로직은 위 블록 바깥에 단독으로 위치해야 합니다)
 const logRef = ref(db, 'liveBattle/currentSession/battleLog');
 onValue(logRef, (snapshot) => {
     const logs = snapshot.val();
