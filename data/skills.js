@@ -439,17 +439,25 @@ SKILL_REALITY: {
       // 3. [흠집] 연계 추가 공격
       const scratchStacks = target.getDebuffStacks("scratch");
       if (scratchStacks > 0) {
-        battleLog(`✦효과✦ ${target.name} [흠집 ${scratchStacks}스택]: 추가타 발생.`);
-        let bonusPower = 0.08;
-        if (scratchStacks === 2) bonusPower = 0.12;
-        else if (scratchStacks >= 3) bonusPower = 0.16;
-
-        for (let i = 0; i < 2; i++) {
-          const bonusDamage = calculateDamage(caster, target, bonusPower, "fixed", statTypeToUse);
-          target.takeDamage(bonusDamage, battleLog, caster);
-          battleLog(`  ✦추가 피해✦ [흠집 효과] ${i + 1}회: ${target.name}에게 ${bonusDamage} 추가 ${damageTypeKorean} 피해.`);
-          if (!target.isAlive) break;
-        }
+          battleLog(`✦효과✦ ${target.name} [흠집 ${scratchStacks}스택]: 추가타 발생.`);
+          
+          // 스택에 따른 위력 설정
+          let bonusPower = 0.08;
+          if (scratchStacks === 2) bonusPower = 0.12;
+          else if (scratchStacks >= 3) bonusPower = 0.16;
+      
+          for (let i = 0; i < 2; i++) {
+              // [수정] 4번째 인자로 "fixed"를 명시하여 방어력을 무시하도록 합니다.
+              // options 객체는 { statTypeToUse } 형태로 넘겨야 합니다.
+              const bonusDamage = calculateDamage(caster, target, bonusPower, "fixed", { statTypeToUse });
+              
+              target.takeDamage(bonusDamage, battleLog, caster);
+              
+              // [수정] damageTypeKorean 대신 "고정" 피해라고 명시하는 것이 정확합니다.
+              battleLog(`  ✦추가 피해✦ [흠집 효과] ${i + 1}회: ${target.name}에게 ${bonusDamage} 추가 고정 피해.`);
+              
+              if (!target.isAlive) break;
+          }
 
         if (target.isAlive) target.removeDebuffById("scratch");
         battleLog(`✦정보✦ ${target.name}: [흠집] 효과 소멸.`);
@@ -476,29 +484,31 @@ SKILL_REALITY: {
       battleLog(`✦스킬✦ ${caster.name}, ${target.name}에게 [간파] 발동.`);
 
       // 1. 관통 2연타 (방어력 20% 무시로 0데미지 방지)
-      // 원본 위력인 2.6을 2타로 나누어 각 1.3씩 적용
-      for (let i = 0; i < 2; i++) {
-      const d1 = calculateDamage(caster, target, 1.3, damageType, { penetration: 0.2 });
-      target.takeDamage(d1, battleLog, caster);
-      battleLog(`✦피해✦ [간파] ${i + 1}타: ${target.name}에게 ${d1} ${damageTypeKorean} 피해.`);
-      if (!target.isAlive) return true;
+    for (let i = 0; i < 2; i++) {
+        // [수정] 4번째 인자로 damageType을, 5번째 인자로 관통 옵션을 전달합니다.
+        const d1 = calculateDamage(caster, target, 1.3, damageType, { penetration: 0.2 });
+        target.takeDamage(d1, battleLog, caster);
+        battleLog(`✦피해✦ [간파] ${i + 1}타: ${target.name}에게 ${d1} ${damageTypeKorean} 피해.`);
+        
+        if (!target.isAlive) return true;
     }
 
-      // 2. 추가 피해 (기존 로직 200% 유지)
-      const d2 = calculateDamage(caster, target, 2.0, damageType);
+    // 2. 추가 피해
+    const d2 = calculateDamage(caster, target, 2.0, damageType);
     target.takeDamage(d2, battleLog, caster);
     battleLog(`✦추가 피해✦ ${caster.name} [간파 효과]: ${target.name}에게 ${d2} 추가 ${damageTypeKorean} 피해.`);
-      
-      if (!target.isAlive) return true;
+    
+    if (!target.isAlive) return true;
 
-      // 3. [쇠약] 디버프 부여
-      target.addDebuff("weakness", "[쇠약]", 2, {
-        damageMultiplierReduction: 0.2,
+    // 3. [쇠약] 디버프 부여
+    target.addDebuff("weakness", "[쇠약]", 2, {
+        damageMultiplierReduction: 0.2, // 적이 가하는 피해량 20% 감소
+        description: "받는 추가 피해 증가 및 가하는 피해 감소",
         category: "상태 이상",
-      });
-      battleLog(`✦상태 이상✦ ${target.name}, [쇠약] 효과 적용 (2턴).`);
-      
-      return true;
+    });
+    battleLog(`✦상태 이상✦ ${target.name}, [쇠약] 효과 적용 (2턴).`);
+    
+    return true;
     },
   },
 
