@@ -229,35 +229,43 @@ function startCharacterAction(char) {
   DOM.confirmBtn.style.display = "none";
   state.selectedAction = null;
 
-  // 스킬 버튼 생성 루프
-  Object.keys(SKILLS).forEach((skillId) => {
+  // 1. 직군별 스킬 매핑 정의
+  const jobSkills = {
+    "탱커": ["SKILL_RESILIENCE", "SKILL_COUNTER", "SKILL_PROVOKE", "SKILL_REVERSAL"],
+    "딜러": ["SKILL_OVERTURE", "SKILL_CLIMAX", "SKILL_DISCERNMENT", "SKILL_RUPTURE"],
+    "힐러": ["SKILL_RESONANCE", "SKILL_COMPENSATION", "SKILL_SEDIMENTATION", "SKILL_DIFFERANCE"],
+    "서포터": ["SKILL_ILLUSION", "SKILL_NIHILITY", "SKILL_REALITY", "SKILL_TRUTH"]
+  };
+
+  // 2. 캐릭터 직군에 해당하는 스킬 목록 가져오기
+  const allowedSkillIds = jobSkills[char.job] || [];
+
+  // 3. 허용된 스킬들만 순회하며 버튼 생성
+  allowedSkillIds.forEach((skillId) => {
     const skill = SKILLS[skillId];
     if (!skill) return;
 
     const btn = document.createElement("button");
     btn.textContent = skill.name;
 
-    // 1. 대미지 가함 여부 분석 (무장 해제 판정용)
+    // 대미지 가함 여부 분석 (무장 해제 판정용)
     const skillCode = skill.execute.toString();
     const dealsDamage = skillCode.includes("calculateDamage") || skillCode.includes("takeDamage");
 
-    // 2. 쿨타임 변수 정의 (에러 해결 포인트)
+    // 쿨타임 변수 정의
     const lastUsed = char.lastSkillTurn ? char.lastSkillTurn[skillId] || 0 : 0;
     const isOnCooldown = skill.cooldown && lastUsed !== 0 && state.currentTurn - lastUsed < skill.cooldown;
 
-    // 3. 무장 해제 상태 및 대미지 스킬 여부 체크
+    // 무장 해제 및 쿨타임 상태에 따른 버튼 비활성화
     if (!char.canAttack && dealsDamage) {
-        btn.disabled = true;
-        btn.style.opacity = "0.5";
-        btn.style.cursor = "not-allowed";
-        btn.textContent += " (무장 해제)";
-    } 
-    // 4. 쿨타임 상태 체크
-    else if (isOnCooldown) {
-        btn.disabled = true;
-        btn.textContent += ` (${skill.cooldown - (state.currentTurn - lastUsed)}턴)`;
+      btn.disabled = true;
+      btn.style.opacity = "0.5";
+      btn.style.cursor = "not-allowed";
+      btn.textContent += " (무장 해제)";
+    } else if (isOnCooldown) {
+      btn.disabled = true;
+      btn.textContent += ` (${skill.cooldown - (state.currentTurn - lastUsed)}턴)`;
     }
-
     btn.onclick = () => {
             state.selectedAction = { type: "skill", skill, caster: char, targetId: null };
             UI.renderSkillDescription(DOM.description, skill);
