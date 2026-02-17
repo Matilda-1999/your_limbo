@@ -317,7 +317,7 @@ export const MONSTER_SKILLS = {
    execute: (caster, target, allies, enemies, battleLog, state) => {
      // BattleEngine.js가 이 ID를 확인하여 안전지대 판정을 수행합니다.
      caster.activeGimmick = "GIMMICK_Aegis_of_Earth1"; 
-     battleLog(`✦기믹 발동✦ ${caster.name}가 동쪽 성벽을 세웁니다.`);
+     battleLog(`✦기믹 발동✦ ${caster.name}가 동쪽을 향해 포효합니다.`);
      return true;
    },
  },
@@ -331,7 +331,7 @@ export const MONSTER_SKILLS = {
    script: `<pre>우리가 상대할 것은 대지, 그 자체였을까.\n절벽이 앞을 가로막는다.\n허나 무너뜨릴 수 없을 듯하던 서쪽 성벽 또한 작은 균열 하나에 허물어지는 법.\n"무딘 칼날로 대지를 가를 수 있겠는가?"</pre>\n`,
    execute: (caster, target, allies, enemies, battleLog, state) => {
      caster.activeGimmick = "GIMMICK_Aegis_of_Earth2";
-     battleLog(`✦기믹 발동✦ ${caster.name}가 서쪽 성벽을 세웁니다.`);
+     battleLog(`✦기믹 발동✦ ${caster.name}가 서쪽을 향해 포효합니다.`);
      return true;
    },
  },
@@ -345,7 +345,7 @@ export const MONSTER_SKILLS = {
    script: `<pre>우리가 상대할 것은 대지, 그 자체였을까.\n절벽이 앞을 가로막는다.\n허나 무너뜨릴 수 없을 듯하던 남쪽 성벽 또한 작은 균열 하나에 허물어지는 법.\n"무딘 칼날로 대지를 가를 수 있겠는가?"</pre>\n`,
    execute: (caster, target, allies, enemies, battleLog, state) => {
      caster.activeGimmick = "GIMMICK_Aegis_of_Earth3";
-     battleLog(`✦기믹 발동✦ ${caster.name}가 남쪽 성벽을 세웁니다.`);
+     battleLog(`✦기믹 발동✦ ${caster.name}가 남쪽을 향해 포효합니다.`);
      return true;
    },
  },
@@ -359,7 +359,7 @@ export const MONSTER_SKILLS = {
    script: `\n<pre>우리가 상대할 것은 대지, 그 자체였을까.\n절벽이 앞을 가로막는다.\n허나 무너뜨릴 수 없을 듯하던 북쪽 성벽 또한 작은 균열 하나에 허물어지는 법.\n"무딘 칼날로 대지를 가를 수 있겠는가?"</pre>\n`,
    execute: (caster, target, allies, enemies, battleLog, state) => {
      caster.activeGimmick = "GIMMICK_Aegis_of_Earth4";
-     battleLog(`✦기믹 발동✦ ${caster.name}가 북쪽 성벽을 세웁니다.`);
+     battleLog(`✦기믹 발동✦ ${caster.name}가 북쪽을 향해 포효합니다.`);
      return true;
    },
  },
