@@ -191,5 +191,27 @@
     </div>
 
     <script type="module" src="player_view.js"></script>
+    <script>
+            <script type="module" src="player_view.js">
+
+        // 우클릭 방지
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        
+        // 단축키 차단 (F12, Ctrl+Shift+I, Ctrl+U 등)
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123 || // F12
+                (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || // Ctrl+Shift+I/J
+                (e.ctrlKey && e.keyCode == 85)) { // Ctrl+U
+                return false;
+            }
+        };
+
+        // 콘솔창 무력화 (개발자 도구를 열어도 로그가 안 보이게 함)
+        console.log = function() {};
+        console.warn = function() {};
+        console.error = function() {};
+    </script>
+</body>
+    </script>
 </body>
 </html>
