@@ -263,15 +263,37 @@ export class Character {
         this.debuffs = this.debuffs.filter(d => d.turnsLeft > 0);
     }
     
-    addDebuff(id, name, turns, effect) {
-        const existing = this.debuffs.find(d => d.id === id);
-        if (existing && effect.maxStacks) {
-            existing.stacks = Math.min((existing.stacks || 1) + 1, effect.maxStacks);
-            existing.turnsLeft = turns;
-        } else {
-            this.debuffs.push({ id, name, turnsLeft: turns, effect, stacks: 1 });
+    addDebuff(id, name, turns, effect = {}) {
+    // 1. 기존에 같은 ID의 디버프가 있는지 확인
+    const existingIdx = this.debuffs.findIndex(d => d.id === id);
+
+    if (existingIdx > -1) {
+        // 중첩(Stack) 설정이 있는 경우
+        if (effect.maxStacks) {
+            this.debuffs[existingIdx].stacks = Math.min(
+                (this.debuffs[existingIdx].stacks || 1) + 1, 
+                effect.maxStacks
+            );
         }
+        // 턴 수 갱신 (더 긴 쪽으로 유지하거나 새로고침)
+        this.debuffs[existingIdx].turnsLeft = Math.max(this.debuffs[existingIdx].turnsLeft, turns);
+    } else {
+        // 2. 새로운 디버프 추가
+        this.debuffs.push({ 
+            id, 
+            name, 
+            turnsLeft: turns, 
+            effect, 
+            stacks: 1 
+        });
     }
+}
+
+// [추가] 공격 가능 여부를 판단하는 Getter
+get canAttack() {
+    // debuffs 배열에 'disarm' ID를 가진 디버프가 있는지 확인
+    return !this.debuffs.some(d => d.id === "disarm");
+}
 
     getDebuffStacks(debuffId) {
         const debuff = this.debuffs.find(d => d.id === debuffId);
