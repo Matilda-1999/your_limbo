@@ -6,9 +6,7 @@
 import { TYPE_RELATIONSHIPS, TYPE_ADVANTAGE_MODIFIER, TYPE_DISADVANTAGE_MODIFIER } from './Character.js';
 
 export const BattleEngine = {
-    /**
-     * calculateDamage: 상성, 기믹(안전지대), 관통, 그로기가 반영된 최종 대미지 산출
-     */
+    // calculateDamage: 상성, 기믹(안전지대), 관통, 그로기가 반영된 최종 대미지 산출
     calculateDamage(attacker, defender, skillPower, damageType, options = {}) {
         const { 
             statTypeToUse = null, 
@@ -18,16 +16,24 @@ export const BattleEngine = {
             battleLog = null 
         } = options;
 
-        // 1. 고정 피해(fixed) 처리: 방어력과 상성을 무시합니다.
-        if (damageType === "fixed") {
-            return Math.round(Math.max(0, skillPower));
+        // 1. 공격자 기본 공격 스탯 결정 (물리/마법 구분)
+        // 고정 피해라도 '공격자의 스탯'에 비례해야 하므로 먼저 산출
+        let baseAttackStat = 0;
+        if (damageType === "magical" || statTypeToUse === "matk") {
+            baseAttackStat = attacker.getEffectiveStat("matk");
+        } else {
+            baseAttackStat = attacker.getEffectiveStat("atk");
         }
 
-        // 2. 상성 판정
+        // 2. 고정 피해(fixed) 처리
+        if (damageType === "fixed") {
+            // 방어력을 무시하고 (공격력 * 계수)를 반환 (최소 1 보장)
+            const fixedDmg = Math.max(1, baseAttackStat * skillPower);
+            return Math.round(fixedDmg);
+        }
+
+        // 3. 상성 판정 (일반 물리/마법 공격에만 적용)
         let typeModifier = 1.0;
-        
-        // attacker 객체 존재 여부와 hasDebuff 메서드 확인 로직 강화
-        // 공격자가 [우울 낙인] 상태가 아닐 때만 공격 상성 우위(1.3배)가 적용됩니다.
         const canApplyAdvantage = attacker && typeof attacker.hasDebuff === 'function' && !attacker.hasDebuff("melancholy_brand");
 
         if (canApplyAdvantage && TYPE_RELATIONSHIPS[attacker.type] === defender.type) {
@@ -36,10 +42,8 @@ export const BattleEngine = {
             typeModifier = TYPE_DISADVANTAGE_MODIFIER; // 0.7
         }
 
-        // 3. 기믹 판정 (대지의 수호 등 안전지대 메커니즘)
+        // 4. 기믹 판정 (안전지대 메커니즘)
         let finalSkillPower = skillPower;
-        
-        // defender 객체와 activeGimmick 속성 접근 안전성 강화
         if (defender && defender.activeGimmick && defender.activeGimmick.startsWith("GIMMICK_Aegis_of_Earth")) {
             const currentGimmick = gimmickData ? gimmickData[defender.activeGimmick] : null;
             
@@ -57,8 +61,7 @@ export const BattleEngine = {
             }
         }
 
-        // 4. 공격자 상태 보정 ([쇠약] 적용)
-        // attacker.debuffs 배열 존재 여부 확인
+        // 5. 공격자 상태 보정 ([쇠약] 적용)
         if (attacker && Array.isArray(attacker.debuffs)) {
             const weakness = attacker.debuffs.find(d => d.id === "weakness");
             if (weakness && weakness.effect) {
@@ -66,15 +69,11 @@ export const BattleEngine = {
             }
         }
 
-        // 5. 스탯 결정 및 [관통] 로직 적용
-        let baseAttackStat = 0;
+        // 6. 방어력 결정 및 관통 적용
         let defenseStat = 0;
-
         if (damageType === "physical") {
-            baseAttackStat = attacker.getEffectiveStat(statTypeToUse || "atk");
             defenseStat = defender.getEffectiveStat("def");
         } else if (damageType === "magical") {
-            baseAttackStat = attacker.getEffectiveStat(statTypeToUse || "matk");
             defenseStat = defender.getEffectiveStat("mdef");
         }
 
@@ -82,26 +81,23 @@ export const BattleEngine = {
             defenseStat *= (1 - penetration);
         }
 
-        // 6. 기본 대미지 산출 공식
+        // 7. 기본 대미지 산출 공식 (방어력 차감)
         let damage = (baseAttackStat * finalSkillPower * typeModifier) - defenseStat;
         damage = Math.max(0, damage);
 
-        // 7. 방어자 상태 보정 ([침묵/그로기] 시 10% 추가 피해)
+        // 8. 방어자 상태 보정 ([쇠약] 대상 추가 피해)
         if (defender && Array.isArray(defender.debuffs)) {
-        const weakness = defender.debuffs.find(d => d.id === "weakness");
-        if (weakness) {
-            const fixedBonus = Math.round(attacker.getEffectiveStat("atk") * 0.3);
-            damage += fixedBonus;
-            if (battleLog) battleLog(`✦쇠약 효과✦ ${defender.name}의 약점을 찔러 ${fixedBonus}의 추가 피해를 입혔습니다.`);
+            const weaknessDebuff = defender.debuffs.find(d => d.id === "weakness");
+            if (weaknessDebuff) {
+                const fixedBonus = Math.round(attacker.getEffectiveStat("atk") * 0.3);
+                damage += fixedBonus;
+                if (battleLog) battleLog(`✦쇠약 효과✦ ${defender.name}의 약점을 찔러 ${fixedBonus}의 추가 피해를 입혔습니다.`);
+            }
         }
-    }
 
         return Math.round(damage);
     },
 
-    /**
-     * applyHeal: 캐릭터의 체력을 회복시키고 로그를 남깁니다.
-     */
     applyHeal(target, amount, logFn, skillName = "회복") {
         if (!target || !target.isAlive) return;
         const oldHp = target.currentHp;
@@ -110,9 +106,6 @@ export const BattleEngine = {
         logFn(`✦회복✦ ${target.name}, [${skillName}]으로 체력 +${Math.round(actualHeal)} 회복. (현재 HP: ${Math.round(target.currentHp)})`);
     },
 
-    /**
-     * checkBattleEnd: 전투 종료 여부를 판정합니다.
-     */
     checkBattleEnd(allyCharacters, enemyCharacters) {
         const allAlliesDead = allyCharacters.every(c => !c.isAlive);
         const allEnemiesDead = enemyCharacters.every(c => !c.isAlive);
@@ -121,5 +114,4 @@ export const BattleEngine = {
         if (allEnemiesDead) return "WIN";
         return null; 
     }
-    
 };
