@@ -158,10 +158,6 @@ function startBattle() {
   DOM.startBtn.style.display = "none";
   log("\n【전투 시작】\n");
 
-  const config = MAP_CONFIGS[state.selectedMapId];
-  if (config) {
-    log(`\n<pre>${config.flavorText}</pre>\n`);
-  }
   prepareNextTurnCycle();
 }
 
@@ -404,22 +400,34 @@ function confirmAction() {
 
 async function executeBattleTurn() {
   DOM.executeBtn.style.display = "none";
+  
   const actionId = state.enemyPreviewAction?.skillId;
   const actionData = MONSTER_SKILLS[actionId];
   const activeBoss = state.enemyCharacters.find(e => e.isAlive && (e.name.includes("테르모르") || e.name.includes("카르나블룸")));
 
   if (activeBoss && actionData && (actionId.startsWith("GIMMICK_") || actionData.type?.includes("디버프"))) {
-    actionData.execute(activeBoss, null, state.allyCharacters, state.enemyCharacters, log, {
-      ...state,
-      calculateDamage: (a, d, p, t, o = {}) => BattleEngine.calculateDamage(a, d, p, t, { ...o, gimmickData: MONSTER_SKILLS, parseSafeCoords: Utils.parseSafeCoords, battleLog: log }),
-      applyHeal: BattleEngine.applyHeal,
-      utils: Utils
-    });
-    syncUI();
-    await new Promise((r) => setTimeout(r, 600));
+    // 이미 이번 턴에 기믹 로그가 출력되었다면 중복 실행하지 않음
+    if (!state.bossGimmickExecuted) {
+      
+      actionData.execute(activeBoss, null, state.allyCharacters, state.enemyCharacters, log, {
+        ...state,
+        calculateDamage: (a, d, p, t, o = {}) => BattleEngine.calculateDamage(a, d, p, t, { 
+          ...o, 
+          gimmickData: MONSTER_SKILLS, 
+          parseSafeCoords: Utils.parseSafeCoords, 
+          battleLog: log 
+        }),
+        applyHeal: BattleEngine.applyHeal,
+        utils: Utils
+      });
+      
+      state.bossGimmickExecuted = true;
+      syncUI();
+      await new Promise((r) => setTimeout(r, 600));
+    }
   }
 
-  log(`\n\n<b>☂︎ 아군의 행동을 개시합니다.<b>\n\n`);
+  log(`\n\n<b>☂︎ 아군의 행동을 개시합니다.</b>\n\n`);
 
   for (const action of state.playerActionsQueue) {
     const { caster, skill, targetId, moveDelta } = action;
@@ -429,42 +437,50 @@ async function executeBattleTurn() {
       const target = Utils.findCharacterById(targetId, state.allyCharacters, state.enemyCharacters, state.mapObjects);
       log(`✦ ${caster.name}, [${skill.name}] 시전.`);
 
-      // [환원]
+      // [환원] 효과 처리
       if (caster.hasBuff("restoration")) {
         const restorationBuff = caster.buffs.find((b) => b.id === "restoration");
+        // restorationBuff.effect.healPower가 있는지 확인 (skills.js에서 설정됨)
         if (restorationBuff && restorationBuff.effect && restorationBuff.effect.healPower) {
           const aliveAllies = state.allyCharacters.filter((a) => a.isAlive);
           if (aliveAllies.length > 0) {
-            let lowestHpAlly = aliveAllies[0];
-            for (let i = 1; i < aliveAllies.length; i++) {
-              if (aliveAllies[i].currentHp < lowestHpAlly.currentHp) {
-                lowestHpAlly = aliveAllies[i];
-              }
-            }
+            // 체력이 가장 낮은 아군 찾기
+            let lowestHpAlly = aliveAllies.reduce((prev, curr) => (prev.currentHp < curr.currentHp) ? prev : curr);
+            // BattleEngine.applyHeal(대상, 회복량, 로그함수, 스킬이름)
             BattleEngine.applyHeal(lowestHpAlly, restorationBuff.effect.healPower, log, "환원"); 
           }
         }
       }
       
+      // 스킬 실행
       skill.execute(caster, target, state.allyCharacters, state.enemyCharacters, log, {
         ...state,
         applyHeal: BattleEngine.applyHeal,
         calculateDamage: (a, d, p, t, o = {}) => {
-          const finalDamage = BattleEngine.calculateDamage(a, d, p, t, { ...o, gimmickData: MONSTER_SKILLS, parseSafeCoords: Utils.parseSafeCoords, battleLog: log });
+          // 1. 대미지 계산 (고정 피해 등은 BattleEngine 내부에서 처리됨)
+          const finalDamage = BattleEngine.calculateDamage(a, d, p, t, { 
+            ...o, 
+            gimmickData: MONSTER_SKILLS, 
+            parseSafeCoords: Utils.parseSafeCoords, 
+            battleLog: log 
+          });
+
           console.log(`%c[아군 스킬 계산] %c${a.name} -> %c${d.name} | %c피해: ${finalDamage}`, 'color: #4da6ff; font-weight: bold;', 'color: black;', 'color: #ffcc00;', 'color: #ff0000;');
 
-          if (finalDamage > 0 && d.debuffs && d.debuffs.some(deb => deb.id === "transfer")) {
-          
-            const healAmount = a.atk;
-          BattleEngine.applyHeal(a, healAmount, log, "전이"); 
+          // 2. [전이] 효과 처리 (피해가 발생했고 대상에게 전이 디버프가 있을 때)
+          if (finalDamage > 0 && d.hasDebuff && d.hasDebuff("transfer")) {
+            // 공격자의 실시간 공격력(getEffectiveStat)을 기반으로 회복
+            const healAmount = a.getEffectiveStat("atk");
+            BattleEngine.applyHeal(a, healAmount, log, "전이"); 
           }
-            
 
           return finalDamage;
         },
         displayCharacters: syncUI,
         mapObjects: state.mapObjects
       });
+
+      // 스킬 사용 기록 업데이트
       if (!caster.lastSkillTurn) caster.lastSkillTurn = {};
       caster.lastSkillTurn[skill.id] = state.currentTurn;
     } else {
