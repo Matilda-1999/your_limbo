@@ -5,7 +5,7 @@
 
 // 1. 모듈 수입
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+import { getDatabase, ref, set, push } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
 import { Character } from "./core/Character.js";
 import { BattleEngine } from "./core/BattleEngine.js";
@@ -69,7 +69,17 @@ const DOM = {
   allySelectDiv: document.getElementById("allySelectionButtons"),
 };
 
-const log = (msg) => UI.logToBattleLog(DOM.battleLog, msg);
+const log = (msg) => {
+  // 1. 관리자 화면(index.html)에 로그 출력
+  UI.logToBattleLog(DOM.battleLog, msg); 
+  
+  // 2. Firebase의 'battleLog' 경로에 실시간으로 로그 전송
+  const logRef = ref(db, "liveBattle/currentSession/battleLog");
+  push(logRef, {
+    message: msg,
+    timestamp: Date.now()
+  });
+};
 
 // 6. 전투 준비 및 캐릭터 관리
 function addCharacterAtPos(templateId, pos) {
@@ -159,6 +169,10 @@ function deleteChar(id, team) {
 function startBattle() {
   if (state.allyCharacters.length === 0 || state.enemyCharacters.length === 0)
     return alert("캐릭터가 부족합니다.");
+
+  // 전투 시작 시 Firebase에 저장된 이전 로그들을 삭제
+  set(ref(db, "liveBattle/currentSession/battleLog"), null);
+  
   state.isBattleStarted = true;
   state.currentTurn = 0;
   DOM.startBtn.style.display = "none";
