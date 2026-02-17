@@ -295,9 +295,9 @@ function startCharacterAction(char) {
   
   DOM.skillButtons.appendChild(document.createElement("br"));
   DOM.skillButtons.appendChild(skipBtn);
-
-    // 3. 이동 컨트롤 렌더링 호출
-  renderMovementControls(char);
+    
+    // 3. 이동 컨트롤 호출
+    renderMovementControls(char);
 }
 
 function renderMovementControls(char) {
