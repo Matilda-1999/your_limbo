@@ -21,6 +21,7 @@ const DOM = {
     mapContainer: document.getElementById("mapGridContainer"),
     allyDisplay: document.getElementById("allyCharacters"),
     enemyDisplay: document.getElementById("enemyCharacters"),
+    logDisplay: document.getElementById("playerBattleLog"),
 };
 
 const reconstructCharacter = (data) => {
@@ -85,4 +86,32 @@ onValue(battleRef, (snapshot) => {
         DOM.enemyDisplay.appendChild(createEnemySpectatorCard(char));
     });
     
+});
+
+ // 4. 적군 카드 리스트 렌더링 (속성 및 상태만 노출)
+    DOM.enemyDisplay.innerHTML = "";
+    enemies.forEach(char => {
+        DOM.enemyDisplay.appendChild(createEnemySpectatorCard(char));
+    }); 
+});
+
+// 2. 전투 로그 실시간 감시 (새로 추가된 로직)
+const logRef = ref(db, 'liveBattle/currentSession/battleLog');
+onValue(logRef, (snapshot) => {
+    const logs = snapshot.val();
+    if (!logs || !DOM.logDisplay) {
+        if (DOM.logDisplay) DOM.logDisplay.innerHTML = "";
+        return;
+    }
+
+    DOM.logDisplay.innerHTML = ""; 
+    Object.values(logs).forEach(logData => {
+        const entry = document.createElement("div");
+        entry.style.marginBottom = "5px";
+        entry.innerHTML = logData.message; 
+        DOM.logDisplay.appendChild(entry);
+    });
+    
+    // 최신 로그 위치로 자동 스크롤
+    DOM.logDisplay.scrollTop = DOM.logDisplay.scrollHeight;
 });
