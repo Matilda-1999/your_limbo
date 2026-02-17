@@ -231,17 +231,28 @@ export const MONSTER_SKILLS = {
  },
 
  SKILL_Thread_of_Emotion: {
-  id: "SKILL_Thread_of_Emotion",
-  name: "감정의 실",
-  type: "광역 디버프",
-  execute: (caster, allies, enemies, battle_log, state) => {
-       if (hitArea.some(pos => pos[0] === target.posX && pos[1] === target.posY)) {
-         battleLog(` ↪︎ [감정의 실]이 ${target.name}을(를) 휘감습니다.`);
-         target.addDebuff("melancholy_brand", "[우울 낙인]", 99, {});
-         target.addDebuff("ecstasy_brand", "[환희 낙인]", 99, {});
-         target.addDebuff("nightmare", "[악몽]", 99, {});
-       }
-     });
+   id: "SKILL_Thread_of_Emotion",
+   name: "감정의 실",
+   type: "광역 디버프",
+   execute: (caster, target, allies, enemies, battleLog, state) => {
+     // 1. 타격 범위 정의
+     const hitAreaRaw = "0,0;1,0;1,1;2,0;2,1;2,2;3,0;3,1;3,2;3,3;4,0;4,1;4,2;4,3;5,0;5,1;5,2;5,3;6,0;6,1;6,2;7,0;7,1;8,0;0,8;1,7;1,8;2,6;2,7;2,8;3,5;3,6;3,7;3,8;4,5;4,6;4,7;4,8;5,5;5,6;5,7;5,8;6,6;6,7;6,8;7,7;7,8;8,8";
+     const hitArea = hitAreaRaw.split(";").map(s => s.split(",").map(Number));
+     
+     // 2. 적중한 아군 필터링 및 디버프 횟수(지속시간) 계산
+     const hitTargets = allies.filter(t => t.isAlive && hitArea.some(pos => pos[0] === t.posX && pos[1] === t.posY));
+     const debuffDuration = hitTargets.length * 3; // [수정] 맞은 사람 수 × 3
+
+     if (hitTargets.length > 0) {
+       hitTargets.forEach(t => {
+         battleLog(` ↪︎ [감정의 실]이 ${t.name}을(를) 휘감습니다. (${debuffDuration}턴 유지)`);
+         t.addDebuff("melancholy_brand", "[우울 낙인]", debuffDuration, {});
+         t.addDebuff("ecstasy_brand", "[환희 낙인]", debuffDuration, {});
+         t.addDebuff("nightmare", "[악몽]", debuffDuration, {});
+       });
+     } else {
+       battleLog(` ↪︎ [감정의 실]이 허공을 가릅니다.`);
+     }
      return true;
    }
  },
