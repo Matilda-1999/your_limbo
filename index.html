@@ -601,5 +601,28 @@
     </div>
 
     <script type="module" src="main.js"></script>
+
+    <script>
+        (function() {
+            // [1] 콘솔 로그 완전 삭제
+            const noop = () => {};
+            Object.keys(window.console).forEach(key => {
+                window.console[key] = noop;
+            });
+
+            // [2] 우클릭 방지
+            document.addEventListener('contextmenu', e => e.preventDefault());
+
+            // [3] 키보드 보안 (F12, Ctrl+Shift+I, Ctrl+U 등)
+            document.onkeydown = function(e) {
+                if (e.keyCode === 123 || 
+                    (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || 
+                    (e.ctrlKey && e.keyCode === 85)) {
+                    return false;
+                }
+            };
+        })();
+    </script>
+    
 </body>
 </html>
