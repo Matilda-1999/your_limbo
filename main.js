@@ -387,7 +387,7 @@ async function executeBattleTurn() {
   const activeBoss = state.enemyCharacters.find(e => e.isAlive && (e.name.includes("테르모르") || e.name.includes("카르나블룸")));
 
   if (activeBoss && actionData && (actionId.startsWith("GIMMICK_") || actionData.type?.includes("디버프"))) {
-    actionData.execute(activeBoss, target, state.allyCharacters, state.enemyCharacters, log, {
+    actionData.execute(activeBoss, null, state.allyCharacters, state.enemyCharacters, log, {
       ...state,
       calculateDamage: (a, d, p, t, o = {}) => BattleEngine.calculateDamage(a, d, p, t, { ...o, gimmickData: MONSTER_SKILLS, parseSafeCoords: Utils.parseSafeCoords, battleLog: log }),
       applyHeal: BattleEngine.applyHeal, utils: Utils
