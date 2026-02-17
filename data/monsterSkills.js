@@ -94,7 +94,7 @@ export const MONSTER_SKILLS = {
      const hitTargets = allies.filter(t => t.isAlive && area.some(p => p.x === t.posX && p.y === t.posY));
      if (hitTargets.length > 0) {
        hitTargets.forEach(t => {
-         t.addDebuff("disarm", "[무장 해제]", hitTargets.length, { description: "공격 스킬 사용 불가" });
+         t.addDebuff("disarm", "[무장 해제]", 2, { description: "공격 스킬 사용 불가" });
          battleLog(`✦광역 디버프✦ ${t.name}이 포자에 노출되어 무장이 해제됩니다.`);
        });
      }
@@ -116,7 +116,7 @@ export const MONSTER_SKILLS = {
          target.takeDamage(d, battleLog, caster, allies, enemies, state);
        }
        if (blueArea.some(p => p.x === target.posX && p.y === target.posY)) {
-         target.addDebuff("disarm", "[무장 해제]", 1, {});
+         target.addDebuff("disarm", "[무장 해제]", 2, { description: "공격 스킬 사용 불가" });
          battleLog(`✦상태 이상✦ ${target.name}에게 씨앗이 붙어 무장이 해제됩니다.`);
        }
      });
