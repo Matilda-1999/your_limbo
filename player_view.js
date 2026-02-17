@@ -88,23 +88,41 @@ onValue(battleRef, (snapshot) => {
     
 });
 
-// 5. 전투 로그 실시간 감시 (onValue 블록 바깥에 단독으로 위치)
+// 전투 로그 실시간 감시 로직
 const logRef = ref(db, 'liveBattle/currentSession/battleLog');
+
 onValue(logRef, (snapshot) => {
     const logs = snapshot.val();
-    if (!logs || !DOM.logDisplay) {
-        if (DOM.logDisplay) DOM.logDisplay.innerHTML = "";
+    
+    // 로그 표시 영역이 없으면 중단
+    if (!DOM.logDisplay) return;
+
+    // 데이터가 없으면 비우고 중단
+    if (!logs) {
+        DOM.logDisplay.innerHTML = '<p style="color: #888; text-align: center;">전투 기록이 없습니다.</p>';
         return;
     }
 
+    // 기존 로그 초기화
     DOM.logDisplay.innerHTML = ""; 
-    Object.values(logs).forEach(logData => {
-        const entry = document.createElement("div");
-        entry.style.marginBottom = "5px";
-        entry.innerHTML = logData.message; 
-        DOM.logDisplay.appendChild(entry);
+
+    const sortedLogs = Object.values(logs).sort((a, b) => a.timestamp - b.timestamp);
+
+    sortedLogs.forEach(logData => {
+        if (logData && logData.message) {
+            const entry = document.createElement("div");
+            entry.style.marginBottom = "8px";
+            entry.style.borderBottom = "1px solid rgba(212, 175, 55, 0.1)";
+            entry.style.paddingBottom = "4px";
+            
+            // HTML 태그(pre 등)가 포함되어 있을 수 있으므로 innerHTML 사용
+            entry.innerHTML = logData.message; 
+            DOM.logDisplay.appendChild(entry);
+        }
     });
     
     // 최신 로그 위치로 자동 스크롤
     DOM.logDisplay.scrollTop = DOM.logDisplay.scrollHeight;
+}, (error) => {
+    console.error("로그 데이터 불러오기 실패:", error);
 });
