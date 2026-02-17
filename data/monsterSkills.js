@@ -239,9 +239,9 @@ export const MONSTER_SKILLS = {
      const hitAreaRaw = "0,0;1,0;1,1;2,0;2,1;2,2;3,0;3,1;3,2;3,3;4,0;4,1;4,2;4,3;5,0;5,1;5,2;5,3;6,0;6,1;6,2;7,0;7,1;8,0;0,8;1,7;1,8;2,6;2,7;2,8;3,5;3,6;3,7;3,8;4,5;4,6;4,7;4,8;5,5;5,6;5,7;5,8;6,6;6,7;6,8;7,7;7,8;8,8";
      const hitArea = hitAreaRaw.split(";").map(s => s.split(",").map(Number));
      
-     // 2. 적중한 아군 필터링 및 디버프 횟수(지속시간) 계산
+     // 2. 적중한 아군 필터링 및 디버프 횟수(지속 시간) 계산
      const hitTargets = allies.filter(t => t.isAlive && hitArea.some(pos => pos[0] === t.posX && pos[1] === t.posY));
-     const debuffDuration = hitTargets.length * 3; // [수정] 맞은 사람 수 × 3
+     const debuffDuration = hitTargets.length * 3;
 
      if (hitTargets.length > 0) {
        hitTargets.forEach(t => {
@@ -298,7 +298,7 @@ export const MONSTER_SKILLS = {
    name: "침묵",
    type: "상태 이상",
    execute: (caster, target, allies, enemies, battleLog, state) => {
-     battleLog(`✦특수 패턴✦ ${caster.name}이 맹공에 정신을 차리지 못하고 [침묵] 상태에 빠집니다.`);
+     battleLog(`✦특수 패턴✦ ${caster.name}가 맹공에 정신을 차리지 못하고 [침묵] 상태에 빠집니다.`);
      caster.addDebuff("groggy", "[침묵](그로기)", 2, { description: "행동 불가 및 받는 피해 증가" });
      return true;
    }
@@ -375,7 +375,7 @@ export const MONSTER_SKILLS = {
    script: `<pre>\n"균열이 퍼지며, 땅 아래서 검은 뿌리가 꿈틀댄다.\n 번져오는 재해 앞에서 길을 찾아야 한다.\n생명의 뿌리를 꺾을 수 있다고 믿는가?"\n</pre>`,
    execute: (caster, target, allies, enemies, battleLog, state) => {
      caster.addBuff("path_of_ruin_telegraph", "균열의 길 예고", 2, {});
-     battleLog(`✦기믹 발동✦ ${caster.name}이 전장에 깊은 균열을 새깁니다. 다음 턴에 해당 구역에 폭발이 일어납니다.`);
+     battleLog(`✦기믹 발동✦ ${caster.name}가 전장에 깊은 균열을 새깁니다. 다음 턴에 해당 구역에 폭발이 일어납니다.`);
      return true;
    },
  },
