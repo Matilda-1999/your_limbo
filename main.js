@@ -390,7 +390,8 @@ async function executeBattleTurn() {
     actionData.execute(activeBoss, null, state.allyCharacters, state.enemyCharacters, log, {
       ...state,
       calculateDamage: (a, d, p, t, o = {}) => BattleEngine.calculateDamage(a, d, p, t, { ...o, gimmickData: MONSTER_SKILLS, parseSafeCoords: Utils.parseSafeCoords, battleLog: log }),
-      applyHeal: BattleEngine.applyHeal, utils: Utils
+      applyHeal: BattleEngine.applyHeal,
+      utils: Utils
     });
     syncUI();
     await new Promise((r) => setTimeout(r, 600));
@@ -592,7 +593,8 @@ async function performEnemyAction(enemy) {
       }
       return dmg;
     },
-    applyHeal: BattleEngine.applyHeal
+    applyHeal: BattleEngine.applyHeal,
+    utils: Utils
   };
   
   // 4. 스킬 실행
