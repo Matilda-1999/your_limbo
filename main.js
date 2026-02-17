@@ -229,6 +229,7 @@ function startCharacterAction(char) {
   DOM.confirmBtn.style.display = "none";
   state.selectedAction = null;
 
+  // 1. 스킬 버튼 생성 루프
   Object.keys(SKILLS).forEach((skillId) => {
     const skill = SKILLS[skillId];
     if (!skill) return;
@@ -237,6 +238,7 @@ function startCharacterAction(char) {
     const lastUsed = char.lastSkillTurn ? char.lastSkillTurn[skillId] || 0 : 0;
     const isOnCooldown = skill.cooldown && lastUsed !== 0 && state.currentTurn - lastUsed < skill.cooldown;
 
+    // 쿨타임 체크 및 onclick 로직
     if (isOnCooldown) {
       btn.disabled = true;
       btn.textContent += ` (${skill.cooldown - (state.currentTurn - lastUsed)}턴)`;
@@ -270,7 +272,7 @@ function startCharacterAction(char) {
     syncUI();
 };
 
-  // [행동 포기] 버튼 추가
+  // 2. [행동 포기] 버튼
   const skipBtn = document.createElement("button");
   skipBtn.textContent = "행동 포기";
   skipBtn.className = "button";
@@ -293,7 +295,8 @@ function startCharacterAction(char) {
   
   DOM.skillButtons.appendChild(document.createElement("br"));
   DOM.skillButtons.appendChild(skipBtn);
-  
+
+    // 3. 이동 컨트롤 렌더링 호출
   renderMovementControls(char);
 }
 
