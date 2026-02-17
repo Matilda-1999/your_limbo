@@ -38,6 +38,7 @@ export const MONSTER_TEMPLATES = {
       "SKILL_Birth_of_Vines",
       "SKILL_Spores_of_Silence",
       "SKILL_Seeds_Wrath",
+      "SKILL_Ruin_Explosion"
     ],
     gimmicks: ["GIMMICK_Path_of_Ruin", "GIMMICK_Seed_of_Devour"],
   },
