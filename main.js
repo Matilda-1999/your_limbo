@@ -295,7 +295,6 @@ function startCharacterAction(char) {
     // 3. 이동 컨트롤 호출
     renderMovementControls(char);
   }
-}
 
 function renderMovementControls(char) {
   DOM.moveButtons.innerHTML = "<h4>이동(8방향)</h4>";
