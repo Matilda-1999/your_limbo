@@ -551,12 +551,20 @@ function checkMapShrink() {
 }
 
 async function performEnemyAction(enemy) {
-  const actionId = state.enemyPreviewAction?.skillId;
+  let actionId;
+  
+  // 보스급 몬스터는 예고된 스킬 사용, 일반 몬스터는 자신의 스킬 중 랜덤 사용
+  const isBoss = enemy.name.includes("테르모르") || enemy.name.includes("카르나블룸");
+  
+  if (isBoss && state.enemyPreviewAction) {
+    actionId = state.enemyPreviewAction.skillId;
+  } else if (enemy.skills && enemy.skills.length > 0) {
+    // 일반 몬스터는 자신의 템플릿에 정의된 스킬 중 하나를 무작위로 선택
+    actionId = enemy.skills[Math.floor(Math.random() * enemy.skills.length)];
+  }
+
   const actionData = MONSTER_SKILLS[actionId];
   if (!actionData) return;
-
-  log(`\n<b>→→→→[행동] ${enemy.name}:</b> ${actionData.name}`);
-  let effectTriggered = false;
 
   const extendedState = {
     ...state,
