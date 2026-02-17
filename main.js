@@ -233,10 +233,21 @@ function startCharacterAction(char) {
   Object.keys(SKILLS).forEach((skillId) => {
     const skill = SKILLS[skillId];
     if (!skill) return;
+
     const btn = document.createElement("button");
     btn.textContent = skill.name;
-    const lastUsed = char.lastSkillTurn ? char.lastSkillTurn[skillId] || 0 : 0;
-    const isOnCooldown = skill.cooldown && lastUsed !== 0 && state.currentTurn - lastUsed < skill.cooldown;
+
+    // 스킬의 실행 코드(execute)를 분석하여 대미지 가함 여부 확인
+    const skillCode = skill.execute.toString();
+    const dealsDamage = skillCode.includes("calculateDamage") || skillCode.includes("takeDamage");
+
+    // 캐릭터가 무장 해제 상태(canAttack === false)이고, 대미지를 주는 스킬인 경우 비활성화
+    if (!char.canAttack && dealsDamage) {
+        btn.disabled = true;
+        btn.style.opacity = "0.5";
+        btn.style.cursor = "not-allowed";
+        btn.textContent += " (무장 해제)";
+    }
 
     // 쿨타임 체크 및 onclick 로직
     if (isOnCooldown) {
