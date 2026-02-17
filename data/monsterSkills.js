@@ -374,7 +374,7 @@ export const MONSTER_SKILLS = {
    ],
    script: `<pre>\n"균열이 퍼지며, 땅 아래서 검은 뿌리가 꿈틀댄다.\n 번져오는 재해 앞에서 길을 찾아야 한다.\n생명의 뿌리를 꺾을 수 있다고 믿는가?"\n</pre>`,
    execute: (caster, target, allies, enemies, battleLog, state) => {
-     caster.addBuff("path_of_ruin_telegraph", "균열의 길 예고", 2, {});
+     caster.addBuff("path_of_ruin_telegraph", "폭발 예고", 2, {});
      battleLog(`✦기믹 발동✦ ${caster.name}가 전장에 깊은 균열을 새깁니다. 다음 턴에 해당 구역에 폭발이 일어납니다.`);
      return true;
    },
