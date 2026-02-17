@@ -264,6 +264,7 @@ function startCharacterAction(char) {
                 DOM.targetName.textContent = targetText;
             }
               syncUI();
+      };
       DOM.skillButtons.appendChild(btn);
     });
 
