@@ -165,6 +165,7 @@ function prepareNextTurnCycle() {
   state.currentTurn++;
   state.actedAlliesThisTurn = [];
   state.playerActionsQueue = [];
+  state.bossGimmickExecuted = false;
   DOM.executeBtn.style.display = "none";
 
   const boss = state.enemyCharacters.find(e => e.isAlive && (e.name.includes("테르모르") || e.name.includes("카르나블룸")));
@@ -186,7 +187,7 @@ function prepareNextTurnCycle() {
       const scriptText = skillData.script || `\n<pre>${skillData.name} 태세를 취합니다.</pre>\n`;
       log(`${scriptText}`);
     }
-    log(`\n\n ☂︎ 전원, 5 분 동안 행동해 주세요. \n\n`);
+    log(`\n\n ☂︎ 전원, 5 분 동안 행동해 주세요.\n\n`);
   }
 
   promptAllySelection();
@@ -201,7 +202,7 @@ function promptAllySelection() {
 
   if (available.length === 0) {
     DOM.executeBtn.style.display = "block";
-    log("모든 아군의 행동 예약이 완료되었습니다. [턴 실행]을 눌러주세요.");
+    log("모든 아군의 행동 예약이 완료되었습니다. [턴 실행]을 눌러주세요.\n\n");
   } else {
     DOM.allySelectDiv.style.display = "block";
     available.forEach((ally) => {
