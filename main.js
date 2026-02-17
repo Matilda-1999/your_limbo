@@ -553,26 +553,42 @@ function checkMapShrink() {
 async function performEnemyAction(enemy) {
   let actionId;
   
-  // 보스급 몬스터는 예고된 스킬 사용, 일반 몬스터는 자신의 스킬 중 랜덤 사용
+  // 1. 보스급 몬스터는 예고된 스킬 사용, 일반 몬스터는 자신의 스킬 중 랜덤 사용
   const isBoss = enemy.name.includes("테르모르") || enemy.name.includes("카르나블룸");
   
   if (isBoss && state.enemyPreviewAction) {
     actionId = state.enemyPreviewAction.skillId;
   } else if (enemy.skills && enemy.skills.length > 0) {
-    // 일반 몬스터는 자신의 템플릿에 정의된 스킬 중 하나를 무작위로 선택
     actionId = enemy.skills[Math.floor(Math.random() * enemy.skills.length)];
   }
 
   const actionData = MONSTER_SKILLS[actionId];
   if (!actionData) return;
 
+  // 2. 적군의 타겟 결정 로직
+  let target = null;
+  if (actionData.targetSelection === "ally") {
+    const aliveAllies = state.allyCharacters.filter(a => a.isAlive);
+    target = aliveAllies[Math.floor(Math.random() * aliveAllies.length)];
+  }
+
+  let effectTriggered = false; // 대미지 발생 여부 체크용 변수
+
+  // 3. 확장 상태 정의
   const extendedState = {
     ...state,
-    calculateDamage: (a, d, p, t, o = {}) => {
-      const dmg = BattleEngine.calculateDamage(a, d, p, t, { ...o, state: state, gimmickData: MONSTER_SKILLS, parseSafeCoords: Utils.parseSafeCoords, battleLog: log });
+    // (공격자, 방어자, 위력, 타입, 타겟_객체, 옵션) 순으로 인자 구조 통일
+    calculateDamage: (a, d, p, t, targetObj = null, o = {}) => {
+      const dmg = BattleEngine.calculateDamage(a, d, p, t, { 
+        ...o, 
+        state: state, 
+        gimmickData: MONSTER_SKILLS, 
+        parseSafeCoords: Utils.parseSafeCoords, 
+        battleLog: log 
+      });
       
       if (dmg > 0) {
-        effectTriggered = true; // 피해가 발생하면 효과가 있었음으로 간주
+        effectTriggered = true; 
       } else {
         log(`✦회피✦ ${d.name}, 공격을 완전히 상쇄하거나 회피했습니다.`);
       }
@@ -581,10 +597,19 @@ async function performEnemyAction(enemy) {
     applyHeal: BattleEngine.applyHeal
   };
   
-  const success = actionData.execute(enemy, state.allyCharacters, state.enemyCharacters, log, extendedState);
-  const isDebuffSkill = actionData.type?.includes("디버프") || actionId.includes("SILENCE") || actionId.includes("SPORES");
+  // 4. 스킬 실행
+  const success = actionData.execute(enemy, target, state.allyCharacters, state.enemyCharacters, log, extendedState);
 
-  if (success && !effectTriggered && !isDebuffSkill) {
+  // 5. 디버프 및 기믹 스킬 판정
+  const isDebuffOrGimmick = 
+    actionData.type?.includes("디버프") || 
+    actionData.type?.includes("기믹") ||
+    actionId.includes("SILENCE") || 
+    actionId.includes("SPORES") ||
+    actionId.includes("EMOTION") ||
+    actionId.includes("GIMMICK");
+
+  if (success && !effectTriggered && !isDebuffOrGimmick) {
     log(`✦정보✦ 아무 일도 일어나지 않았습니다.`);
   }
 }
