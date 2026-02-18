@@ -88,41 +88,52 @@ onValue(battleRef, (snapshot) => {
     
 });
 
-// 전투 로그 실시간 감시 로직
+// 플레이어 뷰어 연동
 const logRef = ref(db, 'liveBattle/currentSession/battleLog');
 
 onValue(logRef, (snapshot) => {
-    const logs = snapshot.val();
-    
-    // 로그 표시 영역이 없으면 중단
     if (!DOM.logDisplay) return;
 
-    // 데이터가 없으면 비우고 중단
-    if (!logs) {
-        DOM.logDisplay.innerHTML = '<p style="color: #888; text-align: center;">전투 기록이 없습니다.</p>';
+    const logs = snapshot.val();
+
+    // 1. 데이터가 아예 없거나 빈 객체인 경우 처리
+    if (!logs || Object.keys(logs).length === 0) {
+        DOM.logDisplay.innerHTML = '<div style="color: #888; text-align: center; padding: 20px;">전투 기록이 없습니다.</div>';
         return;
     }
 
-    // 기존 로그 초기화
+    // 2. 화면 초기화 후 정렬된 로그 출력
     DOM.logDisplay.innerHTML = ""; 
 
-    const sortedLogs = Object.values(logs).sort((a, b) => a.timestamp - b.timestamp);
+    // Firebase의 push ID 객체를 배열로 변환 후 시간순 정렬
+    const sortedLogs = Object.values(logs).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
 
     sortedLogs.forEach(logData => {
         if (logData && logData.message) {
             const entry = document.createElement("div");
-            entry.style.marginBottom = "8px";
+            entry.className = "log-entry"; // CSS 클래스가 있다면 활용
+            entry.style.marginBottom = "10px";
             entry.style.borderBottom = "1px solid rgba(212, 175, 55, 0.1)";
-            entry.style.paddingBottom = "4px";
+            entry.style.paddingBottom = "6px";
+            entry.style.lineHeight = "1.5";
             
-            // HTML 태그(pre 등)가 포함되어 있을 수 있으므로 innerHTML 사용
+            // 시뮬레이터에서 보낸 HTML 구조(pre, color 등)를 그대로 반영
             entry.innerHTML = logData.message; 
             DOM.logDisplay.appendChild(entry);
         }
     });
     
-    // 최신 로그 위치로 자동 스크롤
-    DOM.logDisplay.scrollTop = DOM.logDisplay.scrollHeight;
+    // 3. 새 로그가 추가될 때 하단으로 자동 스크롤
+    setTimeout(() => {
+        DOM.logDisplay.scrollTo({
+            top: DOM.logDisplay.scrollHeight,
+            behavior: 'smooth' // 부드러운 스크롤 효과
+        });
+    }, 50);
+
 }, (error) => {
     console.error("로그 데이터 불러오기 실패:", error);
+    if (DOM.logDisplay) {
+        DOM.logDisplay.innerHTML = '<div style="color: #ff4444;">데이터 로드 중 오류가 발생했습니다.</div>';
+    }
 });
