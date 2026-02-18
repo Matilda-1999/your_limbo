@@ -94,46 +94,46 @@ const logRef = ref(db, 'liveBattle/currentSession/battleLog');
 onValue(logRef, (snapshot) => {
     if (!DOM.logDisplay) return;
 
-    const logs = snapshot.val();
+    const data = snapshot.val();
 
-    // 1. 데이터가 아예 없거나 빈 객체인 경우 처리
-    if (!logs || Object.keys(logs).length === 0) {
-        DOM.logDisplay.innerHTML = '<div style="color: #888; text-align: center; padding: 20px;">전투 기록이 없습니다.</div>';
+    // 1. 데이터가 없으면 안내 문구 표시
+    if (!data) {
+        DOM.logDisplay.innerHTML = '<p style="color: #888; text-align: center;">전투 기록 대기 중...</p>';
         return;
     }
 
-    // 2. 화면 초기화 후 정렬된 로그 출력
-    DOM.logDisplay.innerHTML = ""; 
+    // 2. 화면을 비우고 데이터를 하나씩 추가
+    DOM.logDisplay.innerHTML = "";
 
-    // Firebase의 push ID 객체를 배열로 변환 후 시간순 정렬
-    const sortedLogs = Object.values(logs).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+    // Firebase의 push 객체를 배열로 변환 (순서 보장)
+    const logs = Object.values(data);
 
-    sortedLogs.forEach(logData => {
-        if (logData && logData.message) {
-            const entry = document.createElement("div");
-            entry.className = "log-entry"; // CSS 클래스가 있다면 활용
-            entry.style.marginBottom = "10px";
-            entry.style.borderBottom = "1px solid rgba(212, 175, 55, 0.1)";
-            entry.style.paddingBottom = "6px";
-            entry.style.lineHeight = "1.5";
-            
-            // 시뮬레이터에서 보낸 HTML 구조(pre, color 등)를 그대로 반영
-            entry.innerHTML = logData.message; 
-            DOM.logDisplay.appendChild(entry);
+    logs.forEach(log => {
+        // log 자체가 문자열이거나, log.message에 내용이 있는 경우 모두 대응
+        const message = (typeof log === 'string') ? log : (log.message || "");
+        
+        if (message) {
+            const div = document.createElement("div");
+            div.style.marginBottom = "10px";
+            div.style.whiteSpace = "pre-wrap";
+            div.innerHTML = message;
+            DOM.logDisplay.appendChild(div);
         }
     });
-    
-    // 3. 새 로그가 추가될 때 하단으로 자동 스크롤
-    setTimeout(() => {
-        DOM.logDisplay.scrollTo({
-            top: DOM.logDisplay.scrollHeight,
-            behavior: 'smooth' // 부드러운 스크롤 효과
-        });
-    }, 50);
 
-}, (error) => {
-    console.error("로그 데이터 불러오기 실패:", error);
+    // 3. 스크롤을 항상 최하단으로 이동
+    DOM.logDisplay.scrollTop = DOM.logDisplay.scrollHeight;
+},
+
+    // --- 에러 발생 시 처리 로직 ---
+    (error) => {
+    console.error("Firebase 데이터 로드 에러:", error);
     if (DOM.logDisplay) {
-        DOM.logDisplay.innerHTML = '<div style="color: #ff4444;">데이터 로드 중 오류가 발생했습니다.</div>';
+        DOM.logDisplay.innerHTML = `
+            <div style="color: #ff4444; text-align: center; padding: 20px; border: 1px solid #ff4444;">
+                <p>통신 기구의 이상으로 전투 기록을 불러오지 못했습니다.</p>
+                <small>${error.message}</small>
+            </div>
+        `;
     }
 });
