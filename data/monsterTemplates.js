@@ -8,7 +8,7 @@ export const MONSTER_TEMPLATES = {
   Terrmor_1: {
     name: "테르모르",
     type: "암석",
-    maxHp: 1500,
+    maxHp: 800,
     atk: 50,
     matk: 50,
     def: 35,
@@ -29,7 +29,7 @@ export const MONSTER_TEMPLATES = {
   Terrmor_2: {
     name: "테르모르",
     type: "나무",
-    maxHp: 2000,
+    maxHp: 1000,
     atk: 50,
     matk: 50,
     def: 20,
@@ -47,7 +47,7 @@ export const MONSTER_TEMPLATES = {
   Carnabloom_1: {
     name: "카르나블룸",
     type: "야수",
-    maxHp: 1500,
+    maxHp: 1000,
     atk: 50,
     matk: 50,
     def: 35,
@@ -59,7 +59,7 @@ export const MONSTER_TEMPLATES = {
   Carnabloom_2: {
     name: "카르나블룸",
     type: "천체",
-    maxHp: 2500,
+    maxHp: 1200,
     atk: 50,
     matk: 50,
     def: 20,
@@ -80,7 +80,7 @@ export const MONSTER_TEMPLATES = {
   Pierrot: {
     name: "피에로",
     type: ["암석", "나무"], // 맵 배치 시 랜덤 결정
-    maxHp: 300,
+    maxHp: 150,
     atk: 30,
     matk: 30,
     def: 20,
@@ -96,7 +96,7 @@ export const MONSTER_TEMPLATES = {
   Clown: {
     name: "클라운",
     type: ["암석", "나무"],
-    maxHp: 300,
+    maxHp: 150,
     atk: 30,
     matk: 30,
     def: 20,
