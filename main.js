@@ -5,7 +5,7 @@
 
 // 1. 모듈 수입
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-import { getDatabase, ref, set, push } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+import { getDatabase, ref, set, push, update } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
 import { Character } from "./core/Character.js";
 import { BattleEngine } from "./core/BattleEngine.js";
@@ -703,15 +703,15 @@ function syncUI() {
   updateFirebaseState();
 }
 
-// 10. Firebase 실시간 상태 업데이트 함수
-let isFirebaseUpdating = false;
+// 10. Firebase 실시간 상태 업데이트 함수 (수정본)
+import { update } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js"; // 1번 라인 근처 import에 update 추가 필요
 
 async function updateFirebaseState() {
   if (isFirebaseUpdating) return;
   isFirebaseUpdating = true;
   try {
     const battleRef = ref(db, "liveBattle/currentSession");
-    await set(battleRef, {
+    await update(battleRef, {
       allyCharacters: state.allyCharacters,
       enemyCharacters: state.enemyCharacters,
       mapObjects: state.mapObjects,
