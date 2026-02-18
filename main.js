@@ -555,7 +555,7 @@ log(`\n<pre>--------------------------------</pre>`);
   if (result === "WIN") {
     state.isBattleStarted = false;
     if (state.selectedMapId === "A-1") {
-      log(`\n\n<b>【 스테이지 클리어! 테르모르의 숨결이 잦아듭니다. 】</b>`);
+      log(`\n\n<b>【 스테이지 클리어! 테르모르의 숨결이 잦아듭니다. 】</b>\n【 보상 수령 및 진행 여부 결정 후, 다음 페이즈로 넘어갑니다. 】`);
       setTimeout(() => { state.isBattleStarted = true; transitionToNextStage("A-2"); }, 1500);
     } else if (state.selectedMapId === "B-1") {
       log(`\n\n<b>【 제 1막 종료: 인형들이 무대 뒤로 사라집니다. 】</b>`);
