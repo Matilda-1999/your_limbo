@@ -70,15 +70,17 @@ const DOM = {
 };
 
 const log = (msg) => {
-  // 1. 관리자 화면(index.html)에 로그 출력
-  UI.logToBattleLog(DOM.battleLog, msg); 
+  // 1. 관리자 화면 로그창에 표시
+  if (DOM.battleLog) {
+    UI.logToBattleLog(DOM.battleLog, msg); 
+  }
   
-  // 2. Firebase의 'battleLog' 경로에 실시간으로 로그 전송
+  // 2. Firebase(뷰어용)로 전송
   const logRef = ref(db, "liveBattle/currentSession/battleLog");
   push(logRef, {
     message: msg,
     timestamp: Date.now()
-  });
+  }).catch(e => console.error("로그 전송 실패:", e));
 };
 
 // 6. 전투 준비 및 캐릭터 관리
@@ -701,21 +703,6 @@ function syncUI() {
   updateFirebaseState();
 }
 
-let isFirebaseUpdating = false;
-async function updateFirebaseState() {
-  if (isFirebaseUpdating) return;
-  isFirebaseUpdating = true;
-  try {
-    const battleRef = ref(db, "liveBattle/currentSession");
-    await set(battleRef, {
-      allyCharacters: state.allyCharacters, enemyCharacters: state.enemyCharacters,
-      mapObjects: state.mapObjects, currentTurn: state.currentTurn,
-      mapWidth: state.mapWidth, mapHeight: state.mapHeight,
-      isBattleStarted: state.isBattleStarted, lastUpdateTime: Date.now(),
-    });
-  } catch (e) { console.error("데이터 전송 실패:", e); }
-  isFirebaseUpdating = false;
-}
 
 window.loadSelectedMap = loadSelectedMap;
 window.addCharacter = addCharacter;
