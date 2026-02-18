@@ -703,6 +703,29 @@ function syncUI() {
   updateFirebaseState();
 }
 
+// 10. Firebase 실시간 상태 업데이트 함수
+let isFirebaseUpdating = false;
+
+async function updateFirebaseState() {
+  if (isFirebaseUpdating) return;
+  isFirebaseUpdating = true;
+  try {
+    const battleRef = ref(db, "liveBattle/currentSession");
+    await set(battleRef, {
+      allyCharacters: state.allyCharacters,
+      enemyCharacters: state.enemyCharacters,
+      mapObjects: state.mapObjects,
+      currentTurn: state.currentTurn,
+      mapWidth: state.mapWidth,
+      mapHeight: state.mapHeight,
+      isBattleStarted: state.isBattleStarted,
+      lastUpdateTime: Date.now(),
+    });
+  } catch (e) {
+    console.error("데이터 전송 실패:", e);
+  }
+  isFirebaseUpdating = false;
+}
 
 window.loadSelectedMap = loadSelectedMap;
 window.addCharacter = addCharacter;
