@@ -73,15 +73,29 @@ export class Character {
 
     let totalStat = value + additiveBonus;
 
-    // 2. 디버프 처리
+    // 2. 디버프 및 낙인(Brand) 처리
     this.debuffs.forEach(debuff => {
-        if (debuff.turnsLeft > 0 && debuff.effect) {
-            if (debuff.id === "scratch" && debuff.effect.reductionType === statName) {
+        if (debuff.turnsLeft > 0) {
+            const stacks = debuff.stacks || 1;
+
+            // 우울: 공/마공 10% 감소 (중첩당)
+            if (debuff.id === "brand_melancholy" && (statName === "atk" || statName === "matk")) {
+                totalStat *= (1 - (0.1 * stacks));
+            }
+            // 환희: 방/마방 20% 감소, 공/마공 10% 증폭 (중첩당)
+            if (debuff.id === "brand_joy") {
+                if (statName === "def" || statName === "mdef") totalStat *= (1 - (0.2 * stacks));
+                else if (statName === "atk" || statName === "matk") totalStat *= (1 + (0.1 * stacks));
+            }
+
+            // [기존 흠집 디버프]: 스택당 방어 성능 감소
+            if (debuff.id === "scratch" && debuff.effect && debuff.effect.reductionType === statName) {
                 const reductionPerStack = debuff.effect.reductionValue || 0.1;
-                const stacks = debuff.stacks || 1;
                 totalStat *= (1 - (reductionPerStack * stacks));
             }
-            if (debuff.effect.type === `${statName}_reduce_multiplier`) {
+
+            // [기타 일반 디버프 배율]
+            if (debuff.effect && debuff.effect.type === `${statName}_reduce_multiplier`) {
                 totalStat *= (debuff.effect.value || 1);
             }
         }
@@ -187,6 +201,12 @@ export class Character {
     
         if (this.hasDebuff("provoked_self") || this.hasBuff("iron_fortress")) {
             this.provokeDamage = (this.provokeDamage || 0) + finalDamage;
+        }
+
+        // 피해량이 0보다 크고 악몽 상태일 때만 해제
+        if (this.hasDebuff("nightmare") && finalDamage > 0) {
+            this.removeDebuffById("nightmare");
+            logFn(`✦해제✦ ${this.name}이(가) 공격의 충격으로 인해 [악몽]에서 깨어납니다!`);
         }
     
         if (this.currentHp <= 0) {
@@ -302,7 +322,7 @@ export class Character {
 // 공격 가능 여부를 판단하는 Getter
 get canAttack() {
     // debuffs 배열에 'disarm' ID를 가진 디버프가 있는지 확인
-    return !this.debuffs.some(d => d.id === "disarm");
+    return !this.hasDebuff("disarm") && !this.hasDebuff("nightmare");
 }
 
     getDebuffStacks(debuffId) {
