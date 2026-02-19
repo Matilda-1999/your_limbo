@@ -50,6 +50,8 @@ export class Character {
         this.totalDamageTakenThisBattle = 0;
         this.provokeDamage = 0;
         this.lastSkillTurn = {};
+        this.actedThisTurn = false;             // 이번 턴에 행동(스킬/이동)을 완료했는가?
+        this.usedAttackSkillThisTurn = false;   // 이번 턴에 사용한 스킬이 '공격'이었는가?
     }
 
     getEffectiveStat(statName) {
