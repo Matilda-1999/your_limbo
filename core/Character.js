@@ -56,45 +56,38 @@ export class Character {
     let value = this[statName];
     let additiveBonus = 0; 
 
-    // 1. 버프 처리 (곱연산 우선 후 합연산 합산)
+    // 1. 버프 처리
     this.buffs.forEach(buff => {
         if (buff.turnsLeft > 0 && buff.effect) {
-            // 곱연산 버프 (예: 방어력 20% 증가)
             if (buff.effect.type === `${statName}_boost_multiplier`) {
                 value *= (buff.effect.value || 1);
             }
-            // 합연산 버프 (일반 보너스 타입)
             if (buff.effect.type === `${statName}_boost_add`) {
                 additiveBonus += (buff.effect.value || 0);
             }
-            
-            // [실재/실존]: buff.id가 reality_def_add 또는 reality_mdef_add인 경우
             if (buff.id === `reality_${statName}_add`) {
                 additiveBonus += (buff.effect.value || 0);
             }
         }
     });
 
-    // 버프가 적용된 중간값 계산
     let totalStat = value + additiveBonus;
 
-    // 2. 디버프 처리 (최종 수치에서 깎음)
+    // 2. 디버프 처리
     this.debuffs.forEach(debuff => {
         if (debuff.turnsLeft > 0 && debuff.effect) {
-            // [흠집] 등 스택형 감소 디버프 (정상 반영 중)
             if (debuff.id === "scratch" && debuff.effect.reductionType === statName) {
                 const reductionPerStack = debuff.effect.reductionValue || 0.1;
                 const stacks = debuff.stacks || 1;
                 totalStat *= (1 - (reductionPerStack * stacks));
             }
-            
-            // 일반적인 고정 수치 감소 디버프
             if (debuff.effect.type === `${statName}_reduce_multiplier`) {
                 totalStat *= (debuff.effect.value || 1);
             }
         }
     });
 
+    // 최종 스탯 반환 (여기서 메서드가 끝나야 합니다)
     return Math.max(0, totalStat);
 }
 
