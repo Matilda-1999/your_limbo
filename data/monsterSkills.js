@@ -134,6 +134,7 @@ export const MONSTER_SKILLS = {
   id: "SKILL_Slapstick_Comdey_P",
   name: "슬랩스틱 코미디(피에로)",
   type: "물리 공격",
+  script: `<pre>"하핫! 다, 다들 즐겁지? 응……?"</pre>`,
   description: "뿅망치를 세로로 크게 휘둘러 상하 두 칸씩 피해를 입힙니다.",
   execute: (caster, target, allies, enemies, battleLog, state) => {
     // 세로축 오프셋: 상(0,-2), 상(0,-1), 하(0,1), 하(0,2)
@@ -146,7 +147,7 @@ export const MONSTER_SKILLS = {
         const finalDmg = Math.max(10, calculatedDmg);
         
         target.takeDamage(finalDmg, battleLog, caster, allies, enemies, state);
-        battleLog(`  ✦피해✦ 피에로의 세로 휘두르기! ${target.name}에게 ${finalDmg}의 물리 피해.`);
+        battleLog(`  ✦피해✦ 피에로의 물풍선! ${target.name}에게 ${finalDmg}의 물리 피해.`);
 
         // [폭주 기믹] duet_enrage 상태일 때 낙인(Brand) 부여
         if (caster.hasBuff("duet_enrage") && state.applyRandomBrand) {
@@ -162,6 +163,7 @@ export const MONSTER_SKILLS = {
   id: "SKILL_Slapstick_Comdey_C",
   name: "슬랩스틱 코미디(클라운)",
   type: "마법 공격",
+  script: `<pre>"와장창! 어때, 어때? 놀랐지?!"</pre>`,
   description: "뿅망치를 가로로 크게 휘둘러 좌우 두 칸씩 피해를 입힙니다.",
   execute: (caster, target, allies, enemies, battleLog, state) => {
     // 가로축 오프셋: 좌(-2,0), 좌(-1,0), 우(1,0), 우(2,0)
@@ -174,7 +176,7 @@ export const MONSTER_SKILLS = {
         const finalDmg = Math.max(10, calculatedDmg);
         
         target.takeDamage(finalDmg, battleLog, caster, allies, enemies, state);
-        battleLog(`  ✦피해✦ 클라운의 가로 휘두르기! ${target.name}에게 ${finalDmg}의 마법 피해.`);
+        battleLog(`  ✦피해✦ 클라운의 뿅망치! ${target.name}에게 ${finalDmg}의 마법 피해.`);
 
         // [폭주 기믹] duet_enrage 상태일 때 낙인(Brand) 부여
         if (caster.hasBuff("duet_enrage") && state.applyRandomBrand) {
@@ -190,6 +192,7 @@ export const MONSTER_SKILLS = {
   id: "SKILL_Get_a_Present_C",
   name: "선물 받아!(클라운)",
   type: "마법 공격",
+  script: `<pre>"깜~짝 선물 등장이요!"</pre>`,
   description: "대각선 방향 2칸까지 선물을 던져 X자 범위 내의 모든 적에게 마법 피해를 입힙니다.",
   execute: (caster, target, allies, enemies, battleLog, state) => {
     // 대각선 X자 오프셋 (1칸 및 2칸)
@@ -207,7 +210,7 @@ export const MONSTER_SKILLS = {
         const finalDmg = Math.max(10, calculatedDmg);
         
         target.takeDamage(finalDmg, battleLog, caster, allies, enemies, state);
-        battleLog(`  ✦피해✦ 클라운의 폭탄! ${target.name}에게 ${finalDmg}의 마법 피해.`);
+        battleLog(`  ✦피해✦ 클라운의 물풍선! ${target.name}에게 ${finalDmg}의 마법 피해.`);
 
         // [폭주 기믹] duet_enrage 상태일 때 낙인(Brand) 부여
         if (caster.hasBuff("duet_enrage") && state.applyRandomBrand) {
@@ -223,6 +226,7 @@ export const MONSTER_SKILLS = {
   id: "SKILL_Get_a_Present_P",
   name: "선물 받아!(피에로)",
   type: "물리 공격",
+  script: `<pre>"깜짝 선물, 줘야 한댔어……."</pre>`,
   description: "파이를 던져 자신 주변 1칸(8방향) 내의 모든 적에게 물리 피해를 입힙니다.",
   execute: (caster, target, allies, enemies, battleLog, state) => {
     // 자신을 둘러싼 8방향 오프셋
@@ -239,7 +243,7 @@ export const MONSTER_SKILLS = {
         const finalDmg = Math.max(10, calculatedDmg);
         
         target.takeDamage(finalDmg, battleLog, caster, allies, enemies, state);
-        battleLog(`  ✦피해✦ 피에로의 깜짝 파이! ${target.name}에게 ${finalDmg}의 물리 피해.`);
+        battleLog(`  ✦피해✦ 피에로의 파이! ${target.name}에게 ${finalDmg}의 물리 피해.`);
 
         // [폭주 기믹] duet_enrage 상태일 때 낙인(Brand) 부여
         if (caster.hasBuff("duet_enrage") && state.applyRandomBrand) {
@@ -255,6 +259,7 @@ export const MONSTER_SKILLS = {
   id: "GIMMICK_Laugh_of",
   name: "광대의 웃음",
   type: "기믹",
+  script: `<pre>\n\n퍼레이드 음악이 늘어지며 기묘하게 일그러진다.\n협화음 속으로 섬찟한 웃음소리가 들린다.\n"광대는 언제나 감정에 따라 춤을 추지. 함께 웃어 줄래?"\n\n</pre>`,
   execute: (caster, target, allies, enemies, battleLog, state) => {
     // 중복 기믹 방지
     if (state.activeGimmickState && state.activeGimmickState.type.startsWith("clown_emotion")) return false;
@@ -286,6 +291,7 @@ export const MONSTER_SKILLS = {
   id: "GIMMICK_Tears_of",
   name: "광대의 눈물",
   type: "기믹",
+  script: `<pre>\n\n퍼레이드 음악이 늘어지며 기묘하게 일그러진다.\n협화음 속으로 섬찟한 울음소리가 들린다.\n"광대는 언제나 감정에 따라 춤을 추지. 함께 울어 줄래?"\n\n</pre>`,
   execute: (caster, target, allies, enemies, battleLog, state) => {
     // 중복 기믹 방지
     if (state.activeGimmickState && state.activeGimmickState.type.startsWith("clown_emotion")) return false;
@@ -317,6 +323,7 @@ export const MONSTER_SKILLS = {
  SKILL_Carnabloom_Playtime: {
   id: "SKILL_Carnabloom_Playtime",
   name: "유희 (기본 공격)",
+  script: `<pre>\n\n불꽃의 고리가 무대 위를 전부 태울 듯 회전한다.\n박자를 놓치는 순간, 불길이 당신을 스쳐 간다.\n"집중이 깨지는 순간……. 쉿. 조심해야 해. 다칠지도 모르니."\n\n</pre>`,
   execute: (caster, target, allies, enemies, battleLog, state) => {
     const { currentTurn, calculateDamage } = state;
     const isOdd = currentTurn % 2 === 1;
@@ -345,9 +352,8 @@ export const MONSTER_SKILLS = {
   id: "SKILL_Strings_of_Emotion",
   name: "감정의 실",
   type: "디버프/제어",
+  script: `\n<pre>인형사의 가느다란 손가락이 색색의 리본을 감싸 쥔다.\n그것은 누군가의 의지를, 자아를, 이성을, 손쉽게 조롱한다.\n"기쁨도, 공포도. 모두 내려놓고 나에게 몸을 맡기는 게 어떻겠니."\n\n</pre>`,
   execute: (caster, target, allies, enemies, battleLog, state) => {
-    battleLog(`\n<pre>인형사의 가느다란 손가락이 색색의 리본을 감싸 쥔다.</pre>`);
-    battleLog(`<pre>"기쁨도, 슬픔도, 공포도... 모두 내가 정해 주는 대로 느끼렴."</pre>`);
 
     // 살아 있는 아군 중 무작위 2명 선정
     const targets = allies.filter(a => a.isAlive).sort(() => 0.5 - Math.random()).slice(0, 2);
@@ -390,6 +396,7 @@ export const MONSTER_SKILLS = {
 SKILL_Puppet_Parade: {
   id: "SKILL_Puppet_Parade",
   name: "퍼펫 퍼레이드",
+  script: `\n\n<pre>유려한 손짓이 자나간 곳에는 기묘한 퍼레이드 음악이 울린다.\n눈을 감고 있던 인형들은 곧 생명을 되찾고 깨어난다.\n"나의 아이들아, 어서 나가 보렴. 손님들이 찾아왔단다."<pre>\n\n`,
   execute: (caster, target, allies, enemies, battleLog, state) => {
     battleLog(`✦기믹✦ 카르나 블룸의 손짓에 새로운 인형들이 무대로 걸어 나옵니다.`);
     
@@ -407,7 +414,7 @@ SKILL_Puppet_Parade: {
  SKILL_Play2: {
    id: "SKILL_Play2",
    name: "유희(2,4타)",
-   // 문자열 대신 객체 배열로 정규화
+   script: `\n\n<pre>장난감들이 공중에서 빙글빙글 돌며 떨어진다.\n그것들이 불협화음을 이루며 바닥에 닿을 때, 무대는 숨을 멈춘다.\n"그 표정, 무대 위에서 더 보고 싶어. 이리 올라오렴."</pre>\n\n`,
    hitArea: [
      {x:0,y:0}, {x:1,y:1}, {x:2,y:2}, {x:3,y:3}, {x:5,y:5}, {x:6,y:6}, {x:7,y:7}, {x:8,y:8},
      {x:0,y:8}, {x:1,y:7}, {x:2,y:6}, {x:3,y:5}, {x:5,y:3}, {x:6,y:2}, {x:7,y:1}, {x:8,y:0}
@@ -455,8 +462,8 @@ SKILL_Puppet_Parade: {
       caster.isAlive = true;
       caster.currentHp = Math.round(caster.maxHp * 0.4);
       
-      battleLog(`\n<b>✦앵콜✦ 카르나 블룸이 다시 무대 위로 소환되었습니다! (HP 40% 회복)</b>`);
-      battleLog(`"자, 관객 여러분. 다시 한번 박수를!"`);
+      battleLog(`\n<b>✦앵콜✦ 카르나 블룸이 다시 무대 위로 소환되었습니다!</b>`);
+      battleLog(`<pre>"자, 관객 여러분. 다시 한번 박수를!"</pre>`);
       battleLog(`<pre>--------------------------------</pre>\n`);
 
       if (state.displayCharacters) state.displayCharacters();
@@ -475,6 +482,7 @@ SKILL_Puppet_Parade: {
    id: "SKILL_Silence",
    name: "침묵",
    type: "상태 이상",
+  script: `\n\n<pre>불협화음은 예고 없이 중단된다.\n인형의 동작은 크게 흔들리고, 무대 위에서 비틀거린다.\n"이건 예정된 장면이 아니야……."</pre>\n\n`,
    execute: (caster, target, allies, enemies, battleLog, state) => {
      battleLog(`✦특수 패턴✦ ${caster.name}가 맹공에 정신을 차리지 못하고 [침묵] 상태에 빠집니다.`);
      caster.addDebuff("groggy", "[침묵](그로기)", 2, { description: "행동 불가 및 받는 피해 증가" });
@@ -486,8 +494,9 @@ SKILL_Puppet_Parade: {
   id: "SKILL_Script_Reversal",
   name: "대본의 반역",
   type: "기믹/광역 공격",
+  script: `\n<pre>무대의 조명이 번뜩이며 시야를 혼란시킨다. \n대본 위에 존재하는 것은, 어느 자리일까.\n"배우는 늘 빛 아래에. 자리를 비우면, 대본은 분노하지."</pre>\n\n`,
   execute: (caster, target, allies, enemies, battleLog, state) => {
-    battleLog(`\n<pre>무대의 조명이 번뜩이며 시야를 혼란시킨다. \n정해진 배역을 벗어난 자들에게는 오로지 어둠만이 허락될 뿐.</pre>`);
+   
     
     // 1. 안전 구역(조명 타일) 무작위 선정 (예: 9x9 중 3~4곳)
     const safeZones = [];
@@ -530,9 +539,9 @@ SKILL_Dress_Rehearsal: {
   id: "SKILL_Dress_Rehearsal",
   name: "최종 리허설",
   type: "최종 기믹",
+  script: `\n\n<pre>무대 위의 모든 시선이 한 곳으로 집중된다.\n이 순간, 당신에게 맡겨진 배역은.\n\n</pre>`,
   execute: (caster, target, allies, enemies, battleLog, state) => {
-    battleLog(`\n\n<pre>무대 위의 모든 시선이 한 곳으로 집중된다.\n이 순간, 당신에게 맡겨진 배역은.\n\n</pre>`);
-
+    
    const roles = ["웃는 자", "우는 자", "흥분한 자", "무표정한 자"];
     
     allies.filter(a => a.isAlive).forEach(a => {
