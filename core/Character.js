@@ -214,9 +214,14 @@ export class Character {
         if (nightmare.stacks <= 0) {
             this.removeDebuffById("nightmare");
             logFn(`✦해제✦ ${this.name}, 충격으로 인해 [악몽]에서 깨어납니다.`);
+                }
+            }
         }
+        if (this.currentHp <= 0) {
+            this.isAlive = false;
+            logFn(`✦☠️✦ ${this.name}, 쓰러집니다.`);
+        }   
     }
-}
 
     addBuff(id, name, turns, effect) {
         // 1. 기존에 같은 ID를 가진 버프가 있다면 먼저 제거 (중복 방지)
