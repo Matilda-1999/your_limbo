@@ -369,7 +369,7 @@ export const MONSTER_SKILLS = {
            stacks: 2, // 2회 타격 필요
            description: "행동 불가. 공격을 2회 받아야 해제됩니다."
          });
-         battleLog(`  ✦상태 이상✦ ${t.name}, 실에 묶여 자아를 잃고 [악몽]에 빠집니다.`);
+         battleLog(`  ✦낙인✦ ${t.name}, 실에 묶여 자아를 잃고 [악몽]에 빠집니다.`);
        } else if (chosenEffect === "brand_joy") {
         // [환희 낙인] 부여 (영구, 3중첩)
         t.addDebuff("brand_joy", "[환희 낙인]", 99, {
