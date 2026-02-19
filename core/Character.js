@@ -54,11 +54,7 @@ export class Character {
 
     getEffectiveStat(statName) {
     let value = this[statName];
-    let additiveBonus = 0;
-
-    getEffectiveStat(statName) {
-    let value = this[statName];
-    let additiveBonus = 0; // [실재] 등의 합연산 보너스
+    let additiveBonus = 0; 
 
     // 1. 버프 처리 (곱연산 우선 후 합연산 합산)
     this.buffs.forEach(buff => {
