@@ -80,7 +80,7 @@ export const MONSTER_TEMPLATES = {
   // 3. 랜덤 타입을 갖는 일반/엘리트 몬스터
   Pierrot: {
     name: "피에로",
-    type: ["암석", "나무"],
+    type: ["천체", "나무"],
     maxHp: 300,
     atk: 35,
     matk: 35,
@@ -96,7 +96,7 @@ export const MONSTER_TEMPLATES = {
 
   Clown: {
     name: "클라운",
-    type: ["암석", "나무"],
+    type: ["암석", "야수"],
     maxHp: 300,
     atk: 35,
     matk: 35,
