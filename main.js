@@ -40,7 +40,7 @@ let state = {
   characterPositions: {},
   currentTurn: 0,
   isBattleStarted: false,
-  selectedMapId: "A-1",
+  selectedMapId: "B-1",
   playerActionsQueue: [],
   actedAlliesThisTurn: [],
   selectedAction: null,
