@@ -185,6 +185,12 @@ function startBattle() {
 
 function prepareNextTurnCycle() {
   state.currentTurn++;
+
+  state.allyCharacters.forEach(a => {
+    a.actedThisTurn = false;
+    a.usedAttackSkillThisTurn = false;
+  });
+  
   state.actedAlliesThisTurn = [];
   state.playerActionsQueue = [];
   state.bossGimmickExecuted = false;
@@ -404,6 +410,18 @@ function confirmAction() {
   const action = state.selectedAction;
   const { caster, type } = action;
 
+  // --- 최종 리허설 판정을 위한 행동 기록 ---
+  caster.actedThisTurn = true; // "행동함" 상태 기록
+
+  if (type === "skill") {
+    // 스킬 실행 코드 문자열을 분석하여 대미지 관련 로직이 있는지 확인
+    const skillCode = action.skill.execute.toString();
+    caster.usedAttackSkillThisTurn = skillCode.includes("calculateDamage") || skillCode.includes("takeDamage");
+  } else {
+    // 이동은 공격 스킬이 아님
+    caster.usedAttackSkillThisTurn = false;
+  }
+  
   console.group(`%c[행동 예약] ${caster.name}`, 'color: #4da6ff; font-weight: bold;');
   if (type === "skill") {
     console.log(`스킬명: ${action.skill.name}`);
@@ -535,6 +553,12 @@ async function executeBattleTurn() {
     await new Promise(r => setTimeout(r, 600));
   }
 
+  // 최종 리허설 판정 로직 (B-2 맵에서만 작동)
+if (state.selectedMapId === "B-2") {
+  resolveDressRehearsal(state.allyCharacters, log, state);
+  syncUI(); // 판정 결과(디버프 등) 반영을 위해 UI 갱신
+}
+
   [...state.allyCharacters, ...state.enemyCharacters].forEach((c) => {
   if (c.isAlive) {
     // 턴 감소 (1턴 종료 직후 실행되어 2->1이 됨)
@@ -606,71 +630,7 @@ function resolveMinionGimmicks() {
   }
 }
 
-function resolveDressRehearsal(allies, battleLog, state) {
-  battleLog(`\n<b>☂︎ [최종 리허설] 판정: 무대 감독의 눈이 번뜩입니다.</b>`);
-  
-  let grimReaperTriggered = false; // 무표정한 자 실패 여부
 
-  allies.filter(a => a.isAlive && a.hasBuff("rehearsal_role")).forEach(a => {
-    const buff = a.buffs.find(b => b.id === "rehearsal_role");
-    const role = buff.effect.roleType;
-    const moved = (a.posX !== buff.effect.startPosX || a.posY !== buff.effect.startPosY);
-    const acted = a.actedThisTurn; // 행동 완료 여부 (state에서 관리)
-    const usedAttack = a.usedAttackSkillThisTurn; // 공격 스킬 사용 여부
-
-    let success = true;
-
-    switch(role) {
-      case "웃는 자":
-        if (!usedAttack) {
-          success = false;
-          a.addDebuff("move_bind", "[이동 불가]", 3, { isRoot: true });
-          battleLog(`  ✦낙제✦ ${a.name}: 웃음을 잃어 3턴간 발이 묶입니다.`);
-        }
-        break;
-
-      case "우는 자":
-        // acted(행동함)인데 공격스킬을 썼거나, 아예 행동을 안 한 경우 실패
-        if (usedAttack || !acted) {
-          success = false;
-          a.addDebuff("brand_melancholy", "[우울 낙인]", 99, { maxStacks: 3 });
-          battleLog(`  ✦낙제✦ ${a.name}: 슬픔을 외면하여 [우울 낙인]이 새겨집니다.`);
-        }
-        break;
-
-      case "흥분한 자":
-        if (!moved) {
-          success = false;
-          a.addDebuff("brand_joy", "[환희 낙인]", 99, { maxStacks: 3 });
-          battleLog(`  ✦낙제✦ ${a.name}: 고요함에 질려 [환희 낙인]이 새겨집니다.`);
-        }
-        break;
-
-      case "무표정한 자":
-        if (acted || moved) {
-          success = false;
-          grimReaperTriggered = true;
-          battleLog(`  ✦낙제✦ ${a.name}: 감정을 드러내 무대 전체에 혼란을 줍니다!`);
-        }
-        break;
-    }
-
-    if (success) {
-      battleLog(`  ✦통과✦ ${a.name}: 완벽한 연기였습니다.`);
-    }
-    
-    a.removeBuffById("rehearsal_role");
-  });
-
-  // 무표정한 자 실패 시 전원 피해
-  if (grimReaperTriggered) {
-    allies.filter(a => a.isAlive).forEach(a => {
-      const dmg = Math.round(a.maxHp * 0.1);
-      a.takeDamage(dmg, battleLog);
-      battleLog(`  ✦공동 책임✦ 체력이 10% 감소합니다.`);
-    });
-  }
-}
 
 function checkMapShrink() {
   if (state.selectedMapId !== "B-2") return; // 곡예사 모드(9x9)에서만 작동
@@ -711,24 +671,6 @@ function applyShrinkDamage() {
       const dmg = Math.round(a.maxHp * 0.15); // 외곽 대미지 15%
       a.takeDamage(dmg, log);
       log(`✦어둠✦ 무대 밖의 ${a.name}, ${dmg}의 피해를 입습니다.`);
-    }
-  });
-}
-
-function applyShrinkDamage() {
-  if (state.mapShrinkState === 0) return;
-
-  // 안전 구역 계산 (9x9 기준 중심부)
-  const size = state.mapShrinkState === 2 ? 3 : 5;
-  const start = Math.floor((9 - size) / 2);
-  const end = start + size - 1;
-
-  state.allyCharacters.filter(a => a.isAlive).forEach(a => {
-    const isOutside = a.posX < start || a.posX > end || a.posY < start || a.posY > end;
-    if (isOutside) {
-      const dmg = Math.round(a.maxHp * 0.15); // 최대 체력의 15% 고정 피해
-      a.takeDamage(dmg, log);
-      log(`✦어둠✦ 무대 밖으로 밀려난 ${a.name}이(가) ${dmg}의 지속 피해를 입습니다.`);
     }
   });
 }
@@ -795,6 +737,77 @@ async function performEnemyAction(enemy) {
 
   if (success && !effectTriggered && !isDebuffOrGimmick) {
     log(`✦정보✦ 아무 일도 일어나지 않았습니다.`);
+  }
+}
+
+function resolveDressRehearsal(allies, battleLog, state) {
+  // 배역 버프를 가진 캐릭터가 한 명도 없으면 실행 안 함
+  const actors = allies.filter(a => a.isAlive && a.hasBuff("rehearsal_role"));
+  if (actors.length === 0) return;
+
+  battleLog(`\n<pre>[최종 리허설] 판정: 무대 감독의 눈이 번뜩입니다.</pre>`);
+  
+  let grimReaperTriggered = false;
+
+  actors.forEach(a => {
+    const buff = a.buffs.find(b => b.id === "rehearsal_role");
+    const role = buff.effect.roleType;
+    
+    // 조건 체크 (confirmAction에서 기록한 데이터 사용)
+    const moved = (a.posX !== buff.effect.startPosX || a.posY !== buff.effect.startPosY);
+    const acted = a.actedThisTurn; 
+    const usedAttack = a.usedAttackSkillThisTurn; 
+
+    let success = true;
+
+    switch(role) {
+      case "웃는 자":
+        if (!usedAttack) {
+          success = false;
+          a.addDebuff("move_bind", "[이동 불가]", 3, { isRoot: true });
+          battleLog(`  ✦낙제✦ ${a.name}: 웃음을 잃어 3턴간 발이 묶입니다.`);
+        }
+        break;
+
+      case "우는 자":
+        if (usedAttack || !acted) {
+          success = false;
+          a.addDebuff("brand_melancholy", "[우울 낙인]", 99, { maxStacks: 3 });
+          battleLog(`  ✦낙제✦ ${a.name}: 슬픔을 외면하여 [우울 낙인]이 새겨집니다.`);
+        }
+        break;
+
+      case "흥분한 자":
+        if (!moved) {
+          success = false;
+          a.addDebuff("brand_joy", "[환희 낙인]", 99, { maxStacks: 3 });
+          battleLog(`  ✦낙제✦ ${a.name}: 고요함에 질려 [환희 낙인]이 새겨집니다.`);
+        }
+        break;
+
+      case "무표정한 자":
+        if (acted || moved) {
+          success = false;
+          grimReaperTriggered = true;
+          battleLog(`  ✦낙제✦ ${a.name}: 감정을 드러내 무대 전체에 혼란을 줍니다.`);
+        }
+        break;
+    }
+
+    if (success) {
+      battleLog(`  ✦통과✦ ${a.name}: 완벽한 연기였습니다.`);
+    }
+    
+    // 판정 후 배역 버프 제거
+    a.removeBuffById("rehearsal_role");
+  });
+
+  if (grimReaperTriggered) {
+    allies.filter(a => a.isAlive).forEach(a => {
+      const dmg = Math.round(a.maxHp * 0.1);
+      a.takeDamage(dmg, battleLog);
+    });
+    battleLog(`  ✦공동 책임✦ 전원의 체력이 10% 감소합니다.`);
   }
 }
 
