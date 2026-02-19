@@ -85,9 +85,16 @@ export class Character {
                 }
             }
 
-        // 2. [환희 낙인]: 방어 성능 20% 감소
-        if (debuff.id === "brand_joy" && (statName === "def" || statName === "mdef")) {
-            multiplierTotal *= (1 - (0.2 * stacks));
+        // --- 환희 낙인: 방어 감소 + 공격 강화 ---
+        if (debuff.id === "brand_joy") {
+            // 1. 방어 성능 감소 (기존 로직: 중첩당 20%)
+            if (statName === "def" || statName === "mdef") {
+                multiplierTotal *= (1 - (0.2 * stacks));
+            }
+            // 2. 공격 성능 강화 (추가 로직: 중첩당 15% 강화)
+            if (statName === "atk" || statName === "matk") {
+                multiplierTotal *= (1 + (0.15 * stacks)); // 1중첩 시 1.15배, 3중첩 시 1.45배
+            }
         }
 
         // 3. [우울 낙인]: 공격 성능 10% 감소
