@@ -259,29 +259,33 @@ export const MONSTER_SKILLS = {
   id: "GIMMICK_Laugh_of",
   name: "광대의 웃음",
   type: "기믹",
-  script: `<pre>\n\n퍼레이드 음악이 늘어지며 기묘하게 일그러진다.\n협화음 속으로 섬찟한 웃음소리가 들린다.\n"광대는 언제나 감정에 따라 춤을 추지. 함께 웃어 줄래?"\n\n</pre>`,
+  script: `<pre>\n\n퍼레이드 음악이 늘어지며 기묘하게 일그러진다.\n불협화음 속으로 섬찟한 웃음소리가 들린다.\n"광대는 언제나 감정에 따라 춤을 추지. 함께 웃어 줄래?"\n\n</pre>`,
   execute: (caster, target, allies, enemies, battleLog, state) => {
     // 중복 기믹 방지
     if (state.activeGimmickState && state.activeGimmickState.type.startsWith("clown_emotion")) return false;
 
-    battleLog("✦기믹 발생✦ 무대 위로 피에로의 기괴한 웃음소리가 울려 퍼집니다.");
+    battleLog("✦기믹 발생✦ 무대 위로 클라운의 기괴한 웃음소리가 울려 퍼집니다.");
 
-    // 기믹 상태 설정 (3턴 지속)
+    // 1. 기믹 상태 설정
     state.activeGimmickState = {
       type: "clown_emotion_laugh",
       turnStart: state.currentTurn,
       duration: 3,
-      requiredTarget: "클라운", // 집중 공격 대상
+      requiredTarget: "클라운", 
       hits: 0,
-      requiredHits: 5 // 필요 유효타 수
+      requiredHits: 3
     };
 
-    // 즉시 효과: 모든 아군에게 [환희 낙인] 부여 시도 (광대 폭주 시 대비)
-    allies.filter(a => a.isAlive).forEach(a => {
+    // 2. 즉시 효과: 무작위 아군 1명에게 피해
+    const aliveAllies = allies.filter(a => a.isAlive);
+    if (aliveAllies.length > 0) {
+      const randomTarget = aliveAllies[Math.floor(Math.random() * aliveAllies.length)];
       const damage = 10;
-      a.takeDamage(damage, battleLog, caster);
-      battleLog(`  ✦피해✦ 소름 끼치는 웃음소리에 ${a.name}의 정신이 깎입니다.`);
-    });
+      
+      // 피해 입히기
+      randomTarget.takeDamage(damage, battleLog, caster, allies, enemies, state);
+      battleLog(`  ✦피해✦ 소름 끼치는 웃음소리에 ${randomTarget.name}의 정신이 깎입니다.`);
+    }
 
     return true;
   }
@@ -298,22 +302,26 @@ export const MONSTER_SKILLS = {
 
     battleLog("✦기믹 발생✦ 무대 위로 비명 섞인 피에로의 울음소리가 터져 나옵니다.");
 
-    // 기믹 상태 설정 (3턴 지속)
+    // 1. 기믹 상태 설정
     state.activeGimmickState = {
       type: "clown_emotion_tear",
       turnStart: state.currentTurn,
       duration: 3,
-      requiredTarget: "피에로", // 집중 공격 대상
+      requiredTarget: "피에로", 
       hits: 0,
-      requiredHits: 5 // 필요 유효타 수
+      requiredHits: 3
     };
 
-    // 즉시 효과: 모든 아군에게 [우울 낙인] 부여 시도 (광대 폭주 시 대비)
-    allies.filter(a => a.isAlive).forEach(a => {
-      const damage = 10;
-      a.takeDamage(damage, battleLog, caster);
-      battleLog(`  ✦피해✦ 비통한 울음소리가 ${a.name}의 행동을 무겁게 짓누릅니다.`);
-    });
+    // 2. 즉시 효과: 무작위 아군 1명에게 피해
+    const aliveAllies = allies.filter(a => a.isAlive);
+    if (aliveAllies.length > 0) {
+      const randomTarget = aliveAllies[Math.floor(Math.random() * aliveAllies.length)];
+      const damage = 20;
+      
+      // 피해 입히기
+      randomTarget.takeDamage(damage, battleLog, caster, allies, enemies, state);
+      battleLog(`  ✦피해✦ 비통한 울음소리가 ${randomTarget.name}의 행동을 무겁게 짓누릅니다.`);
+    }
 
     return true;
   }
