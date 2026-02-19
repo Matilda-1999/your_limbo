@@ -404,17 +404,26 @@ SKILL_Puppet_Parade: {
   }
  },
 
- 
-
  SKILL_Play2: {
    id: "SKILL_Play2",
    name: "유희(2,4타)",
+   // 문자열 대신 객체 배열로 정규화
+   hitArea: [
+     {x:0,y:0}, {x:1,y:1}, {x:2,y:2}, {x:3,y:3}, {x:5,y:5}, {x:6,y:6}, {x:7,y:7}, {x:8,y:8},
+     {x:0,y:8}, {x:1,y:7}, {x:2,y:6}, {x:3,y:5}, {x:5,y:3}, {x:6,y:2}, {x:7,y:1}, {x:8,y:0}
+   ],
    execute: (caster, target, allies, enemies, battleLog, state) => {
-     const hitArea = "0,0;1,1;2,2;3,3;5,5;6,6;7,7;8,8;0,8;1,7;2,6;3,5;5,3;6,2;7,1;8,0".split(";").map(s => s.split(",").map(Number));
+     const area = MONSTER_SKILLS.SKILL_Play2.hitArea;
+     
+     // 9x9 맵 전체 아군 중 범위 내 대상 필터링
      allies.filter(t => t.isAlive).forEach(target => {
-       if (hitArea.some(pos => pos[0] === target.posX && pos[1] === target.posY)) {
+       const isHit = area.some(pos => pos.x === target.posX && pos.y === target.posY);
+       
+       if (isHit) {
+         // state.calculateDamage 인자 순서 준수 (caster, target, multiplier, type)
          const d = state.calculateDamage(caster, target, 1.1, "magical");
-         target.takeDamage(d, battleLog, caster, allies, enemies, state); // 파라미터 수정됨
+         target.takeDamage(d, battleLog, caster, allies, enemies, state);
+         battleLog(`✦피해✦ ${target.name}, 화려한 곡예에 휘말려 ${d}의 피해를 입습니다.`);
        }
      });
      return true;
