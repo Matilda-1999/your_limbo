@@ -269,7 +269,6 @@ function startCharacterAction(char) {
   DOM.confirmBtn.style.display = "none";
   state.selectedAction = null;
 
-  
   // 1. 직군별 스킬 매핑 정의
   const jobSkills = {
     "탱커": ["SKILL_RESILIENCE", "SKILL_COUNTER", "SKILL_PROVOKE", "SKILL_REVERSAL"],
@@ -278,10 +277,9 @@ function startCharacterAction(char) {
     "서포터": ["SKILL_ILLUSION", "SKILL_NIHILITY", "SKILL_REALITY", "SKILL_TRUTH"]
   };
 
-  // 2. 캐릭터 직군에 해당하는 스킬 목록 가져오기
   const allowedSkillIds = jobSkills[char.job] || [];
 
-  // 3. 허용된 스킬들만 순회하며 버튼 생성
+  // 2. 스킬 버튼 생성 루프 (하나만 있어야 합니다)
   allowedSkillIds.forEach((skillId) => {
     const skill = SKILLS[skillId];
     if (!skill) return;
@@ -289,62 +287,66 @@ function startCharacterAction(char) {
     const btn = document.createElement("button");
     btn.textContent = skill.name;
 
-    // 대미지 가함 여부 분석 (무장 해제 판정용)
-    const skillCode = skill.execute.toString();
-    const dealsDamage = skillCode.includes("calculateDamage") || skillCode.includes("takeDamage");
-
-    // 쿨타임 변수 정의
     const lastUsed = char.lastSkillTurn ? char.lastSkillTurn[skillId] || 0 : 0;
     const isOnCooldown = skill.cooldown && lastUsed !== 0 && state.currentTurn - lastUsed < skill.cooldown;
 
-    // 무장 해제 및 쿨타임 상태에 따른 버튼 비활성화
-    // 3. 허용된 스킬들만 순회하며 버튼 생성
-    allowedSkillIds.forEach((skillId) => {
-      const skill = SKILLS[skillId];
-      if (!skill) return;
-    
-      const btn = document.createElement("button");
-      btn.textContent = skill.name;
-    
-      // 쿨타임 변수 정의
-      const lastUsed = char.lastSkillTurn ? char.lastSkillTurn[skillId] || 0 : 0;
-      const isOnCooldown = skill.cooldown && lastUsed !== 0 && state.currentTurn - lastUsed < skill.cooldown;
-    
-      // [수정] 악몽 상태면 데미지 여부 상관없이 모든 스킬 차단
-      if (!char.canAttack) {
-        btn.disabled = true;
-        btn.style.opacity = "0.5";
-        btn.style.cursor = "not-allowed";
-        btn.textContent += " (악몽)";
-      } 
-      // 악몽은 아니지만 쿨타임인 경우
-      else if (isOnCooldown) {
-        btn.disabled = true;
-        btn.textContent += ` (${skill.cooldown - (state.currentTurn - lastUsed)}턴)`;
-      }
-    btn.onclick = () => {
-            state.selectedAction = { type: "skill", skill, caster: char, targetId: null };
-            UI.renderSkillDescription(DOM.description, skill);
+    // [악몽 체크] 행동 불능이면 버튼 비활성화
+    if (!char.canAttack) {
+      btn.disabled = true;
+      btn.style.opacity = "0.5";
+      btn.style.cursor = "not-allowed";
+      btn.textContent += " (악몽)";
+    } 
+    else if (isOnCooldown) {
+      btn.disabled = true;
+      btn.textContent += ` (${skill.cooldown - (state.currentTurn - lastUsed)}턴)`;
+    }
 
-            if (skill.targetSelection === "self" || skill.targetType === "all_allies") {
-                state.selectedAction.targetId = char.id;
-                DOM.targetName.textContent = "즉시 발동 (자신)";
-                DOM.confirmBtn.style.display = "block";
-            } else {
-                DOM.confirmBtn.style.display = "none";
-                
-                let targetText = "대상을 선택하세요";
-                if (skill.targetSelection === "enemy") targetText += " (적군)";
-                else if (skill.targetSelection === "ally") targetText += " (아군)";
-                else if (skill.targetSelection === "ally_or_self") targetText += " (아군 혹은 자신)";
-                else if (skill.targetSelection === "single_ally_or_gimmick") targetText += " (아군 혹은 기믹)";
-                
-                DOM.targetName.textContent = targetText;
-            }
-              syncUI();
-      };
-      DOM.skillButtons.appendChild(btn);
-    });
+    btn.onclick = () => {
+      state.selectedAction = { type: "skill", skill, caster: char, targetId: null };
+      UI.renderSkillDescription(DOM.description, skill);
+
+      if (skill.targetSelection === "self" || skill.targetType === "all_allies") {
+        state.selectedAction.targetId = char.id;
+        DOM.targetName.textContent = "즉시 발동 (자신)";
+        DOM.confirmBtn.style.display = "block";
+      } else {
+        DOM.confirmBtn.style.display = "none";
+        let targetText = "대상을 선택하세요";
+        if (skill.targetSelection === "enemy") targetText += " (적군)";
+        else if (skill.targetSelection === "ally") targetText += " (아군)";
+        else if (skill.targetSelection === "ally_or_self") targetText += " (아군 혹은 자신)";
+        else if (skill.targetSelection === "single_ally_or_gimmick") targetText += " (아군 혹은 기믹)";
+        DOM.targetName.textContent = targetText;
+      }
+      syncUI();
+    };
+    DOM.skillButtons.appendChild(btn);
+  }); // 루프 끝
+
+  // 3. [행동 포기] 버튼
+  const skipBtn = document.createElement("button");
+  skipBtn.textContent = "행동 포기";
+  skipBtn.className = "button";
+  skipBtn.style.backgroundColor = "#990000";
+  skipBtn.style.marginTop = "10px";
+
+  skipBtn.onclick = () => {
+    if (confirm(`${char.name}의 이번 턴 행동을 포기하시겠습니까?`)) {
+      log(`✦정보✦ ${char.name}, 이번 턴 행동을 포기했습니다.`);
+      state.actedAlliesThisTurn.push(char.id);
+      state.selectedAction = null;
+      promptAllySelection();
+      syncUI();
+    }
+  };
+
+  DOM.skillButtons.appendChild(document.createElement("br"));
+  DOM.skillButtons.appendChild(skipBtn);
+  
+  // 4. 이동 컨트롤 호출
+  renderMovementControls(char);
+}
 
   // 2. [행동 포기] 버튼
   const skipBtn = document.createElement("button");
