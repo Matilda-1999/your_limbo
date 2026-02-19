@@ -89,12 +89,16 @@ function addCharacterAtPos(templateId, pos) {
   const template = MONSTER_TEMPLATES[templateId];
   if (!template) return;
 
-  let finalType = template.type;
+   // 1. 속성 결정 (배열일 경우 무작위 선택)
+  let selectedType = template.type;
   if (Array.isArray(template.type)) {
-    finalType = template.type[Math.floor(Math.random() * template.type.length)];
+    selectedType = template.type[Math.floor(Math.random() * template.type.length)];
   }
-  
-  const monster = new Character(template.name, template.type, null);
+
+  // 2. 결정된 단일 속성(selectedType)으로 캐릭터 생성
+  const monster = new Character(template.name, selectedType, null);
+
+  // 3. 템플릿의 나머지 능력치 할당
   Object.assign(monster, {
     maxHp: template.maxHp,
     currentHp: template.maxHp,
@@ -751,9 +755,10 @@ async function performEnemyAction(enemy) {
     actionId.includes("GIMMICK");
 
   if (success && !effectTriggered && !isDebuffOrGimmick) {
-    log(`✦정보✦ 아무 일도 일어나지 않았습니다.`);
+    if (isBoss) {
+      log(`✦정보✦ ${enemy.name}의 행동이 전장에 영향을 주지 못했습니다.`);
+    }
   }
-}
 
 function resolveDressRehearsal(allies, battleLog, state) {
   // 배역 버프를 가진 캐릭터가 한 명도 없으면 실행 안 함
