@@ -269,6 +269,7 @@ function startCharacterAction(char) {
   DOM.confirmBtn.style.display = "none";
   state.selectedAction = null;
 
+  
   // 1. 직군별 스킬 매핑 정의
   const jobSkills = {
     "탱커": ["SKILL_RESILIENCE", "SKILL_COUNTER", "SKILL_PROVOKE", "SKILL_REVERSAL"],
@@ -297,15 +298,30 @@ function startCharacterAction(char) {
     const isOnCooldown = skill.cooldown && lastUsed !== 0 && state.currentTurn - lastUsed < skill.cooldown;
 
     // 무장 해제 및 쿨타임 상태에 따른 버튼 비활성화
-    if (!char.canAttack && dealsDamage) {
-      btn.disabled = true;
-      btn.style.opacity = "0.5";
-      btn.style.cursor = "not-allowed";
-      btn.textContent += " (무장 해제)";
-    } else if (isOnCooldown) {
-      btn.disabled = true;
-      btn.textContent += ` (${skill.cooldown - (state.currentTurn - lastUsed)}턴)`;
-    }
+    // 3. 허용된 스킬들만 순회하며 버튼 생성
+    allowedSkillIds.forEach((skillId) => {
+      const skill = SKILLS[skillId];
+      if (!skill) return;
+    
+      const btn = document.createElement("button");
+      btn.textContent = skill.name;
+    
+      // 쿨타임 변수 정의
+      const lastUsed = char.lastSkillTurn ? char.lastSkillTurn[skillId] || 0 : 0;
+      const isOnCooldown = skill.cooldown && lastUsed !== 0 && state.currentTurn - lastUsed < skill.cooldown;
+    
+      // [수정] 악몽 상태면 데미지 여부 상관없이 모든 스킬 차단
+      if (!char.canAttack) {
+        btn.disabled = true;
+        btn.style.opacity = "0.5";
+        btn.style.cursor = "not-allowed";
+        btn.textContent += " (악몽)";
+      } 
+      // 악몽은 아니지만 쿨타임인 경우
+      else if (isOnCooldown) {
+        btn.disabled = true;
+        btn.textContent += ` (${skill.cooldown - (state.currentTurn - lastUsed)}턴)`;
+      }
     btn.onclick = () => {
             state.selectedAction = { type: "skill", skill, caster: char, targetId: null };
             UI.renderSkillDescription(DOM.description, skill);
@@ -360,6 +376,7 @@ function startCharacterAction(char) {
 
 function renderMovementControls(char) {
   DOM.moveButtons.innerHTML = "<h4>이동(8방향)</h4>";
+  const isNightmare = !char.canAttack;
   const directions = [
     { d: "↖", x: -1, y: -1 }, { d: "↑", x: 0, y: -1 }, { d: "↗", x: 1, y: -1 },
     { d: "←", x: -1, y: 0 }, { d: "→", x: 1, y: 0 },
@@ -375,8 +392,10 @@ function renderMovementControls(char) {
     const isOutOfBounds = targetX < 0 || targetX >= state.mapWidth || targetY < 0 || targetY >= state.mapHeight;
     const isOccupied = state.characterPositions[`${targetX},${targetY}`];
 
-    if (isOutOfBounds || isOccupied) {
-      btn.disabled = true; btn.style.opacity = "0.3";
+    if (isNightmare || isOutOfBounds || isOccupied) {
+      btn.disabled = true; 
+      btn.style.opacity = "0.3";
+      btn.style.cursor = "not-allowed";
     }
 
     btn.onclick = () => {
