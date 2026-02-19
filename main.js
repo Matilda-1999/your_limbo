@@ -760,6 +760,7 @@ async function performEnemyAction(enemy) {
       log(`✦정보✦ ${enemy.name}의 행동이 전장에 영향을 주지 못했습니다.`);
     }
   }
+}
 
 function resolveDressRehearsal(allies, battleLog, state) {
   // 배역 버프를 가진 캐릭터가 한 명도 없으면 실행 안 함
