@@ -119,11 +119,6 @@ function addCharacterAtPos(templateId, pos) {
 function loadSelectedMap() {
   if (state.isBattleStarted) return alert("전투 중에는 맵을 변경할 수 없습니다.");
   const mapId = document.getElementById("mapSelect").value;
-
-  // A-1 선택 시 로딩 차단
-  if (mapId === "A-1") {
-    return alert("현재 이용할 수 없습니다.");
-  }
   
   const config = MAP_CONFIGS[mapId];
 
