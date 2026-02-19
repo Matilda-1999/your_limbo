@@ -142,7 +142,7 @@ export class Character {
         }
     }
 
-    // 2. [악몽] 해제 판정 (피격 즉시 실행)
+    /* 2. [악몽] 해제 판정 (피격 즉시 실행)
     if (this.hasDebuff("nightmare") && rawDamage > 0) {
         const nightmare = this.debuffs.find(d => d.id === "nightmare");
         if (nightmare) {
@@ -152,7 +152,7 @@ export class Character {
                 logFn(`✦해제✦ ${this.name}, 충격으로 인해 [악몽]에서 깨어납니다.`);
             }
         }
-    }
+    } */
 
     // 3. [반격/역습] 판정 (isCounter가 아닐 때만 발동하여 무한 루프 방지)
     if (!isCounter && attacker && rawDamage > 0) {
