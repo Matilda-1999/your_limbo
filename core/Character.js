@@ -95,89 +95,91 @@ export class Character {
         if (!this.isAlive) return;
         let finalDamage = rawDamage;
 
-        // 내가 아닌 아군이 맞았을 때, 파티에 [철옹성] 버프를 가진 인원이 있는지 확인
+        // [철옹성/도발] 가로채기
         const protector = allies.find(a => 
             a.isAlive && (a.hasBuff("iron_fortress") || a.hasDebuff("provoked_self"))
         );
         
         if (protector && protector.id !== this.id) {
-        logFn(`✦방어✦ ${protector.name}이(가) 공격을 가로채 대신 맞습니다!`);
+        logFn(`✦방어✦ ${protector.name}, 공격을 가로채 대신 맞습니다.`);
             // protector가 대신 대미지를 입음
             protector.takeDamage(rawDamage, logFn, attacker, [this, ...allies.filter(a => a.id !== protector.id)], enemies, state);
             return; 
         }
 
-        // 2. [도발 감쇄] 본인이 도발 상태라면 피해량 70% 감소 (30%만 받음)
+        // 2. [반격/역습] 판정 (보호막 적용 전 rawDamage 기준으로 실행)
+    const isOddTurn = (state.currentTurn || 1) % 2 !== 0;
+
+    // A. 반격 (모든 아군 피격 시 체크)
+    const counterProvider = [this, ...allies].find(member => 
+        member.isAlive && member.buffs && member.buffs.some(b => b.id === "counter_active")
+    );
+
+    // rawDamage > 0 조건으로 변경하여 보호막 흡수 시에도 반격이 나가도록 함
+    if (counterProvider && attacker && rawDamage > 0) {
+        const isSelfHit = (counterProvider.id === this.id);
+        const multiplier = isSelfHit ? 1.5 : 0.5;
+        const counterDamage = Math.round(rawDamage * multiplier);
+
+        // [신규 기믹] 반격 발동 시 시전자의 보호막 10% 소모 (반격의 반동)
+        if (counterProvider.shield > 0) {
+            const shieldCost = Math.round(counterProvider.shield * 0.1);
+            counterProvider.shield = Math.max(0, counterProvider.shield - shieldCost);
+            logFn(`✦반격 반동✦ ${counterProvider.name}, 반격의 여파로 보호막이 ${shieldCost}만큼 감소합니다.`);
+        }
+
+        if (isOddTurn) {
+            const targetEnemy = [...enemies].filter(e => e.isAlive).sort((a, b) => b.currentHp - a.currentHp)[0];
+            if (targetEnemy) {
+                logFn(`✦스킬✦ ${counterProvider.name}의 응수. ${this.name}을(를) 위해 ${targetEnemy.name}에게 ${counterDamage} 피해.`);
+                targetEnemy.takeDamage(counterDamage, logFn, counterProvider, enemies, allies, state);
+            }
+        } else {
+            logFn(`✦스킬✦ ${counterProvider.name}의 격노. 모든 적에게 피해를 입힙니다.`);
+            enemies.filter(e => e.isAlive).forEach(enemy => {
+                enemy.takeDamage(counterDamage, logFn, counterProvider, enemies, allies, state);
+            });
+        }
+    }
+
+        // B. 역습 (본인 전용)
+        const reversalBuff = this.buffs.find(b => b.id === "reversal_active");
+        if (reversalBuff && attacker && rawDamage > 0) {
+            const atkStat = this.getEffectiveStat("atk");
+            const storedDmg = this.provokeDamage || 0;
+            const counterDamage = Math.round((atkStat + storedDmg) * 1.5);
+            
+            logFn(`✦피해✦ ${this.name}, 역습 실행. (저장된 피해: ${storedDmg})`);
+            attacker.takeDamage(counterDamage, logFn, this, allies, enemies, state);
+            
+            this.buffs = this.buffs.filter(b => b.id !== "reversal_active");
+            this.provokeDamage = 0; 
+        }
+    
+        // 3. 도발 대미지 감쇄 (기존 유지)
         if (this.hasDebuff("provoked_self")) {
             finalDamage *= 0.3;
             logFn(`✦스킬✦ ${this.name}: 도발 효과로 피해량이 70% 감소합니다.`);
         }
-
-        // 3. 보호막 처리
+    
+        // 4. 보호막 처리
         if (this.shield > 0) {
             const absorbed = Math.min(finalDamage, this.shield);
             this.shield -= absorbed;
             finalDamage -= absorbed;
             logFn(`✦보호막✦ ${this.name}: 피해 ${Math.round(absorbed)} 흡수.`);
         }
-
-        // 4. 체력 차감 및 피해 기록
+    
+        // 5. 체력 차감 및 피해 기록
         this.currentHp = Math.max(0, this.currentHp - finalDamage);
         this.totalDamageTakenThisBattle += finalDamage;
-
-        // 도발 혹은 철옹성 상태일 때 받은 실질 피해 누적
+    
         if (this.hasDebuff("provoked_self") || this.hasBuff("iron_fortress")) {
             this.provokeDamage = (this.provokeDamage || 0) + finalDamage;
         }
-
-        // 3. [반격/역습] 통합 판정 로직
-        // 턴 수 및 속성 정보 (공통)
-        const isOddTurn = (state.currentTurn || 1) % 2 !== 0;
-
-        // A. 역습
-        const reversalBuff = this.buffs.find(b => b.id === "reversal_active");
-        if (reversalBuff && attacker && finalDamage > 0) {
-            const damageType = isOddTurn ? "physical" : "magical";
-            const typeName = isOddTurn ? "물리" : "마법";
-            const atkStat = this.getEffectiveStat("atk");
-            const storedDmg = this.provokeDamage || 0;
-            const counterDamage = Math.round((atkStat + storedDmg) * 1.5);
-            
-            logFn(`✦피해✦ ${this.name}, 반격. (저장된 피해: ${storedDmg})`);
-            attacker.takeDamage(counterDamage, logFn, this, allies, enemies, state);
-            
-            this.buffs = this.buffs.filter(b => b.id !== "reversal_active");
-            this.provokeDamage = 0; 
-        }
-
-        // B. 반격
-        const counterProvider = [this, ...allies].find(member => 
-            member.isAlive && member.buffs && member.buffs.some(b => b.id === "counter_active")
-        );
-
-        if (counterProvider && attacker && finalDamage > 0) {
-            const isSelfHit = (counterProvider.id === this.id);
-            const multiplier = isSelfHit ? 1.5 : 0.5; // 본인 피격 시 1.5배, 아군 피격 시 0.5배
-            const counterDamage = Math.round(finalDamage * multiplier);
-
-            if (isOddTurn) {
-                // [홀수 턴: 응수] 체력이 가장 높은 적에게 단일 반격
-                const targetEnemy = [...enemies].filter(e => e.isAlive).sort((a, b) => b.currentHp - a.currentHp)[0];
-                if (targetEnemy) {
-                    logFn(`✦응수✦ ${counterProvider.name}의 보복! ${this.name}을(를) 위해 ${targetEnemy.name}에게 ${counterDamage} 피해.`);
-                    targetEnemy.takeDamage(counterDamage, logFn, counterProvider, enemies, allies, state);
-                }
-            } else {
-                // [짝수 턴: 격노] 모든 적에게 광역 반격
-                logFn(`✦격노✦ ${counterProvider.name}의 광역 반격! 모든 적에게 피해를 입힙니다.`);
-                enemies.filter(e => e.isAlive).forEach(enemy => {
-                    enemy.takeDamage(counterDamage, logFn, counterProvider, enemies, allies, state);
-                });
-            }
-        }
-
+    
         if (this.currentHp <= 0) {
-            this.isAlive = false;
+            this.isAlive = False;
             logFn(`✦☠️✦ ${this.name}, 쓰러집니다.`);
         }
     }
@@ -236,7 +238,7 @@ export class Character {
             if (debuff.id === "poison_truth") {
                 // 1. [중독] 결산: 현재 체력의 1.5% 피해
                 const poisonDmg = Math.max(1, Math.round(this.currentHp * 0.015));
-                logFn(`✦중독✦ ${this.name}이(가) 독으로 ${poisonDmg}의 피해를 입습니다.`);
+                logFn(`✦중독✦ ${this.name}, 독으로 ${poisonDmg}의 피해를 입습니다.`);
                 
                 // 데미지 입힘 (공격자 null 처리)
                 this.takeDamage(poisonDmg, logFn, null, enemies, allies, state);
