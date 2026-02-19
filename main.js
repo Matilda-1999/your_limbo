@@ -203,7 +203,6 @@ function prepareNextTurnCycle() {
   state.bossGimmickExecuted = false;
   DOM.executeBtn.style.display = "none";
 
-  // 턴 시작 로그를 보스 존재 여부와 상관없이 가장 먼저 출력
   log(`\n\n ☂︎ <b>${state.currentTurn} 턴</b>을 시작합니다.`);
 
   // 2. 보스 탐색
@@ -212,26 +211,33 @@ function prepareNextTurnCycle() {
   );
 
   if (boss) {
-    const available = [...(boss.skills || []), ...(boss.gimmicks || [])];
+    let available = [...(boss.skills || []), ...(boss.gimmicks || [])];
+    
+    if (boss.isAlive) {
+      available = available.filter(id => id !== "GIMMICK_Curtain_Call");
+    }
+
     if (available.length > 0) {
       const nextSkillId = available[Math.floor(Math.random() * available.length)];
       state.enemyPreviewAction = { skillId: nextSkillId };
 
       const skillData = MONSTER_SKILLS[nextSkillId];
+      
+      // 스크립트가 있는 경우 출력
       if (skillData && skillData.script) {
         log(skillData.script);
-
-        // 콘솔 디버깅용
-        console.log(`[턴 ${state.currentTurn}] 적군 행동 예고: ${skillData.name}`);
+      } else {
+        // 만약 대사가 없는 스킬이 뽑혔을 경우를 대비한 기본 대사
+        log(`\n<pre>"공연은 계속되어야 해. 아직 관객들이 기다리고 있거든."</pre>`);
       }
+
+      console.log(`[턴 ${state.currentTurn}] 적군 행동 예고: ${skillData ? skillData.name : nextSkillId}`);
     }
   } else {
-    // 보스가 없을 경우(일반 몹 구간 등)에도 최소한의 정보를 출력
     log(`\n<pre>전장에 긴장감이 맴돕니다.</pre>`);
   }
 
-  // [수정] 행동 유도 문구를 항상 마지막에 출력
-  log(`\n ☂︎ 전원, 5분 동안 행동을 예약해 주세요.\n\n`);
+  log(`\n ☂︎ 전원, 5 분 동안 행동을 선언해 주세요.\n\n`);
 
   promptAllySelection();
   syncUI();
