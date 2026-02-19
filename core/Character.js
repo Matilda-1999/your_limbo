@@ -207,15 +207,16 @@ export class Character {
 
         // 피해량이 0보다 크고 악몽 상태일 때만 해제
         if (this.hasDebuff("nightmare") && finalDamage > 0) {
+    const nightmare = this.debuffs.find(d => d.id === "nightmare");
+    if (nightmare) {
+        nightmare.stacks = (nightmare.stacks || 1) - 1; // 스택 차감
+        
+        if (nightmare.stacks <= 0) {
             this.removeDebuffById("nightmare");
-            logFn(`✦해제✦ ${this.name}이(가) 공격의 충격으로 인해 [악몽]에서 깨어납니다!`);
-        }
-    
-        if (this.currentHp <= 0) {
-            this.isAlive = false;
-            logFn(`✦☠️✦ ${this.name}, 쓰러집니다.`);
+            logFn(`✦해제✦ ${this.name}, 충격으로 인해 [악몽]에서 깨어납니다.`);
         }
     }
+}
 
     addBuff(id, name, turns, effect) {
         // 1. 기존에 같은 ID를 가진 버프가 있다면 먼저 제거 (중복 방지)
