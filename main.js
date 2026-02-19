@@ -497,6 +497,12 @@ async function executeBattleTurn() {
     const { caster, skill, targetId, moveDelta } = action;
     if (!caster.isAlive) continue;
 
+    // 악몽 체크
+    if (!caster.canAttack) {
+      log(`✦정보✦ ${caster.name}: 현재 [악몽] 상태여서 행동할 수 없습니다.`);
+      continue;
+    }
+    
     if (action.type === "skill") {
       const target = Utils.findCharacterById(targetId, state.allyCharacters, state.enemyCharacters, state.mapObjects);
       log(`✦ ${caster.name}, [${skill.name}] 시전.`);
