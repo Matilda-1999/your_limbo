@@ -403,7 +403,7 @@ SKILL_Puppet_Parade: {
   id: "SKILL_Puppet_Parade",
   name: "퍼펫 퍼레이드",
   type: "기믹/이동",
-  script: `\n<pre>유려한 손짓이 지나간 곳에는 기묘한 퍼레이드 음악이 울린다.\n멈춰있던 인형들이 태엽 소리를 내며 기괴하게 움직이기 시작한다.\n"나의 아이들아, 손님들을 위해 자리를 옮겨보렴."</pre>\n`,
+  script: `\n<pre>유려한 손짓이 지나간 곳에는 기묘한 퍼레이드 음악이 울린다.\n눈을 감고 있던 인형들은 곧 생명을 되찾고 깨어난다.\n"나의 아이들아, 어서 나가 보렴. 손님들이 찾아왔단다."</pre>\n`,
   execute: (caster, target, allies, enemies, battleLog, state) => {
     battleLog(`✦기믹✦ 카르나 블룸의 명령에 인형들이 일제히 움직입니다!`);
 
