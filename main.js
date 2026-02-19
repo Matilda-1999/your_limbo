@@ -40,7 +40,7 @@ let state = {
   characterPositions: {},
   currentTurn: 0,
   isBattleStarted: false,
-  selectedMapId: "A-1",
+  selectedMapId: "B-1",
   playerActionsQueue: [],
   actedAlliesThisTurn: [],
   selectedAction: null,
@@ -109,8 +109,8 @@ function loadSelectedMap() {
   if (state.isBattleStarted) return alert("전투 중에는 맵을 변경할 수 없습니다.");
   const mapId = document.getElementById("mapSelect").value;
 
-  // B-1 선택 시 로딩 차단
-  if (mapId === "B-1") {
+  // A-1 선택 시 로딩 차단
+  if (mapId === "A-1") {
     return alert("현재 이용할 수 없습니다.");
   }
   
@@ -598,7 +598,7 @@ function resolveMinionGimmicks() {
   if (livingMinions.length === 0) {
     if (!state.minionsWipedTurn) state.minionsWipedTurn = state.currentTurn;
     if (state.currentTurn >= state.minionsWipedTurn + 2) {
-      log('✦기믹✦ "나의 아이들은 아직 무대를 떠날 준비가 되지 않은 모양이야."');
+      log('<pre>"나의 아이들은 아직 무대를 떠날 준비가 되지 않은 모양이야."</pre>');
       addCharacterAtPos("Clown", Utils.getRandomEmptyCell(state.mapWidth, state.mapHeight, state.characterPositions));
       addCharacterAtPos("Pierrot", Utils.getRandomEmptyCell(state.mapWidth, state.mapHeight, state.characterPositions));
       state.minionsWipedTurn = null;
