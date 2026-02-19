@@ -639,14 +639,33 @@ function transitionToNextStage(nextMapId) {
 
 function resolveMinionGimmicks() {
   if (!state.selectedMapId || !state.selectedMapId.startsWith("B")) return;
+
+  const boss = state.enemyCharacters.find(e => e.name.includes("카르나블룸"));
   const livingMinions = state.enemyCharacters.filter(e => e.isAlive && (e.name === "클라운" || e.name === "피에로"));
-  if (livingMinions.length === 0) {
+
+  // [Case 1] 보스가 사망했을 때 (커튼콜/부활 체크)
+  if (boss && !boss.isAlive) {
+    const curtainCall = MONSTER_SKILLS["GIMMICK_Curtain_Call"];
+    // 부활 성공 여부를 판정 (미니언이 한 마리라도 살아있어야 성공)
+    const revived = curtainCall.execute(boss, null, state.allyCharacters, state.enemyCharacters, log, state);
+    
+    if (revived) {
+      syncUI();
+      return; // 부활했으므로 종료
+    }
+  }
+
+  // [Case 2] 보스가 살아있는데 쫄몹만 전멸했을 때 (일반 리스폰)
+  if (boss && boss.isAlive && livingMinions.length === 0) {
     if (!state.minionsWipedTurn) state.minionsWipedTurn = state.currentTurn;
-    if (state.currentTurn >= state.minionsWipedTurn + 2) {
+    
+    // 전멸 후 3턴 뒤에 부활
+    if (state.currentTurn >= state.minionsWipedTurn + 3) {
       log('<pre>"나의 아이들은 아직 무대를 떠날 준비가 되지 않은 모양이야."</pre>');
       addCharacterAtPos("Clown", Utils.getRandomEmptyCell(state.mapWidth, state.mapHeight, state.characterPositions));
       addCharacterAtPos("Pierrot", Utils.getRandomEmptyCell(state.mapWidth, state.mapHeight, state.characterPositions));
       state.minionsWipedTurn = null;
+      syncUI();
     }
   }
 }
