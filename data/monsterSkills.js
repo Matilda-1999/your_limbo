@@ -1,1 +1,695 @@
-function _0x3c90(_0x261504,_0x41bd88){_0x261504=_0x261504-0x1d7;const _0x2f624c=_0x2f62();let _0x3c90bb=_0x2f624c[_0x261504];return _0x3c90bb;}const _0x4b91fc=_0x3c90;(function(_0x5849bd,_0x8fdaf){const _0x54af17=_0x3c90,_0x200c2e=_0x5849bd();while(!![]){try{const _0x2627e9=-parseInt(_0x54af17(0x1f3))/0x1*(parseInt(_0x54af17(0x1e6))/0x2)+-parseInt(_0x54af17(0x1f8))/0x3+-parseInt(_0x54af17(0x232))/0x4+-parseInt(_0x54af17(0x240))/0x5+parseInt(_0x54af17(0x230))/0x6*(-parseInt(_0x54af17(0x242))/0x7)+parseInt(_0x54af17(0x20c))/0x8*(parseInt(_0x54af17(0x20a))/0x9)+parseInt(_0x54af17(0x243))/0xa;if(_0x2627e9===_0x8fdaf)break;else _0x200c2e['push'](_0x200c2e['shift']());}catch(_0x19725e){_0x200c2e['push'](_0x200c2e['shift']());}}}(_0x2f62,0xf044c));function _0x2f62(){const _0xe85611=['duet_enrage','clown_emotion_tear','forEach','의\x20진동이\x20','GIMMICK_Aegis_of_Earth3','SKILL_Birth_of_Vines','addDebuff','4842500gAtytE','SPRING_','7rBkOSZ','31401830BXsgTd','선물\x20받아!(피에로)','광대의\x20웃음','✦피해✦\x20폭발의\x20여파가\x20','광대의\x20눈물','activeGimmick','SKILL_Crimson','상태\x20이상','폭발\x20예고','공격\x20스킬\x20사용\x20불가','SKILL_Play2','SKILL_Silence','슬랩스틱\x20코미디(피에로)','SKILL_Thread_of_Emotion','FRUIT_','0,0;0,1;0,2;0,3;0,4;1,1;1,2;1,3','0,0;1,0;2,0;3,0;4,0;1,1;2,1;3,1','균열의\x20진동','3,1;3,2;3,3;4,0;4,1;4,2;4,3;4,4','random','magical','1,1;1,7;2,2;2,3;2,5;2,6;3,2;3,4;3,6;4,3;4,5;5,2;5,4;5,6;6,2;6,3;6,5;6,6;7,1;7,7','✦기믹✦\x20[생명의\x20샘]이\x20나타났습니다!','에게\x20','addBuff','posX','\x0a<pre>\x20생명의\x20씨앗들이\x20고개를\x20들기\x20시작한다.\x20\x0a이\x20씨앗들이\x20결실을\x20맺지\x20못하도록\x20꺾어야\x20한다.\x20\x0a\x22씨앗은\x20생명을\x20흡수해,\x20다시\x20죽음을\x20틔운다.\x22</pre>','push','SKILL_Seeds_Wrath','의\x20피해를\x20입혔습니다.','startsWith','filter','applyRandomBrand','removeDebuffById','에게\x20씨앗이\x20붙어\x20무장이\x20해제됩니다.','✦기믹✦\x20지면에\x20새겨진\x20균열이\x20일제히\x20터집니다.','가\x20동쪽을\x20향해\x20포효합니다.','슬랩스틱\x20코미디(클라운)','[무장\x20해제]','name','가\x20맹공에\x20정신을\x20차리지\x20못하고\x20[침묵]\x20상태에\x20빠집니다.','SKILL_Seismic_Fissure','\x0a<pre>고운\x20꽃가루가\x20하늘을\x20뒤덮는다.\x20\x0a생경한\x20아름다움은\x20고요한\x20찬사만을\x20강요한다.\x20\x0a\x22많은\x20말은\x20필요하지\x20않은\x20법.\x22</pre>\x0a','<pre>우리가\x20상대할\x20것은\x20대지,\x20그\x20자체였을까.\x0a절벽이\x20앞을\x20가로막는다.\x0a허나\x20무너뜨릴\x20수\x20없을\x20듯하던\x20서쪽\x20성벽\x20또한\x20작은\x20균열\x20하나에\x20허물어지는\x20법.\x0a\x22무딘\x20칼날로\x20대지를\x20가를\x20수\x20있겠는가?\x22</pre>\x0a','posY','\x0a<pre>바닥으로부터\x20수많은\x20덩굴이\x20솟구친다.\x20\x0a벗어날\x20수\x20없는\x20공포가\x20당신의\x20발목을\x20옥죄어\x20온다.\x20\x0a\x22이\x20땅에\x20모습을\x20드러낸\x20이들을,\x20잊지\x20않겠다.\x22</pre>\x0a','1,3;2,3;3,3;0,4;1,4;2,4;3,4;4,4','행동\x20불가\x20및\x20받는\x20피해\x20증가','path_of_ruin_telegraph','calculateDamage','✦광역\x20디버프✦\x20','[악몽]','floor','14OMIddJ','groggy','currentTurn','✦피해✦\x20솟구친\x20덩굴이\x20','에게\x20적중하여\x20','spring','hasBuff','균열의\x20폭발','type','대지의\x20수호(서)','SKILL_Echo_of_Silence','GIMMICK_Tears_of','대지의\x20수호(동)','151698JvgCaU','감정의\x20실','\x0a<pre>고운\x20꽃가루가\x20하늘을\x20뒤덮는다.\x0a생경한\x20아름다움은\x20고요한\x20찬사만을\x20강요한다.\x0a\x22많은\x20말은\x20필요하지\x20않은\x20법.\x22</pre>\x0a','length','GIMMICK_Path_of_Ruin','731421JFujtA','의\x20메아리가\x20','[환희\x20낙인]','✦피해✦\x20하늘에서\x20떨어진\x20석괴가\x20','✦기믹\x20발생✦\x20광대가\x20웃음을\x20터트립니다.','activeGimmickState','map','hasDebuff','<pre>우리가\x20상대할\x20것은\x20대지,\x20그\x20자체였을까.\x0a절벽이\x20앞을\x20가로막는다.\x0a허나\x20무너뜨릴\x20수\x20없을\x20듯하던\x20동쪽\x20성벽\x20또한\x20작은\x20균열\x20하나에\x20허물어지는\x20법.\x0a\x22무딘\x20칼날로\x20대지를\x20가를\x20수\x20있겠는가?\x22</pre>\x0a','SKILL_Spores_of_Silence','무너지는\x20하늘','GIMMICK_Aegis_of_Earth2','SKILL_Crushing_Sky','split','[균열의\x20흔적]','대지의\x20수호(남)','기믹\x20예고','some','4089537APOWxp','\x20↪︎\x20[감정의\x20실]이\x20','8Ltxuwo','fruit','에게\x20적중하여\x20[침묵]을\x20부여합니다.','clown_emotion','광역\x20디버프','✦상태\x20이상✦\x20','유희(2,4타)','disarm','선물\x20받아!(클라운)','nightmare','덩굴\x20탄생','GIMMICK_Aegis_of_Earth4','melancholy_brand','ecstasy_brand','GIMMICK_Aegis_of_Earth1','[우울\x20낙인]','[침묵](그로기)','<pre>우리가\x20상대할\x20것은\x20대지,\x20그\x20자체였을까.\x0a절벽이\x20앞을\x20가로막는다.\x0a허나\x20무너뜨릴\x20수\x20없을\x20듯하던\x20남쪽\x20성벽\x20또한\x20작은\x20균열\x20하나에\x20허물어지는\x20법.\x0a\x22무딘\x20칼날로\x20대지를\x20가를\x20수\x20있겠는가?\x22</pre>\x0a','\x20↪︎\x20[감정의\x20실]이\x20허공을\x20가릅니다.','0,0;1,0;1,1;2,0;2,1;2,2;3,0;3,1;3,2;3,3;4,0;4,1;4,2;4,3;5,0;5,1;5,2;5,3;6,0;6,1;6,2;7,0;7,1;8,0;0,8;1,7;1,8;2,6;2,7;2,8;3,5;3,6;3,7;3,8;4,5;4,6;4,7;4,8;5,5;5,6;5,7;5,8;6,6;6,7;6,8;7,7;7,8;8,8','ruin_mark','메마른\x20생명의\x20샘','0,0;1,1;2,2;3,3;5,5;6,6;7,7;8,8;0,8;1,7;2,6;3,5;5,3;6,2;7,1;8,0','\x0a<pre>거대한\x20석괴가\x20하늘에서\x20떨어지기\x20시작한다.\x20\x0a때로\x20자연이라는\x20것은,\x20인간에게\x20이다지도\x20무자비하다.\x20\x0a\x22대지가\x20너희에게\x20분노하리라.\x22</pre>\x0a','GIMMICK_Laugh_of','✦기믹\x20발생✦\x20광대가\x20눈물을\x20흘립니다.','가\x20남쪽을\x20향해\x20포효합니다.','씨앗의\x20분노','침묵의\x20포자','오브젝트\x20생성','의\x20발목을\x20옥죄어\x20','가\x20북쪽을\x20향해\x20포효합니다.','hitArea','isAlive','을(를)\x20휘감습니다.\x20(','\x0a<pre>\x22마른\x20땅이\x20갈라지며\x20균열이\x20퍼져나간다\x20\x0a이\x20전장은\x20오로지\x20한\x20생명의\x20손아귀에\x20놓여\x20있다.\x20\x0a\x22땅이\x20갈라지는\x20소리를\x20들은\x20적\x20있느냐.\x22\x22</pre>\x0a','1902066EPyCdl','SKILL_Ruin_Explosion','76928kJAunx','대지의\x20수호(북)','getRandomEmptyCell','SKILL_Slapstick_Comdey_P','✦기믹✦\x20','physical','takeDamage'];_0x2f62=function(){return _0xe85611;};return _0x2f62();}export const MONSTER_SKILLS={'SKILL_Seismic_Fissure':{'id':_0x4b91fc(0x1da),'name':_0x4b91fc(0x254),'hitArea':[{'x':0x1,'y':0x1},{'x':0x2,'y':0x1},{'x':0x3,'y':0x1},{'x':0x1,'y':0x2},{'x':0x3,'y':0x2},{'x':0x1,'y':0x3},{'x':0x2,'y':0x3},{'x':0x3,'y':0x3}],'script':_0x4b91fc(0x22f),'execute':(_0x5064dd,_0x36a406,_0x2c8ca9,_0xbc8f88,_0x458e89,_0x12c55a)=>{const _0x1fb314=_0x4b91fc,_0x1e8895=MONSTER_SKILLS[_0x1fb314(0x1da)][_0x1fb314(0x22c)],_0x17d8f4=_0x2c8ca9[_0x1fb314(0x262)](_0x3186b8=>_0x3186b8['isAlive']&&_0x1e8895[_0x1fb314(0x209)](_0x13ae20=>_0x13ae20['x']===_0x3186b8['posX']&&_0x13ae20['y']===_0x3186b8[_0x1fb314(0x1dd)]));return _0x17d8f4['forEach'](_0x3316ae=>{const _0x38e745=_0x1fb314,_0x51d378=_0x12c55a[_0x38e745(0x1e2)](_0x5064dd,_0x3316ae,0x1,_0x38e745(0x237));_0x3316ae['takeDamage'](_0x51d378,_0x458e89,_0x5064dd,_0x2c8ca9,_0xbc8f88,_0x12c55a),_0x458e89('✦피해✦\x20'+_0x5064dd['name']+_0x38e745(0x23c)+_0x3316ae[_0x38e745(0x1d8)]+_0x38e745(0x1ea)+_0x51d378+_0x38e745(0x260));}),!![];}},'SKILL_Echo_of_Silence':{'id':_0x4b91fc(0x1f0),'name':'침묵의\x20메아리','type':'광역\x20디버프','hitArea':[{'x':0x0,'y':0x2},{'x':0x1,'y':0x1},{'x':0x3,'y':0x1},{'x':0x2,'y':0x0},{'x':0x4,'y':0x2},{'x':0x1,'y':0x3},{'x':0x3,'y':0x3}],'script':'\x0a<pre>기묘한\x20울림이\x20공간을\x20가른다.\x20\x0a거대한\x20풍광을\x20앞에\x20두고,\x20달리\x20무엇을\x20말할\x20수\x20있겠는가?\x20\x0a\x22자연의\x20숨결\x20앞에서는\x20그\x20어떤\x20주문도\x20무의미하다.\x22</pre>\x0a','execute':(_0xe907a5,_0xa37afa,_0x4d2645,_0x348ea2,_0x352258,_0x380a87)=>{const _0x4185ea=_0x4b91fc,_0x249a32=MONSTER_SKILLS['SKILL_Echo_of_Silence'][_0x4185ea(0x22c)],_0x11d468=_0x4d2645[_0x4185ea(0x262)](_0x2a08be=>_0x2a08be['isAlive']&&_0x249a32[_0x4185ea(0x209)](_0x2c9731=>_0x2c9731['x']===_0x2a08be[_0x4185ea(0x25c)]&&_0x2c9731['y']===_0x2a08be['posY']));return _0x11d468['length']>0x0&&_0x11d468['forEach'](_0x8d374a=>{const _0x4e3efc=_0x4185ea,_0x29b07f=_0x11d468[_0x4e3efc(0x1f6)]+0x1;_0x8d374a[_0x4e3efc(0x23f)]('silence','[침묵]',0x2,{'description':'주문\x20사용\x20불가'}),_0x352258('✦광역\x20디버프✦\x20'+_0xe907a5[_0x4e3efc(0x1d8)]+_0x4e3efc(0x1f9)+_0x8d374a[_0x4e3efc(0x1d8)]+_0x4e3efc(0x20e));}),!![];}},'SKILL_Crushing_Sky':{'id':_0x4b91fc(0x204),'name':_0x4b91fc(0x202),'hitArea':[{'x':0x2,'y':0x0},{'x':0x2,'y':0x1},{'x':0x0,'y':0x2},{'x':0x1,'y':0x2},{'x':0x3,'y':0x2},{'x':0x4,'y':0x2},{'x':0x2,'y':0x3},{'x':0x2,'y':0x4}],'script':_0x4b91fc(0x223),'execute':(_0x1bceda,_0xed96c3,_0x5e1b7e,_0x13a7ce,_0x211a19,_0x349a6f)=>{const _0x508f2d=_0x4b91fc,_0x3d9fd1=MONSTER_SKILLS[_0x508f2d(0x204)][_0x508f2d(0x22c)],_0x259e28=_0x5e1b7e[_0x508f2d(0x262)](_0x3c60ec=>_0x3c60ec[_0x508f2d(0x22d)]&&_0x3d9fd1[_0x508f2d(0x209)](_0x3c4030=>_0x3c4030['x']===_0x3c60ec[_0x508f2d(0x25c)]&&_0x3c4030['y']===_0x3c60ec[_0x508f2d(0x1dd)]));return _0x259e28['forEach'](_0x586d50=>{const _0x2d5fe4=_0x508f2d,_0x785614=_0x349a6f[_0x2d5fe4(0x1e2)](_0x1bceda,_0x586d50,1.2,_0x2d5fe4(0x237));_0x586d50[_0x2d5fe4(0x238)](_0x785614,_0x211a19,_0x1bceda,_0x5e1b7e,_0x13a7ce,_0x349a6f),_0x211a19(_0x2d5fe4(0x1fb)+_0x586d50['name']+_0x2d5fe4(0x1ea)+_0x785614+_0x2d5fe4(0x260));}),!![];}},'SKILL_Birth_of_Vines':{'id':_0x4b91fc(0x23e),'name':_0x4b91fc(0x216),'hitArea':[{'x':0x0,'y':0x0},{'x':0x0,'y':0x2},{'x':0x0,'y':0x4},{'x':0x1,'y':0x1},{'x':0x1,'y':0x3},{'x':0x2,'y':0x0},{'x':0x2,'y':0x2},{'x':0x2,'y':0x4},{'x':0x3,'y':0x1},{'x':0x3,'y':0x3},{'x':0x4,'y':0x0},{'x':0x4,'y':0x2},{'x':0x4,'y':0x4}],'script':_0x4b91fc(0x1de),'execute':(_0x2902b3,_0x52bacd,_0x25d964,_0x17b0a4,_0x5c83fb,_0x15264e)=>{const _0x3764ab=_0x4b91fc,_0x3d8422=MONSTER_SKILLS[_0x3764ab(0x23e)][_0x3764ab(0x22c)],_0x5f0005=_0x25d964[_0x3764ab(0x262)](_0x43fad1=>_0x43fad1['isAlive']&&_0x3d8422['some'](_0x599f47=>_0x599f47['x']===_0x43fad1[_0x3764ab(0x25c)]&&_0x599f47['y']===_0x43fad1[_0x3764ab(0x1dd)]));return _0x5f0005[_0x3764ab(0x23b)](_0x67b5b9=>{const _0xd551e8=_0x3764ab,_0x331229=_0x15264e[_0xd551e8(0x1e2)](_0x2902b3,_0x67b5b9,1.2,'magical');_0x67b5b9[_0xd551e8(0x238)](_0x331229,_0x5c83fb,_0x2902b3,_0x25d964,_0x17b0a4,_0x15264e),_0x5c83fb(_0xd551e8(0x1e9)+_0x67b5b9[_0xd551e8(0x1d8)]+_0xd551e8(0x22a)+_0x331229+_0xd551e8(0x260));}),!![];}},'SKILL_Spores_of_Silence':{'id':_0x4b91fc(0x201),'name':_0x4b91fc(0x228),'type':_0x4b91fc(0x210),'hitArea':[{'x':0x0,'y':0x0},{'x':0x1,'y':0x0},{'x':0x2,'y':0x0},{'x':0x3,'y':0x0},{'x':0x4,'y':0x0},{'x':0x0,'y':0x2},{'x':0x1,'y':0x2},{'x':0x3,'y':0x2},{'x':0x4,'y':0x2},{'x':0x0,'y':0x4},{'x':0x1,'y':0x4},{'x':0x2,'y':0x4},{'x':0x3,'y':0x4},{'x':0x4,'y':0x4}],'script':_0x4b91fc(0x1f5),'execute':(_0x3bc55f,_0x2c7db7,_0x69cf57,_0x509cc7,_0x454994,_0x2bbd2b)=>{const _0x351ddf=_0x4b91fc,_0x303e58=MONSTER_SKILLS[_0x351ddf(0x201)][_0x351ddf(0x22c)],_0x59ff4f=_0x69cf57[_0x351ddf(0x262)](_0x449792=>_0x449792[_0x351ddf(0x22d)]&&_0x303e58[_0x351ddf(0x209)](_0x11866e=>_0x11866e['x']===_0x449792[_0x351ddf(0x25c)]&&_0x11866e['y']===_0x449792[_0x351ddf(0x1dd)]));return _0x59ff4f[_0x351ddf(0x1f6)]>0x0&&_0x59ff4f[_0x351ddf(0x23b)](_0x9e0dcf=>{const _0x358587=_0x351ddf;_0x9e0dcf['addDebuff']('disarm',_0x358587(0x1d7),0x2,{'description':_0x358587(0x24c)}),_0x454994(_0x358587(0x1e3)+_0x9e0dcf[_0x358587(0x1d8)]+'이\x20포자에\x20노출되어\x20무장이\x20해제됩니다.');}),!![];}},'SKILL_Seeds_Wrath':{'id':_0x4b91fc(0x25f),'name':_0x4b91fc(0x227),'hitArea':[{'x':0x1,'y':0x1},{'x':0x1,'y':0x2},{'x':0x1,'y':0x3},{'x':0x2,'y':0x1},{'x':0x2,'y':0x3},{'x':0x3,'y':0x1},{'x':0x3,'y':0x2},{'x':0x3,'y':0x3},{'x':0x0,'y':0x0},{'x':0x0,'y':0x4},{'x':0x4,'y':0x0},{'x':0x4,'y':0x4}],'script':_0x4b91fc(0x1db),'execute':(_0x400454,_0x55b939,_0x50d0a6,_0x1e1aa5,_0x1aec12,_0x1ed015)=>{const _0x553c10=_0x4b91fc,_0x455c68=[{'x':0x1,'y':0x1},{'x':0x1,'y':0x2},{'x':0x1,'y':0x3},{'x':0x2,'y':0x1},{'x':0x2,'y':0x3},{'x':0x3,'y':0x1},{'x':0x3,'y':0x2},{'x':0x3,'y':0x3}],_0x2998da=[{'x':0x0,'y':0x0},{'x':0x0,'y':0x4},{'x':0x4,'y':0x0},{'x':0x4,'y':0x4}];return _0x50d0a6['filter'](_0x3e807f=>_0x3e807f['isAlive'])[_0x553c10(0x23b)](_0x1c6eb3=>{const _0x424ae2=_0x553c10;if(_0x455c68[_0x424ae2(0x209)](_0x21777a=>_0x21777a['x']===_0x1c6eb3[_0x424ae2(0x25c)]&&_0x21777a['y']===_0x1c6eb3[_0x424ae2(0x1dd)])){const _0xb5d71d=_0x1ed015[_0x424ae2(0x1e2)](_0x400454,_0x1c6eb3,1.5,_0x424ae2(0x257));_0x1c6eb3[_0x424ae2(0x238)](_0xb5d71d,_0x1aec12,_0x400454,_0x50d0a6,_0x1e1aa5,_0x1ed015);}_0x2998da[_0x424ae2(0x209)](_0x4ecf16=>_0x4ecf16['x']===_0x1c6eb3[_0x424ae2(0x25c)]&&_0x4ecf16['y']===_0x1c6eb3[_0x424ae2(0x1dd)])&&(_0x1c6eb3[_0x424ae2(0x23f)](_0x424ae2(0x213),'[무장\x20해제]',0x2,{'description':'공격\x20스킬\x20사용\x20불가'}),_0x1aec12(_0x424ae2(0x211)+_0x1c6eb3[_0x424ae2(0x1d8)]+_0x424ae2(0x265)));}),!![];}},'SKILL_Slapstick_Comdey_P':{'id':_0x4b91fc(0x235),'name':_0x4b91fc(0x24f),'execute':(_0x28189c,_0x3424ca,_0x1c4134,_0x263ab1,_0x4dc5aa,_0xcbab5f)=>{const _0x1a2607=_0x4b91fc,_0x93ad43=[{'dx':0x0,'dy':-0x2},{'dx':0x0,'dy':-0x1},{'dx':0x0,'dy':0x1},{'dx':0x0,'dy':0x2}];return _0x1c4134[_0x1a2607(0x262)](_0x22f19e=>_0x22f19e[_0x1a2607(0x22d)])[_0x1a2607(0x23b)](_0x420eae=>{const _0x197c23=_0x1a2607;if(_0x93ad43[_0x197c23(0x209)](_0x5eecef=>_0x28189c[_0x197c23(0x25c)]+_0x5eecef['dx']===_0x420eae['posX']&&_0x28189c['posY']+_0x5eecef['dy']===_0x420eae[_0x197c23(0x1dd)])){const _0x32fa65=_0xcbab5f[_0x197c23(0x1e2)](_0x28189c,_0x420eae,0x1,_0x197c23(0x237));_0x420eae[_0x197c23(0x238)](_0x32fa65,_0x4dc5aa,_0x28189c,_0x1c4134,_0x263ab1,_0xcbab5f);if(_0x28189c[_0x197c23(0x1ec)](_0x197c23(0x239))&&_0xcbab5f[_0x197c23(0x263)])_0xcbab5f[_0x197c23(0x263)](_0x420eae);}}),!![];}},'SKILL_Slapstick_Comdey_C':{'id':'SKILL_Slapstick_Comdey_C','name':_0x4b91fc(0x268),'execute':(_0x407dd4,_0xd2b440,_0x548b63,_0x2075a3,_0xd7f10d,_0x19cba3)=>{const _0x2bd67f=_0x4b91fc,_0x35669f=[{'dx':-0x2,'dy':0x0},{'dx':-0x1,'dy':0x0},{'dx':0x1,'dy':0x0},{'dx':0x2,'dy':0x0}];return _0x548b63[_0x2bd67f(0x262)](_0x4e8913=>_0x4e8913['isAlive'])[_0x2bd67f(0x23b)](_0xfc442f=>{const _0x2c11a6=_0x2bd67f;if(_0x35669f['some'](_0x36b00d=>_0x407dd4[_0x2c11a6(0x25c)]+_0x36b00d['dx']===_0xfc442f[_0x2c11a6(0x25c)]&&_0x407dd4[_0x2c11a6(0x1dd)]+_0x36b00d['dy']===_0xfc442f[_0x2c11a6(0x1dd)])){const _0x1eadaf=_0x19cba3[_0x2c11a6(0x1e2)](_0x407dd4,_0xfc442f,0x1,_0x2c11a6(0x257));_0xfc442f[_0x2c11a6(0x238)](_0x1eadaf,_0xd7f10d,_0x407dd4,_0x548b63,_0x2075a3,_0x19cba3);if(_0x407dd4[_0x2c11a6(0x1ec)](_0x2c11a6(0x239))&&_0x19cba3['applyRandomBrand'])_0x19cba3['applyRandomBrand'](_0xfc442f);}}),!![];}},'SKILL_Get_a_Present_P':{'id':'SKILL_Get_a_Present_P','name':_0x4b91fc(0x244),'execute':(_0x2c9fda,_0x5e9778,_0x469cd2,_0x1b9e37,_0xf9d520,_0x4c9a11)=>{const _0x546883=_0x4b91fc,_0x5032c9=[{'dx':-0x1,'dy':-0x1},{'dx':-0x1,'dy':0x0},{'dx':-0x1,'dy':0x1},{'dx':0x0,'dy':-0x1},{'dx':0x0,'dy':0x1},{'dx':0x1,'dy':-0x1},{'dx':0x1,'dy':0x0},{'dx':0x1,'dy':0x1}];return _0x469cd2[_0x546883(0x262)](_0x894e64=>_0x894e64[_0x546883(0x22d)])[_0x546883(0x23b)](_0x320a32=>{const _0x123e6c=_0x546883;if(_0x5032c9[_0x123e6c(0x209)](_0x3614a7=>_0x2c9fda[_0x123e6c(0x25c)]+_0x3614a7['dx']===_0x320a32[_0x123e6c(0x25c)]&&_0x2c9fda[_0x123e6c(0x1dd)]+_0x3614a7['dy']===_0x320a32[_0x123e6c(0x1dd)])){const _0x4a0101=_0x4c9a11['calculateDamage'](_0x2c9fda,_0x320a32,0x1,_0x123e6c(0x237));_0x320a32[_0x123e6c(0x238)](_0x4a0101,_0xf9d520,_0x2c9fda,_0x469cd2,_0x1b9e37,_0x4c9a11);if(_0x2c9fda[_0x123e6c(0x1ec)](_0x123e6c(0x239))&&_0x4c9a11['applyRandomBrand'])_0x4c9a11[_0x123e6c(0x263)](_0x320a32);}}),!![];}},'SKILL_Get_a_Present_C':{'id':'SKILL_Get_a_Present_C','name':_0x4b91fc(0x214),'execute':(_0x3fca83,_0x585af0,_0x27fd16,_0x975e36,_0x11433a,_0x1eff3c)=>{const _0x4f27a1=_0x4b91fc,_0x30cf0a=[{'dx':-0x2,'dy':-0x2},{'dx':-0x2,'dy':0x2},{'dx':-0x1,'dy':-0x1},{'dx':-0x1,'dy':0x1},{'dx':0x1,'dy':-0x1},{'dx':0x1,'dy':0x1},{'dx':0x2,'dy':-0x2},{'dx':0x2,'dy':0x2}];return _0x27fd16[_0x4f27a1(0x262)](_0x1ecf45=>_0x1ecf45[_0x4f27a1(0x22d)])[_0x4f27a1(0x23b)](_0x1cd537=>{const _0x8cd1d8=_0x4f27a1;if(_0x30cf0a[_0x8cd1d8(0x209)](_0x48522d=>_0x3fca83[_0x8cd1d8(0x25c)]+_0x48522d['dx']===_0x1cd537[_0x8cd1d8(0x25c)]&&_0x3fca83[_0x8cd1d8(0x1dd)]+_0x48522d['dy']===_0x1cd537['posY'])){const _0x321b50=_0x1eff3c['calculateDamage'](_0x3fca83,_0x1cd537,0x1,_0x8cd1d8(0x257));_0x1cd537[_0x8cd1d8(0x238)](_0x321b50,_0x11433a,_0x3fca83,_0x27fd16,_0x975e36,_0x1eff3c);if(_0x3fca83[_0x8cd1d8(0x1ec)](_0x8cd1d8(0x239))&&_0x1eff3c[_0x8cd1d8(0x263)])_0x1eff3c[_0x8cd1d8(0x263)](_0x1cd537);}}),!![];}},'GIMMICK_Laugh_of':{'id':_0x4b91fc(0x224),'name':_0x4b91fc(0x245),'type':'기믹','execute':(_0x2408e9,_0x4557e8,_0x19f3cd,_0x1d8912,_0x19e6da,_0x4f42a1)=>{const _0x51c781=_0x4b91fc;if(_0x4f42a1[_0x51c781(0x1fd)]&&_0x4f42a1[_0x51c781(0x1fd)][_0x51c781(0x1ee)]['startsWith'](_0x51c781(0x20f)))return![];return _0x19e6da(_0x51c781(0x1fc)),_0x4f42a1[_0x51c781(0x1fd)]={'type':'clown_emotion_laugh','turnStart':_0x4f42a1[_0x51c781(0x1e8)],'duration':0x3,'clownHits':0x0,'pierrotHits':0x0},!![];}},'GIMMICK_Tears_of':{'id':_0x4b91fc(0x1f1),'name':_0x4b91fc(0x247),'type':'기믹','execute':(_0x4da4a3,_0x56031e,_0x292cb7,_0x3aed47,_0x2b6ff1,_0x38efae)=>{const _0x4d350b=_0x4b91fc;if(_0x38efae['activeGimmickState']&&_0x38efae['activeGimmickState'][_0x4d350b(0x1ee)][_0x4d350b(0x261)](_0x4d350b(0x20f)))return![];return _0x2b6ff1(_0x4d350b(0x225)),_0x38efae[_0x4d350b(0x1fd)]={'type':_0x4d350b(0x23a),'turnStart':_0x38efae[_0x4d350b(0x1e8)],'duration':0x3,'clownHits':0x0,'pierrotHits':0x0},!![];}},'SKILL_Play1':{'id':'SKILL_Play1','name':'유희(1,3,5타)','hitArea':[{'x':0x0,'y':0x4},{'x':0x1,'y':0x4},{'x':0x2,'y':0x4},{'x':0x3,'y':0x4},{'x':0x5,'y':0x4},{'x':0x6,'y':0x4},{'x':0x7,'y':0x4},{'x':0x8,'y':0x4},{'x':0x4,'y':0x0},{'x':0x4,'y':0x1},{'x':0x4,'y':0x2},{'x':0x4,'y':0x3},{'x':0x4,'y':0x5},{'x':0x4,'y':0x6},{'x':0x4,'y':0x7},{'x':0x4,'y':0x8}],'execute':(_0xbe2b1a,_0x10195c,_0x4cefa9,_0x26c856,_0x1c09f8,_0x3a4126)=>{const _0xae05a4=_0x4b91fc,_0x3fbc17=MONSTER_SKILLS['SKILL_Play1']['hitArea'];return _0x4cefa9[_0xae05a4(0x262)](_0x2d7dd3=>_0x2d7dd3[_0xae05a4(0x22d)])[_0xae05a4(0x23b)](_0x18188e=>{const _0x10777e=_0xae05a4;if(_0x3fbc17[_0x10777e(0x209)](_0x169c44=>_0x169c44['x']===_0x18188e['posX']&&_0x169c44['y']===_0x18188e[_0x10777e(0x1dd)])){const _0x471ab5=_0x3a4126[_0x10777e(0x1e2)](_0xbe2b1a,_0x18188e,1.1,'magical');_0x18188e[_0x10777e(0x238)](_0x471ab5,_0x1c09f8,_0xbe2b1a);}}),!![];}},'SKILL_Thread_of_Emotion':{'id':_0x4b91fc(0x250),'name':_0x4b91fc(0x1f4),'type':_0x4b91fc(0x210),'execute':(_0x1a4a2d,_0x441ad0,_0x218547,_0x25c471,_0x5e3291,_0x22eeb7)=>{const _0x1453c1=_0x4b91fc,_0x5bf224=_0x1453c1(0x21f),_0x304afa=_0x5bf224[_0x1453c1(0x205)](';')[_0x1453c1(0x1fe)](_0x44bdf6=>_0x44bdf6[_0x1453c1(0x205)](',')['map'](Number)),_0x1b5d72=_0x218547['filter'](_0x58617c=>_0x58617c[_0x1453c1(0x22d)]&&_0x304afa[_0x1453c1(0x209)](_0x5d79d7=>_0x5d79d7[0x0]===_0x58617c['posX']&&_0x5d79d7[0x1]===_0x58617c[_0x1453c1(0x1dd)])),_0x547cf0=_0x1b5d72[_0x1453c1(0x1f6)]*0x3;return _0x1b5d72[_0x1453c1(0x1f6)]>0x0?_0x1b5d72[_0x1453c1(0x23b)](_0x364131=>{const _0x2ea9ae=_0x1453c1;_0x5e3291(_0x2ea9ae(0x20b)+_0x364131[_0x2ea9ae(0x1d8)]+_0x2ea9ae(0x22e)+_0x547cf0+'턴\x20유지)'),_0x364131[_0x2ea9ae(0x23f)](_0x2ea9ae(0x218),_0x2ea9ae(0x21b),_0x547cf0,{}),_0x364131[_0x2ea9ae(0x23f)](_0x2ea9ae(0x219),_0x2ea9ae(0x1fa),_0x547cf0,{}),_0x364131[_0x2ea9ae(0x23f)](_0x2ea9ae(0x215),_0x2ea9ae(0x1e4),_0x547cf0,{});}):_0x5e3291(_0x1453c1(0x21e)),!![];}},'SKILL_Play2':{'id':_0x4b91fc(0x24d),'name':_0x4b91fc(0x212),'execute':(_0x512f8c,_0x4402c0,_0x51cd77,_0x2d28d9,_0x56b99b,_0xd64305)=>{const _0x3b7d8a=_0x4b91fc,_0x51106d=_0x3b7d8a(0x222)['split'](';')[_0x3b7d8a(0x1fe)](_0x463cc6=>_0x463cc6[_0x3b7d8a(0x205)](',')[_0x3b7d8a(0x1fe)](Number));return _0x51cd77['filter'](_0x4e0086=>_0x4e0086[_0x3b7d8a(0x22d)])[_0x3b7d8a(0x23b)](_0x4aa579=>{const _0x59bced=_0x3b7d8a;if(_0x51106d[_0x59bced(0x209)](_0x39e88b=>_0x39e88b[0x0]===_0x4aa579[_0x59bced(0x25c)]&&_0x39e88b[0x1]===_0x4aa579[_0x59bced(0x1dd)])){const _0x42470a=_0xd64305[_0x59bced(0x1e2)](_0x512f8c,_0x4aa579,1.1,_0x59bced(0x257));_0x4aa579[_0x59bced(0x238)](_0x42470a,_0x56b99b,_0x512f8c,_0x51cd77,_0x2d28d9,_0xd64305);}}),!![];}},'SKILL_Crimson':{'id':_0x4b91fc(0x249),'name':'진홍','execute':(_0x26d40d,_0xee37af,_0x27f3fd,_0x273eef,_0xbeadcb,_0x13e766)=>{const _0x467a77=_0x4b91fc,_0x4204ab='0,0;0,1;0,2;0,3;0,4;0,5;0,6;0,7;0,8;1,0;1,8;2,0;2,8;3,0;3,8;4,0;4,8;5,0;5,8;6,0;6,8;7,0;7,8;8,0;8,1;8,2;8,3;8,4;8,5;8,6;8,7;8,8;3,3;3,5;5,3;5,5'[_0x467a77(0x205)](';')[_0x467a77(0x1fe)](_0x56b740=>_0x56b740[_0x467a77(0x205)](',')[_0x467a77(0x1fe)](Number)),_0x1e0a2a=_0x467a77(0x258)['split'](';')[_0x467a77(0x1fe)](_0x547086=>_0x547086[_0x467a77(0x205)](',')['map'](Number));return _0x27f3fd[_0x467a77(0x262)](_0x437d70=>_0x437d70['isAlive'])[_0x467a77(0x23b)](_0x515814=>{const _0x17038f=_0x467a77;_0x4204ab[_0x17038f(0x209)](_0x57815b=>_0x57815b[0x0]===_0x515814['posX']&&_0x57815b[0x1]===_0x515814['posY'])&&(_0x515814['addDebuff'](_0x17038f(0x218),_0x17038f(0x21b),0x63,{'unremovable':![]}),_0x515814['addDebuff'](_0x17038f(0x219),_0x17038f(0x1fa),0x63,{'unremovable':![]}),_0x515814[_0x17038f(0x23f)](_0x17038f(0x215),_0x17038f(0x1e4),0x63,{'unremovable':![]}));if(_0x1e0a2a['some'](_0x9558ab=>_0x9558ab[0x0]===_0x515814[_0x17038f(0x25c)]&&_0x9558ab[0x1]===_0x515814[_0x17038f(0x1dd)])){const _0x4c8761=_0x13e766['calculateDamage'](_0x26d40d,_0x515814,0x1,'magical');_0x515814['takeDamage'](_0x4c8761,_0xbeadcb,_0x26d40d,_0x27f3fd,_0x273eef,_0x13e766);}}),!![];}},'SKILL_Silence':{'id':_0x4b91fc(0x24e),'name':'침묵','type':_0x4b91fc(0x24a),'execute':(_0xe96eef,_0x5a65cd,_0x2242f4,_0x4a2a46,_0x3dce16,_0x28babf)=>{const _0x135ad2=_0x4b91fc;return _0x3dce16('✦특수\x20패턴✦\x20'+_0xe96eef[_0x135ad2(0x1d8)]+_0x135ad2(0x1d9)),_0xe96eef[_0x135ad2(0x23f)](_0x135ad2(0x1e7),_0x135ad2(0x21c),0x2,{'description':_0x135ad2(0x1e0)}),!![];}},'GIMMICK_Aegis_of_Earth1':{'id':_0x4b91fc(0x21a),'name':_0x4b91fc(0x1f2),'type':'기믹','hitArea':[],'coords':_0x4b91fc(0x255),'script':_0x4b91fc(0x200),'execute':(_0x246a6b,_0x562644,_0x5c5bb2,_0x225fdb,_0x5b17cb,_0x2f2cda)=>{const _0x5a8ef7=_0x4b91fc;return _0x246a6b[_0x5a8ef7(0x248)]='GIMMICK_Aegis_of_Earth1',_0x5b17cb(_0x5a8ef7(0x236)+_0x246a6b[_0x5a8ef7(0x1d8)]+_0x5a8ef7(0x267)),!![];}},'GIMMICK_Aegis_of_Earth2':{'id':_0x4b91fc(0x203),'name':_0x4b91fc(0x1ef),'type':'기믹','hitArea':[],'coords':_0x4b91fc(0x252),'script':_0x4b91fc(0x1dc),'execute':(_0x276daf,_0x1aef3d,_0x162d98,_0x3a9ca6,_0x32cea5,_0xcfb951)=>{const _0x5c978c=_0x4b91fc;return _0x276daf['activeGimmick']=_0x5c978c(0x203),_0x32cea5(_0x5c978c(0x236)+_0x276daf[_0x5c978c(0x1d8)]+'가\x20서쪽을\x20향해\x20포효합니다.'),!![];}},'GIMMICK_Aegis_of_Earth3':{'id':_0x4b91fc(0x23d),'name':_0x4b91fc(0x207),'type':'기믹','hitArea':[],'coords':_0x4b91fc(0x1df),'script':_0x4b91fc(0x21d),'execute':(_0x4dbea5,_0x37a221,_0x5341d8,_0xcf0448,_0x4f7b21,_0x54102b)=>{const _0xfc3633=_0x4b91fc;return _0x4dbea5[_0xfc3633(0x248)]=_0xfc3633(0x23d),_0x4f7b21('✦기믹✦\x20'+_0x4dbea5[_0xfc3633(0x1d8)]+_0xfc3633(0x226)),!![];}},'GIMMICK_Aegis_of_Earth4':{'id':_0x4b91fc(0x217),'name':_0x4b91fc(0x233),'type':'기믹','hitArea':[],'coords':_0x4b91fc(0x253),'script':'\x0a<pre>우리가\x20상대할\x20것은\x20대지,\x20그\x20자체였을까.\x0a절벽이\x20앞을\x20가로막는다.\x0a허나\x20무너뜨릴\x20수\x20없을\x20듯하던\x20북쪽\x20성벽\x20또한\x20작은\x20균열\x20하나에\x20허물어지는\x20법.\x0a\x22무딘\x20칼날로\x20대지를\x20가를\x20수\x20있겠는가?\x22</pre>\x0a','execute':(_0x4cef93,_0x37e5ff,_0x5c79d3,_0x4b8b8b,_0x4c8a37,_0x81f14e)=>{const _0x5390ad=_0x4b91fc;return _0x4cef93[_0x5390ad(0x248)]=_0x5390ad(0x217),_0x4c8a37('✦기믹✦\x20'+_0x4cef93[_0x5390ad(0x1d8)]+_0x5390ad(0x22b)),!![];}},'GIMMICK_Path_of_Ruin':{'id':_0x4b91fc(0x1f7),'name':'균열의\x20길','type':_0x4b91fc(0x208),'hitArea':[{'x':0x2,'y':0x0},{'x':0x2,'y':0x1},{'x':0x2,'y':0x2},{'x':0x2,'y':0x3},{'x':0x2,'y':0x4},{'x':0x0,'y':0x2},{'x':0x1,'y':0x2},{'x':0x3,'y':0x2},{'x':0x4,'y':0x2}],'execute':(_0x533517,_0x1c9076,_0x2b9192,_0xed5f97,_0x587654,_0x2edb5e)=>{const _0xa687ea=_0x4b91fc;_0x533517[_0xa687ea(0x25b)](_0xa687ea(0x1e1),_0xa687ea(0x24b),0x2,{});const _0x409782=MONSTER_SKILLS['GIMMICK_Path_of_Ruin'][_0xa687ea(0x22c)];return _0x2b9192[_0xa687ea(0x262)](_0x563cf4=>_0x563cf4['isAlive']&&_0x409782[_0xa687ea(0x209)](_0x283e69=>_0x283e69['x']===_0x563cf4[_0xa687ea(0x25c)]&&_0x283e69['y']===_0x563cf4[_0xa687ea(0x1dd)]))[_0xa687ea(0x23b)](_0x58c8d1=>{const _0x1bcce3=_0xa687ea;_0x58c8d1['addDebuff'](_0x1bcce3(0x220),_0x1bcce3(0x206),0x2,{'description':'다음\x20턴\x20폭발\x20대미지\x20대상'}),_0x587654(_0x1bcce3(0x236)+_0x58c8d1[_0x1bcce3(0x1d8)]+'의\x20발치에\x20불길한\x20균열이\x20새겨졌습니다.');}),!![];}},'SKILL_Ruin_Explosion':{'id':_0x4b91fc(0x231),'name':_0x4b91fc(0x1ed),'execute':(_0x1ad332,_0x40d004,_0x3de366,_0x50c788,_0x319696,_0x2435d5)=>{const _0x46dad4=_0x4b91fc,_0x1523f1=MONSTER_SKILLS[_0x46dad4(0x1f7)][_0x46dad4(0x22c)],_0x1381c2=_0x3de366[_0x46dad4(0x262)](_0x15adc3=>_0x15adc3[_0x46dad4(0x22d)]&&_0x1523f1[_0x46dad4(0x209)](_0x31ff5b=>_0x31ff5b['x']===_0x15adc3['posX']&&_0x31ff5b['y']===_0x15adc3['posY']));return _0x1381c2[_0x46dad4(0x1f6)]>0x0&&(_0x319696(_0x46dad4(0x266)),_0x1381c2[_0x46dad4(0x23b)](_0x1fe23=>{const _0x241060=_0x46dad4,_0x5c95ca=_0x1fe23[_0x241060(0x1ff)](_0x241060(0x220))?2.5:1.5,_0x48da07=_0x2435d5[_0x241060(0x1e2)](_0x1ad332,_0x1fe23,_0x5c95ca,_0x241060(0x257));_0x1fe23[_0x241060(0x238)](_0x48da07,_0x319696,_0x1ad332),_0x319696(_0x241060(0x246)+_0x1fe23[_0x241060(0x1d8)]+_0x241060(0x25a)+_0x48da07+_0x241060(0x260)),_0x1fe23[_0x241060(0x264)](_0x241060(0x220));})),!![];}},'GIMMICK_Seed_of_Devour':{'id':'GIMMICK_Seed_of_Devour','name':'흡수의\x20술식','type':_0x4b91fc(0x229),'script':_0x4b91fc(0x25d),'execute':(_0x3fb232,_0x4bac2d,_0x19ea8c,_0x70fb52,_0x20f079,_0x88bac7)=>{const _0x5877c7=_0x4b91fc,{mapObjects:_0x12182,characterPositions:_0x493e7a,mapWidth:_0x23614f,mapHeight:_0x37aa83,utils:_0x4ab51a}=_0x88bac7,_0x13d54e=Math[_0x5877c7(0x1e5)](Math[_0x5877c7(0x256)]()*0x3)+0x1;if(_0x13d54e===0x1){for(let _0x3af24f=0x0;_0x3af24f<0x2;_0x3af24f++){const _0x45d976=_0x4ab51a[_0x5877c7(0x234)](_0x23614f,_0x37aa83,_0x493e7a);if(_0x45d976){const _0x3ae23e={'id':_0x5877c7(0x251)+Date['now']()+'_'+_0x3af24f,'name':'생명의\x20열매','type':_0x5877c7(0x20d),'posX':_0x45d976['x'],'posY':_0x45d976['y'],'isAlive':!![],'hp':0x32};_0x12182[_0x5877c7(0x25e)](_0x3ae23e),_0x493e7a[_0x45d976['x']+','+_0x45d976['y']]=_0x3ae23e['id'];}}_0x20f079('✦기믹✦\x20맵에\x20[생명의\x20열매]가\x20생성되었습니다.');}else{if(_0x13d54e===0x3){const _0x19b742={'id':_0x5877c7(0x241)+Date['now'](),'name':_0x5877c7(0x221),'type':_0x5877c7(0x1eb),'posX':0x2,'posY':0x0,'isAlive':!![],'healingReceived':0x0,'maxHealingRequired':0x32};_0x12182[_0x5877c7(0x25e)](_0x19b742),_0x493e7a['2,0']=_0x19b742['id'],_0x20f079(_0x5877c7(0x259));}}return!![];}}};
+/**
+* monsterSkills.js
+* 모든 몬스터 스킬 및 기믹 통합 관리 (좌표 기반 정규화 버전)
+*/
+
+export const MONSTER_SKILLS = {
+ // --- [1] 테르모르 스킬 (Stage A) ---
+ SKILL_Seismic_Fissure: {
+   id: "SKILL_Seismic_Fissure",
+   name: "균열의 진동",
+   hitArea: [{x:1,y:1},{x:2,y:1},{x:3,y:1},{x:1,y:2},{x:3,y:2},{x:1,y:3},{x:2,y:3},{x:3,y:3}],
+   script: `\n<pre>"마른 땅이 갈라지며 균열이 퍼져나간다 \n이 전장은 오로지 한 생명의 손아귀에 놓여 있다. \n"땅이 갈라지는 소리를 들은 적 있느냐.""</pre>\n`,
+   execute: (caster, target, allies, enemies, battleLog, state) => {
+     const area = MONSTER_SKILLS.SKILL_Seismic_Fissure.hitArea;
+     const hitTargets = allies.filter(t => t.isAlive && area.some(pos => pos.x === t.posX && pos.y === t.posY));
+     
+     hitTargets.forEach(target => {
+       const damage = state.calculateDamage(caster, target, 1.0, "physical");
+       target.takeDamage(damage, battleLog, caster, allies, enemies, state);
+       battleLog(`✦피해✦ ${caster.name}의 진동이 ${target.name}에게 적중하여 ${damage}의 피해를 입혔습니다.`);
+     });
+     return true;
+   },
+ },
+
+ SKILL_Echo_of_Silence: {
+   id: "SKILL_Echo_of_Silence",
+   name: "침묵의 메아리",
+   type: "광역 디버프",
+   hitArea: [{x:0,y:2},{x:1,y:1},{x:3,y:1},{x:2,y:0},{x:4,y:2},{x:1,y:3},{x:3,y:3}],
+   script: `\n<pre>기묘한 울림이 공간을 가른다. \n거대한 풍광을 앞에 두고, 달리 무엇을 말할 수 있겠는가? \n"자연의 숨결 앞에서는 그 어떤 주문도 무의미하다."</pre>\n`,
+   execute: (caster, target, allies, enemies, battleLog, state) => {
+     const area = MONSTER_SKILLS.SKILL_Echo_of_Silence.hitArea;
+     const hitTargets = allies.filter(t => t.isAlive && area.some(p => p.x === t.posX && p.y === t.posY));
+
+     if (hitTargets.length > 0) {
+       hitTargets.forEach(t => {
+         const duration = hitTargets.length + 1;
+         t.addDebuff("silence", "[침묵]", 2, { description: "주문 사용 불가" });
+         battleLog(`✦광역 디버프✦ ${caster.name}의 메아리가 ${t.name}에게 적중하여 [침묵]을 부여합니다.`);
+       })
+     }
+     return true;
+   },
+ },
+
+ SKILL_Crushing_Sky: {
+   id: "SKILL_Crushing_Sky",
+   name: "무너지는 하늘",
+   hitArea: [{x:2,y:0},{x:2,y:1},{x:0,y:2},{x:1,y:2},{x:3,y:2},{x:4,y:2},{x:2,y:3},{x:2,y:4}],
+   script: `\n<pre>거대한 석괴가 하늘에서 떨어지기 시작한다. \n때로 자연이라는 것은, 인간에게 이다지도 무자비하다. \n"대지가 너희에게 분노하리라."</pre>\n`,
+   execute: (caster, target, allies, enemies, battleLog, state) => {
+     const area = MONSTER_SKILLS.SKILL_Crushing_Sky.hitArea;
+     const hitTargets = allies.filter(t => t.isAlive && area.some(p => p.x === t.posX && p.y === t.posY));
+
+     hitTargets.forEach(target => {
+       const damage = state.calculateDamage(caster, target, 1.2, "physical");
+       target.takeDamage(damage, battleLog, caster, allies, enemies, state);
+       battleLog(`✦피해✦ 하늘에서 떨어진 석괴가 ${target.name}에게 적중하여 ${damage}의 피해를 입혔습니다.`);
+     });
+     return true;
+   },
+ },
+
+ SKILL_Birth_of_Vines: {
+   id: "SKILL_Birth_of_Vines",
+   name: "덩굴 탄생",
+   hitArea: [{x:0,y:0}, {x:0,y:2}, {x:0,y:4}, {x:1,y:1}, {x:1,y:3}, {x:2,y:0}, {x:2,y:2}, {x:2,y:4}, {x:3,y:1}, {x:3,y:3}, {x:4,y:0}, {x:4,y:2}, {x:4,y:4}],
+   script: `\n<pre>바닥으로부터 수많은 덩굴이 솟구친다. \n벗어날 수 없는 공포가 당신의 발목을 옥죄어 온다. \n"이 땅에 모습을 드러낸 이들을, 잊지 않겠다."</pre>\n`,
+   execute: (caster, target, allies, enemies, battleLog, state) => {
+     const area = MONSTER_SKILLS.SKILL_Birth_of_Vines.hitArea;
+     const hitTargets = allies.filter(t => t.isAlive && area.some(p => p.x === t.posX && p.y === t.posY));
+     hitTargets.forEach(target => {
+       const damage = state.calculateDamage(caster, target, 1.2, "magical");
+       target.takeDamage(damage, battleLog, caster, allies, enemies, state);
+      battleLog(`✦피해✦ 솟구친 덩굴이 ${target.name}의 발목을 옥죄어 ${damage}의 피해를 입혔습니다.`);
+     });
+     return true;
+   },
+ },
+
+ SKILL_Spores_of_Silence: {
+   id: "SKILL_Spores_of_Silence",
+   name: "침묵의 포자",
+   type: "광역 디버프",
+   hitArea: [
+     {x:0,y:0}, {x:1,y:0}, {x:2,y:0}, {x:3,y:0}, {x:4,y:0},
+     {x:0,y:2}, {x:1,y:2}, {x:3,y:2}, {x:4,y:2},
+     {x:0,y:4}, {x:1,y:4}, {x:2,y:4}, {x:3,y:4}, {x:4,y:4}
+   ],
+   script: `\n<pre>고운 꽃가루가 하늘을 뒤덮는다.\n생경한 아름다움은 고요한 찬사만을 강요한다.\n"많은 말은 필요하지 않은 법."</pre>\n`,
+   execute: (caster, target, allies, enemies, battleLog, state) => {
+        const area = MONSTER_SKILLS.SKILL_Spores_of_Silence.hitArea;
+        const hitTargets = allies.filter(t => t.isAlive && area.some(pos => pos.x === t.posX && pos.y === t.posY));
+        
+        hitTargets.forEach(target => {
+            // 1. 무장 해제 디버프 부여
+            target.addDebuff('disarm', '[무장 해제]', 2, { description: '공격 스킬 사용 불가' });
+            
+            // 2. 시전자 공격력 50% 고정 피해 계산
+            const fixedDamage = Math.round(caster.getEffectiveStat("atk") * 0.5);
+            target.takeDamage(fixedDamage, battleLog, caster);
+            
+            battleLog(`✦피해✦ ${target.name}에게 포자가 터지며 ${fixedDamage}의 고정 피해를 입히고 무장을 해제합니다.`);
+        });
+        return true;
+    }
+},
+
+ SKILL_Seeds_Wrath: {
+   id: "SKILL_Seeds_Wrath",
+   name: "씨앗의 분노",
+   hitArea: [{x:1,y:1}, {x:1,y:2}, {x:1,y:3}, {x:2,y:1}, {x:2,y:3}, {x:3,y:1}, {x:3,y:2}, {x:3,y:3}, {x:0,y:0}, {x:0,y:4}, {x:4,y:0}, {x:4,y:4}],
+   script: `\n<pre>고운 꽃가루가 하늘을 뒤덮는다. \n생경한 아름다움은 고요한 찬사만을 강요한다. \n"많은 말은 필요하지 않은 법."</pre>\n`,
+   execute: (caster, target, allies, enemies, battleLog, state) => {
+     const greenArea = [{x:1,y:1},{x:1,y:2},{x:1,y:3},{x:2,y:1},{x:2,y:3},{x:3,y:1},{x:3,y:2},{x:3,y:3}];
+     const blueArea = [{x:0,y:0},{x:0,y:4},{x:4,y:0},{x:4,y:4}];
+     allies.filter(t => t.isAlive).forEach(target => {
+       if (greenArea.some(p => p.x === target.posX && p.y === target.posY)) {
+         const d = state.calculateDamage(caster, target, 1.5, "magical");
+         target.takeDamage(d, battleLog, caster, allies, enemies, state);
+       }
+       if (blueArea.some(p => p.x === target.posX && p.y === target.posY)) {
+         target.addDebuff("disarm", "[무장 해제]", 2, { description: "공격 스킬 사용 불가" });
+         battleLog(`✦상태 이상✦ ${target.name}에게 씨앗이 붙어 무장이 해제됩니다.`);
+       }
+     });
+     return true;
+   },
+ },
+
+ // --- [2] 피에로 & 클라운 스킬 ---
+ SKILL_Slapstick_Comdey_P: {
+  id: "SKILL_Slapstick_Comdey_P",
+  name: "슬랩스틱 코미디(피에로)",
+  type: "물리 공격",
+  description: "뿅망치를 세로로 크게 휘둘러 상하 두 칸씩 피해를 입힙니다.",
+  execute: (caster, target, allies, enemies, battleLog, state) => {
+    // 세로축 오프셋: 상(0,-2), 상(0,-1), 하(0,1), 하(0,2)
+    const offsets = [{ dx: 0, dy: -2 }, { dx: 0, dy: -1 }, { dx: 0, dy: 1 }, { dx: 0, dy: 2 }];
+    
+    allies.filter(t => t.isAlive).forEach(target => {
+      if (offsets.some(o => caster.posX + o.dx === target.posX && caster.posY + o.dy === target.posY)) {
+        // 물리 피해 계산 (최소 10의 피해 보장)
+        const calculatedDmg = state.calculateDamage(caster, target, 1.0, "physical");
+        const finalDmg = Math.max(10, calculatedDmg);
+        
+        target.takeDamage(finalDmg, battleLog, caster, allies, enemies, state);
+        battleLog(`  ✦피해✦ 피에로의 세로 휘두르기! ${target.name}에게 ${finalDmg}의 물리 피해.`);
+
+        // [폭주 기믹] duet_enrage 상태일 때 낙인(Brand) 부여
+        if (caster.hasBuff("duet_enrage") && state.applyRandomBrand) {
+          state.applyRandomBrand(target, battleLog);
+        }
+      }
+    });
+    return true;
+  }
+},
+
+ SKILL_Slapstick_Comdey_C: {
+  id: "SKILL_Slapstick_Comdey_C",
+  name: "슬랩스틱 코미디(클라운)",
+  type: "마법 공격",
+  description: "뿅망치를 가로로 크게 휘둘러 좌우 두 칸씩 피해를 입힙니다.",
+  execute: (caster, target, allies, enemies, battleLog, state) => {
+    // 가로축 오프셋: 좌(-2,0), 좌(-1,0), 우(1,0), 우(2,0)
+    const offsets = [{ dx: -2, dy: 0 }, { dx: -1, dy: 0 }, { dx: 1, dy: 0 }, { dx: 2, dy: 0 }];
+    
+    allies.filter(t => t.isAlive).forEach(target => {
+      if (offsets.some(o => caster.posX + o.dx === target.posX && caster.posY + o.dy === target.posY)) {
+        // 마법 피해 계산 (최소 10의 피해 보장)
+        const calculatedDmg = state.calculateDamage(caster, target, 1.0, "magical");
+        const finalDmg = Math.max(10, calculatedDmg);
+        
+        target.takeDamage(finalDmg, battleLog, caster, allies, enemies, state);
+        battleLog(`  ✦피해✦ 클라운의 가로 휘두르기! ${target.name}에게 ${finalDmg}의 마법 피해.`);
+
+        // [폭주 기믹] duet_enrage 상태일 때 낙인(Brand) 부여
+        if (caster.hasBuff("duet_enrage") && state.applyRandomBrand) {
+          state.applyRandomBrand(target, battleLog);
+        }
+      }
+    });
+    return true;
+  }
+},
+
+ SKILL_Get_a_Present_C: {
+  id: "SKILL_Get_a_Present_C",
+  name: "선물 받아!(클라운)",
+  type: "마법 공격",
+  description: "대각선 방향 2칸까지 선물을 던져 X자 범위 내의 모든 적에게 마법 피해를 입힙니다.",
+  execute: (caster, target, allies, enemies, battleLog, state) => {
+    // 대각선 X자 오프셋 (1칸 및 2칸)
+    const offsets = [
+      { dx: -2, dy: -2 }, { dx: -2, dy: 2 },
+      { dx: -1, dy: -1 }, { dx: -1, dy: 1 },
+      { dx: 1, dy: -1 },  { dx: 1, dy: 1 },
+      { dx: 2, dy: -2 },  { dx: 2, dy: 2 }
+    ];
+    
+    allies.filter(t => t.isAlive).forEach(target => {
+      if (offsets.some(o => caster.posX + o.dx === target.posX && caster.posY + o.dy === target.posY)) {
+        // 마법 피해 계산 (최소 10의 피해 보장)
+        const calculatedDmg = state.calculateDamage(caster, target, 1.0, "magical");
+        const finalDmg = Math.max(10, calculatedDmg);
+        
+        target.takeDamage(finalDmg, battleLog, caster, allies, enemies, state);
+        battleLog(`  ✦피해✦ 클라운의 폭탄! ${target.name}에게 ${finalDmg}의 마법 피해.`);
+
+        // [폭주 기믹] duet_enrage 상태일 때 낙인(Brand) 부여
+        if (caster.hasBuff("duet_enrage") && state.applyRandomBrand) {
+          state.applyRandomBrand(target, battleLog);
+        }
+      }
+    });
+    return true;
+  }
+},
+
+ SKILL_Get_a_Present_P: {
+  id: "SKILL_Get_a_Present_P",
+  name: "선물 받아!(피에로)",
+  type: "물리 공격",
+  description: "파이를 던져 자신 주변 1칸(8방향) 내의 모든 적에게 물리 피해를 입힙니다.",
+  execute: (caster, target, allies, enemies, battleLog, state) => {
+    // 자신을 둘러싼 8방향 오프셋
+    const offsets = [
+      { dx: -1, dy: -1 }, { dx: -1, dy: 0 }, { dx: -1, dy: 1 },
+      { dx: 0, dy: -1 },                      { dx: 0, dy: 1 },
+      { dx: 1, dy: -1 }, { dx: 1, dy: 0 }, { dx: 1, dy: 1 }
+    ];
+    
+    allies.filter(t => t.isAlive).forEach(target => {
+      if (offsets.some(o => caster.posX + o.dx === target.posX && caster.posY + o.dy === target.posY)) {
+        // 물리 피해 계산 (최소 10의 피해 보장)
+        const calculatedDmg = state.calculateDamage(caster, target, 1.0, "physical");
+        const finalDmg = Math.max(10, calculatedDmg);
+        
+        target.takeDamage(finalDmg, battleLog, caster, allies, enemies, state);
+        battleLog(`  ✦피해✦ 피에로의 깜짝 파이! ${target.name}에게 ${finalDmg}의 물리 피해.`);
+
+        // [폭주 기믹] duet_enrage 상태일 때 낙인(Brand) 부여
+        if (caster.hasBuff("duet_enrage") && state.applyRandomBrand) {
+          state.applyRandomBrand(target, battleLog);
+        }
+      }
+    });
+    return true;
+  }
+},
+
+ GIMMICK_Laugh_of: {
+  id: "GIMMICK_Laugh_of",
+  name: "광대의 웃음",
+  type: "기믹",
+  execute: (caster, target, allies, enemies, battleLog, state) => {
+    // 중복 기믹 방지
+    if (state.activeGimmickState && state.activeGimmickState.type.startsWith("clown_emotion")) return false;
+
+    battleLog("✦기믹 발생✦ 무대 위로 피에로의 기괴한 웃음소리가 울려 퍼집니다.");
+
+    // 기믹 상태 설정 (3턴 지속)
+    state.activeGimmickState = {
+      type: "clown_emotion_laugh",
+      turnStart: state.currentTurn,
+      duration: 3,
+      requiredTarget: "클라운", // 집중 공격 대상
+      hits: 0,
+      requiredHits: 5 // 필요 유효타 수
+    };
+
+    // 즉시 효과: 모든 아군에게 [환희 낙인] 부여 시도 (광대 폭주 시 대비)
+    allies.filter(a => a.isAlive).forEach(a => {
+      const damage = 10;
+      a.takeDamage(damage, battleLog, caster);
+      battleLog(`  ✦피해✦ 소름 끼치는 웃음소리에 ${a.name}의 정신이 깎입니다.`);
+    });
+
+    return true;
+  }
+},
+
+ GIMMICK_Tears_of: {
+  id: "GIMMICK_Tears_of",
+  name: "광대의 눈물",
+  type: "기믹",
+  execute: (caster, target, allies, enemies, battleLog, state) => {
+    // 중복 기믹 방지
+    if (state.activeGimmickState && state.activeGimmickState.type.startsWith("clown_emotion")) return false;
+
+    battleLog("✦기믹 발생✦ 무대 위로 비명 섞인 피에로의 울음소리가 터져 나옵니다.");
+
+    // 기믹 상태 설정 (3턴 지속)
+    state.activeGimmickState = {
+      type: "clown_emotion_tear",
+      turnStart: state.currentTurn,
+      duration: 3,
+      requiredTarget: "피에로", // 집중 공격 대상
+      hits: 0,
+      requiredHits: 5 // 필요 유효타 수
+    };
+
+    // 즉시 효과: 모든 아군에게 [우울 낙인] 부여 시도 (광대 폭주 시 대비)
+    allies.filter(a => a.isAlive).forEach(a => {
+      const damage = 10;
+      a.takeDamage(damage, battleLog, caster);
+      battleLog(`  ✦피해✦ 비통한 울음소리가 ${a.name}의 행동을 무겁게 짓누릅니다.`);
+    });
+
+    return true;
+  }
+},
+
+ // --- [3] 카르나블룸 스킬 (Stage B) ---
+ SKILL_Carnabloom_Playtime: {
+  id: "SKILL_Carnabloom_Playtime",
+  name: "유희 (기본 공격)",
+  execute: (caster, target, allies, enemies, battleLog, state) => {
+    const { currentTurn, calculateDamage } = state;
+    const isOdd = currentTurn % 2 === 1;
+    
+    // 기획: 홀수 발동 시 초록색 범위, 짝수 발동 시 붉은색 범위
+    // (여기서는 시각적 로그와 판정 로직으로 구현)
+    battleLog(`✦공격✦ 카르나블룸의 유희! ${isOdd ? "[초록색 범위]" : "[붉은색 범위]"}가 전장을 휩씁니다.`);
+
+    // 2페이즈는 9x9 맵이므로 범위 판정이 중요함 (예시: 십자 혹은 부채꼴)
+    const hitArea = isOdd ? [{dx:0,dy:-1},{dx:0,dy:1},{dx:-1,dy:0},{dx:1,dy:0}] : [{dx:-1,dy:-1},{dx:1,dy:1},{dx:-1,dy:1},{dx:1,dy:-1}];
+
+    allies.filter(a => a.isAlive).forEach(a => {
+      const isHit = hitArea.some(p => caster.posX + p.dx === a.posX && caster.posY + p.dy === a.posY);
+      if (isHit) {
+        // 유효타 1~5 기준 마법 피해
+        const damage = calculateDamage(caster, a, 1.8, "magical");
+        a.takeDamage(damage, battleLog, caster);
+        battleLog(`  ✦피해✦ 불타는 원형 고리가 ${a.name}을(를) 스칩니다: ${damage} 피해.`);
+      }
+    });
+    return true;
+  }
+},
+
+ SKILL_Strings_of_Emotion: {
+  id: "SKILL_Strings_of_Emotion",
+  name: "감정의 실",
+  type: "디버프/제어",
+  execute: (caster, target, allies, enemies, battleLog, state) => {
+    battleLog(`\n<pre>인형사의 가느다란 손가락이 색색의 리본을 감싸 쥔다.</pre>`);
+    battleLog(`<pre>"기쁨도, 슬픔도, 공포도... 모두 내가 정해 주는 대로 느끼렴."</pre>`);
+
+    // 살아 있는 아군 중 무작위 2명 선정
+    const targets = allies.filter(a => a.isAlive).sort(() => 0.5 - Math.random()).slice(0, 2);
+
+    targets.forEach(t => {
+      // 악몽, 환희, 우울 중 하나를 무작위 선택
+      const effects = ["nightmare", "brand_joy", "brand_melancholy"];
+      const chosenEffect = effects[Math.floor(Math.random() * effects.length)];
+
+      if (chosenEffect === "nightmare") {
+        // [악몽] 부여
+        t.addDebuff("nightmare", "[악몽]", 2, {
+          isStun: true,
+          description: "행동 불가 및 보스 공격 불가. 피격 시 해제."
+        });
+        battleLog(`  ✦상태 이상✦ ${t.name}, 실에 묶여 자아를 잃고 [악몽]에 빠집니다.`);
+        
+      } else if (chosenEffect === "brand_joy") {
+        // [환희 낙인] 부여 (영구, 3중첩)
+        t.addDebuff("brand_joy", "[환희 낙인]", 99, {
+          maxStacks: 3,
+          description: "방어 성능 감소 및 공격 성능 증폭(영구)"
+        });
+        battleLog(`  ✦낙인✦ ${t.name}, 끓어오르는 [환희]에 몸을 맡깁니다.`);
+        
+      } else if (chosenEffect === "brand_melancholy") {
+        // [우울 낙인] 부여 (영구, 3중첩)
+        t.addDebuff("brand_melancholy", "[우울 낙인]", 99, {
+          maxStacks: 3,
+          description: "공격 성능 감소 및 상성 무효화(영구)"
+        });
+        battleLog(`  ✦낙인✦ ${t.name}, 깊은 [우울]에 잠겨 무력해집니다.`);
+      }
+    });
+
+    return true;
+  }
+},
+
+SKILL_Puppet_Parade: {
+  id: "SKILL_Puppet_Parade",
+  name: "퍼펫 퍼레이드",
+  execute: (caster, target, allies, enemies, battleLog, state) => {
+    battleLog(`✦기믹✦ 카르나 블룸의 손짓에 새로운 인형들이 무대로 걸어 나옵니다.`);
+    
+    // 빈 칸에 클라운 1체, 피에로 1체 추가 소환 로직 (main.js의 addCharacterAtPos 활용)
+    const clownPos = state.utils.getRandomEmptyCell(state.mapWidth, state.mapHeight, state.characterPositions);
+    if (clownPos) state.addCharacterAtPos("Clown", clownPos);
+    
+    const pierrotPos = state.utils.getRandomEmptyCell(state.mapWidth, state.mapHeight, state.characterPositions);
+    if (pierrotPos) state.addCharacterAtPos("Pierrot", pierrotPos);
+    
+    return true;
+  }
+ },
+
+ 
+
+ SKILL_Play2: {
+   id: "SKILL_Play2",
+   name: "유희(2,4타)",
+   execute: (caster, target, allies, enemies, battleLog, state) => {
+     const hitArea = "0,0;1,1;2,2;3,3;5,5;6,6;7,7;8,8;0,8;1,7;2,6;3,5;5,3;6,2;7,1;8,0".split(";").map(s => s.split(",").map(Number));
+     allies.filter(t => t.isAlive).forEach(target => {
+       if (hitArea.some(pos => pos[0] === target.posX && pos[1] === target.posY)) {
+         const d = state.calculateDamage(caster, target, 1.1, "magical");
+         target.takeDamage(d, battleLog, caster, allies, enemies, state); // 파라미터 수정됨
+       }
+     });
+     return true;
+   }
+ },
+
+ GIMMICK_Curtain_Call: {
+  id: "GIMMICK_Curtain_Call",
+  name: "커튼콜 / 앵콜",
+  type: "특수 기믹",
+  execute: (caster, target, allies, enemies, battleLog, state) => {
+    // 1. 전장에 남은 미니언(피에로, 클라운) 확인
+    const minions = enemies.filter(e => e.isAlive && (e.name === "피에로" || e.name === "클라운"));
+
+    if (minions.length > 0) {
+      // [커튼콜 발동]
+      battleLog(`\n<pre>--------------------------------</pre>`);
+      battleLog(`<b>☂︎ 하지만, 아직 공연은 끝나지 않았습니다.</b>`);
+      battleLog(`"나의 아이들아, 마지막 장면을 위해 조금 더 힘을 빌려주렴."`);
+
+      // 2. 미니언들의 현재 체력 10%를 바침
+      minions.forEach(m => {
+        const hpSacrifice = Math.round(m.currentHp * 0.1);
+        m.currentHp = Math.max(1, m.currentHp - hpSacrifice);
+        battleLog(`  ✦희생✦ ${m.name}의 생명력이 인형사에게로 흘러 들어갑니다.`);
+      });
+
+      // 3. 보스 부활 (최대 체력의 40% 복구)
+      caster.isAlive = true;
+      caster.currentHp = Math.round(caster.maxHp * 0.4);
+      
+      battleLog(`\n<b>✦앵콜✦ 카르나 블룸이 다시 무대 위로 소환되었습니다! (HP 40% 회복)</b>`);
+      battleLog(`"자, 관객 여러분. 다시 한번 박수를!"`);
+      battleLog(`<pre>--------------------------------</pre>\n`);
+
+      if (state.displayCharacters) state.displayCharacters();
+      return true; // 부활 성공
+    } else {
+      // 모든 미니언이 처치된 상태면 부활 실패
+      battleLog(`\n✦종료✦ 광대들이 모두 사라져, 인형사의 무대가 완전히 막을 내립니다.`);
+      return false; // 최종 사망
+    }
+  }
+},
+
+
+
+ SKILL_Silence: {
+   id: "SKILL_Silence",
+   name: "침묵",
+   type: "상태 이상",
+   execute: (caster, target, allies, enemies, battleLog, state) => {
+     battleLog(`✦특수 패턴✦ ${caster.name}가 맹공에 정신을 차리지 못하고 [침묵] 상태에 빠집니다.`);
+     caster.addDebuff("groggy", "[침묵](그로기)", 2, { description: "행동 불가 및 받는 피해 증가" });
+     return true;
+   }
+ },
+
+ SKILL_Script_Reversal: {
+  id: "SKILL_Script_Reversal",
+  name: "대본의 반역",
+  type: "기믹/광역 공격",
+  execute: (caster, target, allies, enemies, battleLog, state) => {
+    battleLog(`\n<pre>무대의 조명이 번뜩이며 시야를 혼란시킨다. \n정해진 배역을 벗어난 자들에게는 오로지 어둠만이 허락될 뿐.</pre>`);
+    
+    // 1. 안전 구역(조명 타일) 무작위 선정 (예: 9x9 중 3~4곳)
+    const safeZones = [];
+    for(let i=0; i<3; i++) {
+        safeZones.push({
+            x: Math.floor(Math.random() * 9),
+            y: Math.floor(Math.random() * 9)
+        });
+    }
+
+    // 2. 조명 위치 알림
+    safeZones.forEach(p => {
+        battleLog(`✦조명✦ (${p.x}, ${p.y}) 지점에 스포트라이트가 비춰집니다!`);
+    });
+
+    // 3. 판정: 조명 밖의 모든 아군 타격
+    allies.filter(a => a.isAlive).forEach(a => {
+      const isSafe = safeZones.some(p => p.x === a.posX && p.y === a.posY);
+      
+      if (!isSafe) {
+        // 대미지 + 악몽 부여
+        const damage = state.calculateDamage(caster, a, 2.5, "magical");
+        a.takeDamage(damage, battleLog, caster);
+        
+        a.addDebuff("nightmare", "[악몽]", 2, {
+          isStun: true,
+          description: "행동 불가 및 보스 공격 불가. 피격 시 해제."
+        });
+        battleLog(`  ✦피해✦ 조명을 벗어난 ${a.name}이 어둠 속에서 [악몽]에 붙잡힙니다!`);
+      } else {
+        battleLog(`  ✦회피✦ ${a.name}, 빛의 테두리 안에서 무사히 배역을 수행합니다.`);
+      }
+    });
+
+    return true;
+  }
+},
+
+SKILL_Dress_Rehearsal: {
+  id: "SKILL_Dress_Rehearsal",
+  name: "최종 리허설",
+  type: "최종 기믹",
+  execute: (caster, target, allies, enemies, battleLog, state) => {
+    battleLog(`\n\n<pre>무대 위의 모든 시선이 한 곳으로 집중된다.\n이 순간, 당신에게 맡겨진 배역은.\n\n</pre>`);
+
+   const roles = ["웃는 자", "우는 자", "흥분한 자", "무표정한 자"];
+    
+    allies.filter(a => a.isAlive).forEach(a => {
+      // 랜덤 역할 부여
+      const role = roles[Math.floor(Math.random() * roles.length)];
+      
+      // 버프로 역할 저장 (조건 판정을 위해)
+      a.addBuff("rehearsal_role", `[역할: ${role}]`, 2, {
+        roleType: role,
+        startPosX: a.posX,
+        startPosY: a.posY,
+        actionCount: 0, // 해당 턴 행동 횟수 기록용
+        description: getRoleDescription(role)
+      });
+      
+      battleLog(`  ✦배역 부여✦ ${a.name}에게 '${role}'의 대본이 전달되었습니다.`);
+    });
+
+    // 판정용 상태 저장
+    state.activeGimmickState = {
+      type: "dress_rehearsal",
+      castTurn: state.currentTurn
+    };
+
+    return true;
+  }
+},
+  
+// --- [4] 맵 기믹 데이터 ---
+
+ GIMMICK_Aegis_of_Earth1: {
+   id: "GIMMICK_Aegis_of_Earth1",
+   name: "대지의 수호(동)",
+   type: "기믹",
+   hitArea: [], 
+   // 실제 대미지 계산 시 내부적으로만 참조할 좌표 문자열
+   coords: "3,1;3,2;3,3;4,0;4,1;4,2;4,3;4,4",
+   script: `<pre>우리가 상대할 것은 대지, 그 자체였을까.\n절벽이 앞을 가로막는다.\n허나 무너뜨릴 수 없을 듯하던 동쪽 성벽 또한 작은 균열 하나에 허물어지는 법.\n"무딘 칼날로 대지를 가를 수 있겠는가?"</pre>\n`,
+   execute: (caster, target, allies, enemies, battleLog, state) => {
+     // BattleEngine.js가 이 ID를 확인하여 안전지대 판정을 수행합니다.
+     caster.activeGimmick = "GIMMICK_Aegis_of_Earth1"; 
+     battleLog(`✦기믹✦ ${caster.name}가 동쪽을 향해 포효합니다.`);
+     return true;
+   },
+ },
+
+ GIMMICK_Aegis_of_Earth2: {
+   id: "GIMMICK_Aegis_of_Earth2",
+   name: "대지의 수호(서)",
+   type: "기믹",
+   hitArea: [],
+   coords: "0,0;0,1;0,2;0,3;0,4;1,1;1,2;1,3",
+   script: `<pre>우리가 상대할 것은 대지, 그 자체였을까.\n절벽이 앞을 가로막는다.\n허나 무너뜨릴 수 없을 듯하던 서쪽 성벽 또한 작은 균열 하나에 허물어지는 법.\n"무딘 칼날로 대지를 가를 수 있겠는가?"</pre>\n`,
+   execute: (caster, target, allies, enemies, battleLog, state) => {
+     caster.activeGimmick = "GIMMICK_Aegis_of_Earth2";
+     battleLog(`✦기믹✦ ${caster.name}가 서쪽을 향해 포효합니다.`);
+     return true;
+   },
+ },
+
+ GIMMICK_Aegis_of_Earth3: {
+   id: "GIMMICK_Aegis_of_Earth3",
+   name: "대지의 수호(남)",
+   type: "기믹",
+   hitArea: [],
+   coords: "1,3;2,3;3,3;0,4;1,4;2,4;3,4;4,4",
+   script: `<pre>우리가 상대할 것은 대지, 그 자체였을까.\n절벽이 앞을 가로막는다.\n허나 무너뜨릴 수 없을 듯하던 남쪽 성벽 또한 작은 균열 하나에 허물어지는 법.\n"무딘 칼날로 대지를 가를 수 있겠는가?"</pre>\n`,
+   execute: (caster, target, allies, enemies, battleLog, state) => {
+     caster.activeGimmick = "GIMMICK_Aegis_of_Earth3";
+     battleLog(`✦기믹✦ ${caster.name}가 남쪽을 향해 포효합니다.`);
+     return true;
+   },
+ },
+
+ GIMMICK_Aegis_of_Earth4: {
+   id: "GIMMICK_Aegis_of_Earth4",
+   name: "대지의 수호(북)",
+   type: "기믹",
+   hitArea: [],
+   coords: "0,0;1,0;2,0;3,0;4,0;1,1;2,1;3,1",
+   script: `\n<pre>우리가 상대할 것은 대지, 그 자체였을까.\n절벽이 앞을 가로막는다.\n허나 무너뜨릴 수 없을 듯하던 북쪽 성벽 또한 작은 균열 하나에 허물어지는 법.\n"무딘 칼날로 대지를 가를 수 있겠는가?"</pre>\n`,
+   execute: (caster, target, allies, enemies, battleLog, state) => {
+     caster.activeGimmick = "GIMMICK_Aegis_of_Earth4";
+     battleLog(`✦기믹✦ ${caster.name}가 북쪽을 향해 포효합니다.`);
+     return true;
+   },
+ },
+
+ GIMMICK_Path_of_Ruin: {
+   id: "GIMMICK_Path_of_Ruin",
+   name: "균열의 길",
+   type: "기믹 예고",
+   hitArea: [
+     {x:2,y:0}, {x:2,y:1}, {x:2,y:2}, {x:2,y:3}, {x:2,y:4},
+     {x:0,y:2}, {x:1,y:2}, {x:3,y:2}, {x:4,y:2}
+   ],
+   execute: (caster, target, allies, enemies, battleLog, state) => {
+        caster.addBuff("path_of_ruin_telegraph", "폭발 예고", 2, {});
+        
+        // 범위 내 아군에게 [흔적]을 남겨 다음 턴 위험을 예고합니다.
+        const area = MONSTER_SKILLS.GIMMICK_Path_of_Ruin.hitArea;
+        allies.filter(t => t.isAlive && area.some(p => p.x === t.posX && p.y === t.posY)).forEach(t => {
+            t.addDebuff("ruin_mark", "[균열의 흔적]", 2, { description: "다음 턴 폭발 대미지 대상" });
+            battleLog(`✦기믹✦ ${t.name}의 발치에 불길한 균열이 새겨졌습니다.`);
+        });
+        return true;
+    },
+},
+
+ SKILL_Ruin_Explosion: {
+  id: "SKILL_Ruin_Explosion",
+  name: "균열의 폭발",
+  execute: (caster, target, allies, enemies, battleLog, state) => {
+    // 1. 예고했던 범위(GIMMICK_Path_of_Ruin의 hitArea)를 가져옵니다.
+    const area = MONSTER_SKILLS.GIMMICK_Path_of_Ruin.hitArea;
+    
+    // 2. 해당 범위에 있는 살아있는 아군들을 필터링합니다.
+    const hitTargets = allies.filter(t => t.isAlive && area.some(p => p.x === t.posX && p.y === t.posY));
+    
+    if (hitTargets.length > 0) {
+      battleLog(`✦기믹✦ 지면에 새겨진 균열이 일제히 터집니다.`);
+      hitTargets.forEach(t => {
+        // 균열의 흔적(ruin_mark)이 있다면 3.5배, 없다면 기본 1.5배 피해
+        const multiplier = t.hasDebuff("ruin_mark") ? 3.5 : 1.5;
+        
+        const damage = state.calculateDamage(caster, t, multiplier, "magical");
+        
+        t.takeDamage(damage, battleLog, caster);
+        battleLog(`✦피해✦ 폭발의 여파가 ${t.name}에게 ${damage}의 치명적인 피해를 입혔습니다.`);
+        
+        // 폭발에 적중당했으므로 흔적 제거
+        t.removeDebuffById("ruin_mark");
+      });
+    } else {
+      battleLog(`✦정보✦ 균열이 허공에서 터졌습니다. 아무도 피해를 입지 않았습니다.`);
+    }
+    return true;
+  }
+},
+
+ GIMMICK_Seed_of_Devour: {
+   id: "GIMMICK_Seed_of_Devour",
+   name: "흡수의 술식",
+   type: "오브젝트 생성",
+   script: `\n<pre> 생명의 씨앗들이 고개를 들기 시작한다. \n이 씨앗들이 결실을 맺지 못하도록 꺾어야 한다. \n"씨앗은 생명을 흡수해, 다시 죽음을 틔운다."</pre>`,
+   execute: (caster, target, allies, enemies, battleLog, state) => {
+     const { mapObjects, characterPositions, mapWidth, mapHeight, utils } = state;
+     const gimmickType = Math.floor(Math.random() * 3) + 1; 
+
+     if (gimmickType === 1) {
+       for (let i = 0; i < 2; i++) {
+         const pos = utils.getRandomEmptyCell(mapWidth, mapHeight, characterPositions);
+         if (pos) {
+           const fruit = { id: `FRUIT_${Date.now()}_${i}`, name: "생명의 열매", type: "fruit", posX: pos.x, posY: pos.y, isAlive: true, hp: 50 };
+           mapObjects.push(fruit);
+           characterPositions[`${pos.x},${pos.y}`] = fruit.id;
+         }
+       }
+       battleLog(`✦기믹✦ 맵에 [생명의 열매]가 생성되었습니다.`);
+     } else if (gimmickType === 3) {
+       const spring = { id: `SPRING_${Date.now()}`, name: "메마른 생명의 샘", type: "spring", posX: 2, posY: 0, isAlive: true, healingReceived: 0, maxHealingRequired: 50 };
+       mapObjects.push(spring);
+       characterPositions[`2,0`] = spring.id;
+       battleLog(`✦기믹✦ [생명의 샘]이 나타났습니다!`);
+     }
+     return true;
+   },
+ }
+};
