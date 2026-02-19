@@ -79,10 +79,11 @@ export class Character {
 
         // 1. [흠집] 효과: 중첩당 방어/마방 10% 감소 (최대 3중첩)
         if (debuff.id === "scratched") {
-            if (statName === "def" || statName === "mdef") {
-                multiplierTotal *= (1 - (0.1 * stacks)); // 중첩당 10%씩 차감
+                if (statName === "def" || statName === "mdef") {
+                    // 1스택: 0.9, 2스택: 0.8, 3스택: 0.7 배율 적용
+                    multiplierTotal *= (1 - (0.1 * stacks));
+                }
             }
-        }
 
         // 2. [환희 낙인]: 방어 성능 20% 감소
         if (debuff.id === "brand_joy" && (statName === "def" || statName === "mdef")) {
