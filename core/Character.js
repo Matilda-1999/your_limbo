@@ -117,121 +117,123 @@ export class Character {
             return Math.max(0, totalStat);
         }
 
-    takeDamage(rawDamage, logFn, attacker = null, allies = [], enemies = [], state = {}, isRedirected = false) {
-        if (!this.isAlive) return;
-        let finalDamage = rawDamage;
+    takeDamage(rawDamage, logFn, attacker = null, allies = [], enemies = [], state = {}, isRedirected = false, isCounter = false) {
+    if (!this.isAlive || rawDamage <= 0) return;
+    
+    let finalDamage = rawDamage;
 
-        // 1. [가로채기] 로직: 이미 가로챈 대미지(isRedirected=true)가 아닐 때만 실행
-    if (!isRedirected) {
-        // 철옹성이나 도발 상태인 아군들을 찾습니다.
+    // 1. [가로채기] 로직 (이미 가로챈 피해거나 반격 피해는 재가로채기 불가)
+    if (!isRedirected && !isCounter) {
         const protectors = allies.filter(a => 
             a.isAlive && (a.hasBuff("iron_fortress") || a.hasDebuff("provoked_self"))
         );
 
         if (protectors.length > 0) {
-            // lastRedirectTime이 가장 큰(가장 나중에 행동을 결정한) 보호자를 찾습니다.
             const latestProtector = protectors.reduce((prev, current) => {
                 return (prev.lastRedirectTime || 0) >= (current.lastRedirectTime || 0) ? current : prev;
             });
 
-            // 내가 가장 최신 보호자가 아니라면, 최신 보호자에게 대미지를 넘깁니다.
             if (latestProtector.id !== this.id) {
-                logFn(`✦방어✦ ${latestProtector.name}, 주문 순서에 따라 공격을 대신 맞습니다.`);
-                // 마지막 인자에 true를 보내서, 넘겨받은 보호자가 다시 가로채기를 발동하지 않게 합니다.
-                latestProtector.takeDamage(rawDamage, logFn, attacker, allies, enemies, state, true);
+                logFn(`✦방어✦ ${latestProtector.name}, 동료를 대신해 공격을 맞습니다.`);
+                // 인자 순서 주의: (damage, logFn, attacker, allies, enemies, state, isRedirected, isCounter)
+                latestProtector.takeDamage(rawDamage, logFn, attacker, allies, enemies, state, true, false);
                 return; 
             }
         }
     }
 
-        // 2. [반격/역습] 판정 (보호막 적용 전 rawDamage 기준으로 실행)
-    const isOddTurn = (state.currentTurn || 1) % 2 !== 0;
-
-    // A. 반격 (모든 아군 피격 시 체크)
-    const counterProvider = [this, ...allies].find(member => 
-        member.isAlive && member.buffs && member.buffs.some(b => b.id === "counter_active")
-    );
-
-    // rawDamage > 0 조건으로 변경하여 보호막 흡수 시에도 반격이 나가도록 함
-    if (counterProvider && attacker && rawDamage > 0) {
-        const isSelfHit = (counterProvider.id === this.id);
-        const multiplier = isSelfHit ? 1.5 : 0.5;
-        const counterDamage = Math.round(rawDamage * multiplier);
-
-        // [신규 기믹] 반격 발동 시 시전자의 보호막 10% 소모 (반격의 반동)
-        if (counterProvider.shield > 0) {
-            const shieldCost = Math.round(counterProvider.shield * 0.1);
-            counterProvider.shield = Math.max(0, counterProvider.shield - shieldCost);
-            logFn(`✦반격 반동✦ ${counterProvider.name}, 반격의 여파로 보호막이 ${shieldCost}만큼 감소합니다.`);
-        }
-
-        if (isOddTurn) {
-            const targetEnemy = [...enemies].filter(e => e.isAlive).sort((a, b) => b.currentHp - a.currentHp)[0];
-            if (targetEnemy) {
-                logFn(`✦스킬✦ ${counterProvider.name}의 응수. ${this.name}을(를) 위해 ${targetEnemy.name}에게 ${counterDamage} 피해.`);
-                targetEnemy.takeDamage(counterDamage, logFn, counterProvider, enemies, allies, state);
+    // 2. [악몽] 해제 판정 (피격 즉시 실행)
+    if (this.hasDebuff("nightmare") && rawDamage > 0) {
+        const nightmare = this.debuffs.find(d => d.id === "nightmare");
+        if (nightmare) {
+            nightmare.stacks = (nightmare.stacks || 1) - 1;
+            if (nightmare.stacks <= 0) {
+                this.removeDebuffById("nightmare");
+                logFn(`✦해제✦ ${this.name}, 충격으로 인해 [악몽]에서 깨어납니다.`);
             }
-        } else {
-            logFn(`✦스킬✦ ${counterProvider.name}의 격노. 모든 적에게 피해를 입힙니다.`);
-            enemies.filter(e => e.isAlive).forEach(enemy => {
-                enemy.takeDamage(counterDamage, logFn, counterProvider, enemies, allies, state);
-            });
         }
     }
 
-        // B. 역습 (본인 전용)
+    // 3. [반격/역습] 판정 (isCounter가 아닐 때만 발동하여 무한 루프 방지)
+    if (!isCounter && attacker && rawDamage > 0) {
+        const isOddTurn = (state.currentTurn || 1) % 2 !== 0;
+
+        // A. 반격
+        const counterProvider = [this, ...allies].find(member => 
+            member.isAlive && member.buffs && member.buffs.some(b => b.id === "counter_active")
+        );
+
+        if (counterProvider) {
+            const isSelfHit = (counterProvider.id === this.id);
+            const multiplier = isSelfHit ? 1.5 : 0.5;
+            const counterDamage = Math.round(rawDamage * multiplier);
+
+            // 반격 반동 (보호막 소모)
+            if (counterProvider.shield > 0) {
+                const shieldCost = Math.round(counterProvider.shield * 0.1);
+                counterProvider.shield = Math.max(0, counterProvider.shield - shieldCost);
+                logFn(`✦반격 반동✦ ${counterProvider.name}, 보호막이 ${shieldCost} 감소합니다.`);
+            }
+
+            if (isOddTurn) {
+                // 인자 순서 교정: (damage, logFn, caster, casterAllies, casterEnemies, state, isRedirected, isCounter)
+                const targetEnemy = enemies.filter(e => e.isAlive).sort((a, b) => b.currentHp - a.currentHp)[0];
+                if (targetEnemy) {
+                    logFn(`✦스킬✦ ${counterProvider.name}, 응수. ${targetEnemy.name}에게 ${counterDamage} 반격.`);
+                    targetEnemy.takeDamage(counterDamage, logFn, counterProvider, enemies, allies, state, false, true);
+                }
+            } else {
+                logFn(`✦스킬✦ ${counterProvider.name}, 격노. 모든 적에게 ${counterDamage} 반격.`);
+                enemies.filter(e => e.isAlive).forEach(enemy => {
+                    enemy.takeDamage(counterDamage, logFn, counterProvider, enemies, allies, state, false, true);
+                });
+            }
+        }
+
+        // B. 역습
         const reversalBuff = this.buffs.find(b => b.id === "reversal_active");
-        if (reversalBuff && attacker && rawDamage > 0) {
+        if (reversalBuff) {
             const atkStat = this.getEffectiveStat("atk");
             const storedDmg = this.provokeDamage || 0;
             const counterDamage = Math.round((atkStat + storedDmg) * 1.5);
             
-            logFn(`✦피해✦ ${this.name}, 역습 실행. (저장된 피해: ${storedDmg})`);
-            attacker.takeDamage(counterDamage, logFn, this, allies, enemies, state);
+            logFn(`✦피해✦ ${this.name}, 역습. (저장된 피해: ${storedDmg})`);
+            attacker.takeDamage(counterDamage, logFn, this, allies, enemies, state, false, true);
             
-            this.buffs = this.buffs.filter(b => b.id !== "reversal_active");
+            this.removeBuffById("reversal_active");
             this.provokeDamage = 0; 
         }
-    
-        // 3. 도발 대미지 감쇄 (기존 유지)
-        if (this.hasDebuff("provoked_self")) {
-            finalDamage *= 0.3;
-            logFn(`✦스킬✦ ${this.name}: 도발 효과로 피해량이 70% 감소합니다.`);
-        }
-    
-        // 4. 보호막 처리
-        if (this.shield > 0) {
-            const absorbed = Math.min(finalDamage, this.shield);
-            this.shield -= absorbed;
-            finalDamage -= absorbed;
-            logFn(`✦보호막✦ ${this.name}: 피해 ${Math.round(absorbed)} 흡수.`);
-        }
-    
-        // 5. 체력 차감 및 피해 기록
-        this.currentHp = Math.max(0, this.currentHp - finalDamage);
-        this.totalDamageTakenThisBattle += finalDamage;
-    
-        if (this.hasDebuff("provoked_self") || this.hasBuff("iron_fortress")) {
-            this.provokeDamage = (this.provokeDamage || 0) + finalDamage;
-        }
-
-        // 피해량이 0보다 크고 악몽 상태일 때만 해제
-        if (this.hasDebuff("nightmare") && finalDamage > 0) {
-    const nightmare = this.debuffs.find(d => d.id === "nightmare");
-    if (nightmare) {
-        nightmare.stacks = (nightmare.stacks || 1) - 1; // 스택 차감
-        
-        if (nightmare.stacks <= 0) {
-            this.removeDebuffById("nightmare");
-            logFn(`✦해제✦ ${this.name}, 충격으로 인해 [악몽]에서 깨어납니다.`);
-                }
-            }
-        }
-        if (this.currentHp <= 0) {
-            this.isAlive = false;
-            logFn(`✦☠️✦ ${this.name}, 쓰러집니다.`);
-        }   
     }
+
+    // 4. 대미지 보정 (도발 감쇄 등)
+    if (this.hasDebuff("provoked_self")) {
+        finalDamage = Math.round(finalDamage * 0.3);
+        logFn(`✦스킬✦ ${this.name}: 도발 효과로 피해량이 70% 감소합니다.`);
+    }
+
+    // 5. 보호막 처리
+    if (this.shield > 0 && finalDamage > 0) {
+        const absorbed = Math.min(finalDamage, this.shield);
+        this.shield -= absorbed;
+        finalDamage -= absorbed;
+        logFn(`✦보호막✦ ${this.name}: 피해 ${Math.round(absorbed)} 흡수.`);
+    }
+
+    // 6. 최종 체력 차감
+    this.currentHp = Math.max(0, this.currentHp - finalDamage);
+    this.totalDamageTakenThisBattle += finalDamage;
+
+    // 도발/철옹성 스탯 누적
+    if (this.hasDebuff("provoked_self") || this.hasBuff("iron_fortress")) {
+        this.provokeDamage = (this.provokeDamage || 0) + finalDamage;
+    }
+
+    // 7. 사망 판정
+    if (this.currentHp <= 0) {
+        this.isAlive = false;
+        logFn(`✦☠️✦ ${this.name}, 쓰러집니다.`);
+    }   
+}
 
     addBuff(id, name, turns, effect) {
         // 1. 기존에 같은 ID를 가진 버프가 있다면 먼저 제거 (중복 방지)
