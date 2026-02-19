@@ -735,7 +735,8 @@ async function performEnemyAction(enemy) {
       return dmg;
     },
     applyHeal: BattleEngine.applyHeal,
-    utils: Utils
+    utils: Utils,
+    addCharacterAtPos: addCharacterAtPos
   };
   
   // 4. 스킬 실행
