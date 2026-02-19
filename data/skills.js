@@ -1,1 +1,753 @@
-function _0x49bd(){const _0x5e7f8d=['fury','join','시전자의\x20타입에\x20따라\x20강력한\x20피해를\x20입힙니다.\x20대상에게\x20[흠집]이\x20있다면\x20추가\x20공격을\x20가합니다.','SKILL_RUPTURE','SKILL_DISCERNMENT','SKILL_SEDIMENTATION','단일\x20공격','mdef_boost_add','reversal_active','consecutiveCount','[격노]','SKILL_TRUTH','all_enemies','getDebuffStacks','lastSkillTurn','shield','7941510mVZQhD','✦피해✦\x20','107553ZvjqSm','\x20[허상]:\x20첫\x20번째\x20턴에는\x20다른\x20아군에게\x20사용할\x20수\x20없습니다.',',\x20[','riposte','✦정보✦\x20','debuffs','ally_or_self','에게\x20[간파]\x20발동.','\x20주입.','에게\x20','이(가)\x20','\x20(3턴).\x20(현재\x20총\x20보호막:\x20',',\x20[파열]\x20사용.\x20주\x20대상:\x20','none','방어력','\x20\x20✦피해✦\x20[파열\x20주\x20대상]\x20','✦피해✦\x20[간파]\x20','균열은\x20가장\x20고요한\x20순간에\x20일어난다.<br><br>주\x20목표와\x20주변\x20적들에게\x20피해를\x20입힙니다.\x20[쇠약]\x20상태인\x20적에게는\x20추가\x20고정\x20피해를\x20입힙니다.','지정\x20버프','회복(허무)','turn_start_heal','getEffectiveStat','관통율\x2030%가\x20적용된\x202연타\x20공격\x20후,\x20추가\x20피해를\x20입히고\x20[쇠약]\x20상태를\x20부여합니다.','matk','\x20\x20✦추가\x20피해✦\x20','counter_active','[흔적]','map','모든\x20아군의\x20방어력을\x20강화하고\x20자신에게\x20[실재]\x20스택을\x20부여합니다.\x203턴\x20연속\x20사용은\x20불가능합니다.',':\x20[실존]을\x203턴\x20연속\x20사용할\x20수\x20없습니다.','applyHeal','✦버프✦\x20','healingReceived',',\x20[서막]:\x20','reality_mdef_add','lastAppliedTurn','provoked',':\x20[보상]의\x20여파로\x20',',\x20[쇠약]\x20효과\x20적용\x20(2턴).','aggroDamageStored','weakness','SKILL_CLIMAX','riposte_stance','effect','SKILL_PROVOKE','\x20[흠집\x20','single_ally','\x20\x20\x20\x20✦추가\x20피해✦\x20','\x20[간파\x20효과]:\x20',']의\x20보호막\x20분배:\x20아군\x20','ally','spring',']에\x20생명력\x20','forEach','✦스킬✦\x20','[반격\x20보호막]','counter_shield_','addDebuff','reality_mdef_mult_hidden','1110740CWxTOr',',\x20[반격](홀수)\x20사용:\x20[응수]\x20태세\x20돌입.','피격\x20시\x20공격자를\x20(자신의\x20공격력x100%)만큼\x20회복시킴.','transfer','[쇠약]','slice','SKILL_REALITY',')가\x20정화되었습니다.','SKILL_RESILIENCE','841328KQeNeF','healerBoostCount','round','_to_','\x20소모.\x20(HP:\x20','_boost_multiplier','physical','length','326603wPfCFJ','single_ally_or_gimmick','849821NzIZaF','✦소모✦\x20',':\x20[흠집]\x20효과\x20소멸.','enemy','will_buff','의\x20피해를\x20입습니다.',',\x20[근성](짝수)\x20사용:\x20[의지]\x20발동.\x20(누적\x20피해:\x20','\x20\x20\x20\x20✦피해✦\x20[파열\x20부\x20대상]\x20','어그로','takeDamage','✦스킬✦\x20[차연]의\x20여파가\x20적들에게\x20전해졌습니다.','def_boost_multiplier','find',':\x20[환원]\x20상태가\x20되어\x203턴간\x20스킬\x20사용\x20시\x20아군을\x20추가\x20회복합니다.','회:\x20','provoked_self','\x20[실존]\x20연속\x20사용:\x20[실재]가\x206스택으로\x20강화됩니다.','removeBuffById','[흠집]','[중독]','[실재]','[의지]','\x20([쇠약]\x20대상):\x20','카운터','\x20피해.','reality_stacks',',\x20[진리]\x20사용:\x20모든\x20적에게\x20독을\x20퍼뜨립니다.','restoration','[허상:','자신에게\x20보호막\x20부여.\x203턴간\x20아군\x20피해\x20대신\x20받음.','대상의\x20체력을\x20회복하고\x20모든\x20상태\x20이상을\x20정화합니다.\x20기믹\x20오브젝트와\x20상호작용할\x20수\x20있습니다.','fury_stance',']에\x20[공명]\x20사용.\x20생명력\x20',',\x20[역습]\x20준비:\x20체력\x20','상태\x20이상','isAlive','.\x20(현재\x20총\x20보호막:\x20','✦정화✦\x20','SKILL_DIFFERANCE','mdef_boost_multiplier','damage_reflect','magical','checkSupporterPassive',',\x20[근성](홀수)\x20사용:\x20[철옹성]\x20효과\x20발동.\x20보호막\x20+','의\x20디버프(','all_allies','원래\x20연극은\x20대사를\x20고르게\x20나누지\x20않는다.\x20…\x20잠깐.\x20또\x20너야?<br><br>홀수\x20턴에는\x20[철옹성]을,\x20짝수\x20턴에는\x20[의지]를\x20획득.\x20<br><br>[철옹성]:\x20(자신에게\x20현재\x20체력의\x202배\x20+\x20방어력\x202배)만큼의\x20보호막\x20부여.\x20해당\x20턴에\x20발생한\x20모든\x20아군의\x20감소한\x20체력을\x20대신\x20감소.\x203턴\x20유지.\x20<br>[의지]:\x20자신에게\x20(해당\x20전투에서\x20시전\x20턴까지\x20받은\x20대미지의\x20총\x20합\x20*\x202.5배)만큼의\x20보호막을\x20부여.\x20이후\x20[의지]\x20버프가\x20해제될\x20때에\x20남아\x20있는\x20보호막만큼을\x20자신의\x20체력으로\x20흡수.\x203턴\x20유지.\x20단,\x20[의지]\x20버프가\x20해제되면\x20그동안\x20받은\x20대미지의\x20총합을\x20초기화.','poison_truth','✦추가\x20피해✦\x20','\x20[실존]\x20사용:\x20[실재]\x204스택을\x20획득합니다.','✦기믹✦\x20[','마법\x20방어력','name','maxHp','single_ally_or_self','type','[환원]','_boost',':\x20시전자의\x20[실재]\x20영향으로\x20방어\x20성능이\x20강화됩니다.\x20(+','hasDebuff','의\x20고정\x20피해를\x20입었습니다.','\x20추가\x20고정\x20피해.','illusion_extra_hit','\x20효과를\x20부여합니다.','✦효과✦\x20','mdef','\x20추가\x20','모든\x20아군의\x20피해를\x20대신\x20받고\x20받는\x20피해가\x2070%\x20감소합니다.','fixed','✦직군\x20효과✦\x20[은총의\x20방패]\x20발동.\x20회복량\x2010%\x20증가.','SKILL_COMPENSATION','에게\x202턴간\x20','체력을\x20소모하여\x20자신을\x20회복하고\x20적에게\x20피해를\x20입히며,\x20아군에게\x20[흔적]을\x20남깁니다.','에게\x20[절정]\x20공격.','scratch','자신의\x20체력을\x20소모하여\x20아군\x20전체를\x20대폭\x20회복시키고\x20[면역]을\x20부여합니다.','current_hp_ratio','def','스택]:\x20추가타\x20발생.',',\x20[역습]\x20사용\x20불가:\x20쿨타임\x20','sort','공격력','타:\x20','filter','받는\x20피해가\x2070%\x20감소하고,\x202턴간\x20모든\x20아군에\x20대한\x20공격을\x20가로채\x20대신\x20맞습니다.','지정\x20디버프','single_enemy',':\x20[전이]\x20상태\x20부여\x20(2턴).','currentHp','job','광역\x20버프','max','광역\x20공격','atk_boost_multiplier','스택).','이\x202배\x20증가하고,\x20','totalDamageTakenThisBattle','✦디버프✦\x20','[전이]','20vLwxhO','self','고양(허무)',']\x20사용\x20불가:\x20쿨타임\x20','buffs','받는\x20추가\x20피해\x20증가\x20및\x20가하는\x20피해\x20감소','random','498592aMBaEs','역습\x20대기','SKILL_COUNTER','✦피해✦\x20[차연]:\x20','6ewHtOj','모든\x20적에게\x20[중독]을\x20부여합니다.\x20중독\x20결산\x20후\x20랜덤한\x20적에게\x20[맹독]\x20피해를\x20입힙니다.','✦상태\x20이상✦\x20','atk','SKILL_OVERTURE','iron_fortress','addBuff','[면역]',',\x20[흠집]\x20(','void_reflect','toFixed'];_0x49bd=function(){return _0x5e7f8d;};return _0x49bd();}const _0x41244c=_0x471d;(function(_0x184aab,_0x590170){const _0x3cd75b=_0x471d,_0x155781=_0x184aab();while(!![]){try{const _0x2ea6cf=parseInt(_0x3cd75b(0x111))/0x1+-parseInt(_0x3cd75b(0x9d))/0x2*(-parseInt(_0x3cd75b(0xc5))/0x3)+parseInt(_0x3cd75b(0xa4))/0x4+-parseInt(_0x3cd75b(0x100))/0x5*(-parseInt(_0x3cd75b(0xa8))/0x6)+parseInt(_0x3cd75b(0x113))/0x7+parseInt(_0x3cd75b(0x109))/0x8+-parseInt(_0x3cd75b(0xc3))/0x9;if(_0x2ea6cf===_0x590170)break;else _0x155781['push'](_0x155781['shift']());}catch(_0xabfa38){_0x155781['push'](_0x155781['shift']());}}}(_0x49bd,0x5bd18));function _0x471d(_0x3c62e0,_0x30aaf3){_0x3c62e0=_0x3c62e0-0x93;const _0x49bd75=_0x49bd();let _0x471d4c=_0x49bd75[_0x3c62e0];return _0x471d4c;}export const SKILLS={'SKILL_RESILIENCE':{'id':_0x41244c(0x108),'name':'근성','type':_0x41244c(0x11b),'description':_0x41244c(0x141),'targetType':'self','targetSelection':_0x41244c(0x9e),'execute':(_0x349c15,_0x549de4,_0x315571,_0x318c39,_0x5c2c06,_0x32d813)=>{const _0x3d4d05=_0x41244c,{currentTurn:_0x43ee0c}=_0x32d813;if(_0x43ee0c%0x2===0x1){const _0x2cb897=Math[_0x3d4d05(0x10b)](_0x349c15[_0x3d4d05(0x16b)]*0x2+_0x349c15[_0x3d4d05(0x160)]*0x2);_0x349c15[_0x3d4d05(0xc2)]+=_0x2cb897,_0x349c15[_0x3d4d05(0x124)](_0x3d4d05(0xad)),_0x349c15['addBuff']('iron_fortress','[철옹성]',0x3,{'description':_0x3d4d05(0x130),'shieldAmount':_0x2cb897,'redirectAllyDamage':!![]}),_0x5c2c06(_0x3d4d05(0xfb)+_0x349c15[_0x3d4d05(0x147)]+_0x3d4d05(0x13e)+_0x2cb897+_0x3d4d05(0xd0)+_0x349c15[_0x3d4d05(0xc2)][_0x3d4d05(0xb2)](0x0)+')');}else{const _0x523520=_0x349c15[_0x3d4d05(0x9a)],_0x53f9f8=Math[_0x3d4d05(0x10b)](_0x523520*2.5);_0x349c15[_0x3d4d05(0xc2)]+=_0x53f9f8,_0x349c15[_0x3d4d05(0x124)](_0x3d4d05(0x117)),_0x349c15[_0x3d4d05(0xae)](_0x3d4d05(0x117),_0x3d4d05(0x128),0x3,{'description':'받은\x20총\x20피해\x20비례\x20보호막.\x20해제\x20시\x20남은\x20보호막만큼\x20체력\x20흡수\x20및\x20받은\x20피해\x20총합\x20초기화.','shieldAmount':_0x53f9f8,'healOnRemove':!![],'resetsTotalDamageTaken':!![]}),_0x5c2c06('✦스킬✦\x20'+_0x349c15['name']+_0x3d4d05(0x119)+_0x523520+')\x20보호막\x20+'+_0x53f9f8+_0x3d4d05(0x137)+Math[_0x3d4d05(0x10b)](_0x349c15[_0x3d4d05(0xc2)])+')');}return!![];}},'SKILL_COUNTER':{'id':_0x41244c(0xa6),'name':'반격','type':_0x41244c(0x12a),'description':'보호막을\x20분배하고\x20턴에\x20따라\x20[응수]\x20또는\x20[격노]\x20태세를\x20취합니다.','targetType':'self','targetSelection':_0x41244c(0x9e),'cooldown':0x1,'execute':(_0x452104,_0x5ca703,_0x374685,_0x16beef,_0x24fd91,_0x1a02ba)=>{const _0x348384=_0x41244c,{currentTurn:_0x418a3d}=_0x1a02ba,_0x4a7a98=_0x348384(0xa6),_0x1d7e94='반격',_0x461748=_0x452104[_0x348384(0xc1)][_0x4a7a98]||0x0;if(_0x461748!==0x0&&_0x418a3d-_0x461748<0x1)return _0x24fd91(_0x348384(0xc9)+_0x452104[_0x348384(0x147)]+_0x348384(0xc7)+_0x1d7e94+_0x348384(0xa0)+(0x2-(_0x418a3d-_0x461748))+'턴\x20남음.'),![];const _0x14acb7=_0x452104[_0x348384(0xc2)];if(_0x14acb7>0x0){const _0x583ea6=_0x374685['filter'](_0x3f379c=>_0x3f379c[_0x348384(0x136)]);if(_0x583ea6['length']>0x0){const _0x240e1f=Math['round'](_0x14acb7/_0x583ea6[_0x348384(0x110)]);_0x24fd91('✦효과✦\x20'+_0x452104[_0x348384(0x147)]+_0x348384(0xc7)+_0x1d7e94+_0x348384(0xf6)+_0x583ea6[_0x348384(0x110)]+'명에게\x20보호막\x20부여.'),_0x583ea6[_0x348384(0xfa)](_0x43a0f8=>{const _0x96295c=_0x348384,_0x2d46a0=_0x96295c(0xfd)+_0x452104['id']+_0x96295c(0x10c)+_0x43a0f8['id']+'_'+_0x418a3d;_0x43a0f8[_0x96295c(0xae)](_0x2d46a0,_0x96295c(0xfc),0x2,{'shieldAmount':_0x240e1f});}),_0x452104[_0x348384(0xc2)]=0x0;}}return _0x452104[_0x348384(0x124)](_0x348384(0xde)),_0x452104['removeBuffById'](_0x348384(0xef)),_0x452104['removeBuffById'](_0x348384(0x132)),_0x418a3d%0x2===0x1?(_0x452104['addBuff']('counter_active','[응수]',0x1,{'mode':_0x348384(0xc8),'description':'피격\x20시\x20단일\x20반격(1.5배/0.5배).\x20발동\x20시\x20보호막\x2010%\x20소모.'}),_0x24fd91(_0x348384(0xfb)+_0x452104[_0x348384(0x147)]+_0x348384(0x101))):(_0x452104[_0x348384(0xae)](_0x348384(0xde),_0x348384(0xbd),0x1,{'mode':_0x348384(0xb3),'description':'피격\x20시\x20광역\x20반격(1.5배/0.5배).\x20발동\x20시\x20보호막\x2010%\x20소모.'}),_0x24fd91('✦스킬✦\x20'+_0x452104[_0x348384(0x147)]+',\x20[반격](짝수)\x20사용:\x20[격노]\x20태세\x20돌입.')),_0x452104['lastSkillTurn'][_0x4a7a98]=_0x418a3d,!![];}},'SKILL_PROVOKE':{'id':_0x41244c(0xf1),'name':'도발','type':_0x41244c(0x11b),'description':_0x41244c(0x167),'targetType':_0x41244c(0x9e),'targetSelection':'self','execute':(_0x587734,_0x38938a,_0x388d72,_0xce60b2,_0x3acd32,_0x9cb227)=>{const _0x8950cf=_0x41244c;return _0x587734[_0x8950cf(0xfe)](_0x8950cf(0x122),'도발\x20상태',0x2,{'damageReduction':0.7,'description':_0x8950cf(0x156)}),_0xce60b2['filter'](_0x30f80e=>_0x30f80e[_0x8950cf(0x136)])['forEach'](_0x2994d3=>{const _0x3dbf6e=_0x8950cf;_0x2994d3[_0x3dbf6e(0xfe)](_0x3dbf6e(0xe9),'도발\x20(타겟\x20고정)',0x2,{'targetId':_0x587734['id']});}),_0x587734[_0x8950cf(0xec)]=0x0,_0x3acd32(_0x8950cf(0x153)+_0x587734[_0x8950cf(0x147)]+',\x20[도발]\x20사용:\x20모든\x20적의\x20공격을\x20집중시킵니다.'),!![];}},'SKILL_REVERSAL':{'id':'SKILL_REVERSAL','name':'역습','type':_0x41244c(0x12a),'description':'체력을\x20소모하여\x20다음\x20공격에\x20대한\x20강력한\x20반격을\x20준비합니다.','targetType':_0x41244c(0x9e),'targetSelection':_0x41244c(0x9e),'cooldown':0x2,'execute':(_0x58f5cf,_0x56f8f5,_0x13c8f2,_0x8b5ac0,_0x344bc4,_0xad0bf)=>{const _0x4baf5e=_0x41244c,{currentTurn:_0x3dd5a2}=_0xad0bf,_0x46115b='SKILL_REVERSAL',_0x1933b9=_0x58f5cf[_0x4baf5e(0xc1)][_0x46115b]||0x0;if(_0x1933b9!==0x0&&_0x3dd5a2-_0x1933b9<0x2)return _0x344bc4('✦정보✦\x20'+_0x58f5cf[_0x4baf5e(0x147)]+_0x4baf5e(0x162)+(0x2-(_0x3dd5a2-_0x1933b9))+'턴\x20남음.'),![];const _0x5c6baf=Math[_0x4baf5e(0x10b)](_0x58f5cf[_0x4baf5e(0x16b)]*0.5);return _0x58f5cf[_0x4baf5e(0x16b)]=Math[_0x4baf5e(0x95)](0x1,_0x58f5cf[_0x4baf5e(0x16b)]-_0x5c6baf),_0x344bc4(_0x4baf5e(0x114)+_0x58f5cf['name']+_0x4baf5e(0x134)+_0x5c6baf+_0x4baf5e(0x10d)+_0x58f5cf[_0x4baf5e(0x16b)][_0x4baf5e(0xb2)](0x0)+')'),_0x58f5cf[_0x4baf5e(0xae)](_0x4baf5e(0xbb),_0x4baf5e(0xa5),0x1,{}),_0x58f5cf[_0x4baf5e(0xc1)][_0x46115b]=_0x3dd5a2,!![];}},'SKILL_ILLUSION':{'id':'SKILL_ILLUSION','name':'허상','type':'지정\x20버프','description':'자신에겐\x20회복을,\x20아군에겐\x20조건부\x20공격력\x20증폭을\x20부여합니다.\x20턴\x20종료\x20시\x20추가\x20공격을\x20수행합니다.','targetType':_0x41244c(0x149),'targetSelection':_0x41244c(0xcb),'execute':(_0x4eb1ea,_0x29243a,_0x377a45,_0x276ff8,_0x65c06c,_0x20e674)=>{const _0x16e0d4=_0x41244c,{currentTurn:_0x14e775}=_0x20e674;if(_0x4eb1ea['id']!==_0x29243a['id']&&_0x14e775===0x1)return _0x65c06c(_0x16e0d4(0xc9)+_0x4eb1ea['name']+_0x16e0d4(0xc6)),![];const _0x20af10=_0x4eb1ea['id']===_0x29243a['id'];if(_0x20af10){const _0x2f8cf4=Math[_0x16e0d4(0x10b)](_0x4eb1ea[_0x16e0d4(0xda)](_0x16e0d4(0xab))*0.5);_0x20e674[_0x16e0d4(0xe3)](_0x4eb1ea,_0x2f8cf4,_0x65c06c,'허상');}else{const _0x550e71=Math[_0x16e0d4(0x10b)](_0x4eb1ea[_0x16e0d4(0xda)]('atk')*0.2);_0x4eb1ea['currentHp']=Math[_0x16e0d4(0x95)](0x1,_0x4eb1ea['currentHp']-_0x550e71);const _0x131472=_0x4eb1ea[_0x16e0d4(0x9a)]||0x0,_0x439cdc=_0x131472%0x2===0x0,_0x4653f7=_0x439cdc?_0x16e0d4(0xdc):_0x16e0d4(0xab),_0x43a6aa=_0x439cdc?'마법\x20공격력':_0x16e0d4(0x164);_0x29243a[_0x16e0d4(0xae)]('illusion_'+_0x4653f7+_0x16e0d4(0x14c),_0x16e0d4(0x12f)+_0x43a6aa+']',0x2,{'type':_0x4653f7+_0x16e0d4(0x10e),'value':0x2}),_0x65c06c(_0x16e0d4(0xfb)+_0x4eb1ea[_0x16e0d4(0x147)]+_0x16e0d4(0xcf)+_0x29243a[_0x16e0d4(0x147)]+'에게\x20[허상]을\x20시전합니다.'),_0x65c06c('✦효과✦\x20'+_0x29243a[_0x16e0d4(0x147)]+'의\x20'+_0x43a6aa+_0x16e0d4(0x99)+_0x4eb1ea[_0x16e0d4(0x147)]+'의\x20체력이\x20소모됩니다.');}const _0x15e2f9=[..._0x276ff8][_0x16e0d4(0x166)](_0x1bc02a=>_0x1bc02a[_0x16e0d4(0x136)])['sort']((_0x2768eb,_0x118754)=>_0x118754[_0x16e0d4(0x16b)]-_0x2768eb[_0x16e0d4(0x16b)])[0x0];return _0x15e2f9&&_0x4eb1ea['addBuff'](_0x16e0d4(0x151),'[허상:추격]',0x1,{'extraAttack':!![],'targetId':_0x15e2f9['id'],'powerMultiplier':0.5}),!![];}},'SKILL_NIHILITY':{'id':'SKILL_NIHILITY','name':'허무','type':_0x41244c(0xd7),'description':'아군의\x20디버프를\x20정화하고\x20무작위\x20이로운\x20효과를\x20부여합니다.','targetType':_0x41244c(0xf3),'targetSelection':_0x41244c(0xf7),'execute':(_0xb133c3,_0x1bcdbf,_0x112686,_0x3141c9,_0x4eed1f,_0x1c9d43)=>{const _0x20a393=_0x41244c;if(_0x1bcdbf[_0x20a393(0xca)][_0x20a393(0x110)]>0x0){const _0x287d50=[..._0x1bcdbf[_0x20a393(0xca)]][_0x20a393(0x163)](()=>0.5-Math[_0x20a393(0xa3)]()),_0x2b2993=_0x287d50[_0x20a393(0x105)](0x0,0x2),_0xd7518e=_0x2b2993[_0x20a393(0xe0)](_0x52f0d2=>_0x52f0d2['id']);_0x1bcdbf['debuffs']=_0x1bcdbf[_0x20a393(0xca)][_0x20a393(0x166)](_0x5bbbe5=>!_0xd7518e['includes'](_0x5bbbe5['id'])),_0x4eed1f(_0x20a393(0x138)+_0x1bcdbf[_0x20a393(0x147)]+_0x20a393(0x13f)+_0x2b2993[_0x20a393(0xe0)](_0x5507e7=>_0x5507e7[_0x20a393(0x147)])[_0x20a393(0xb4)](',\x20')+_0x20a393(0x107));}const _0x48afc7=[{'id':'void_heal','name':_0x20a393(0xd8),'effect':{'type':_0x20a393(0xd9),'value':0.5}},{'id':_0x20a393(0xb1),'name':'반사(허무)','effect':{'type':_0x20a393(0x13b),'value':0.3}},{'id':'void_def','name':'경화(허무)','effect':{'type':_0x20a393(0x11e),'value':1.3}},{'id':'void_atk','name':_0x20a393(0x9f),'effect':{'type':_0x20a393(0x97),'value':2.5}}],_0x46105b=_0x48afc7[Math['floor'](Math[_0x20a393(0xa3)]()*_0x48afc7[_0x20a393(0x110)])];return _0x1bcdbf[_0x20a393(0xae)](_0x46105b['id'],'['+_0x46105b[_0x20a393(0x147)]+']',0x2,_0x46105b[_0x20a393(0xf0)]),_0x4eed1f('✦허무✦\x20'+_0x1bcdbf['name']+_0x20a393(0x15a)+_0x46105b['name']+_0x20a393(0x152)),_0xb133c3[_0x20a393(0x13d)](_0x4eed1f),!![];}},'SKILL_REALITY':{'id':_0x41244c(0x106),'name':'실존','type':_0x41244c(0x94),'description':_0x41244c(0xe1),'targetType':'all_allies','targetSelection':_0x41244c(0x140),'execute':(_0x592e18,_0x49bc5c,_0x417414,_0xb6bde0,_0x3da6f8,_0x585ddc)=>{const _0x487d5e=_0x41244c,{currentTurn:_0x3ebe88}=_0x585ddc,_0x2d1a1f='SKILL_REALITY',_0x45a937=_0x592e18[_0x487d5e(0xa1)][_0x487d5e(0x11f)](_0x4523e2=>_0x4523e2['id']===_0x487d5e(0x12c)),_0x36f4a1=_0x45a937&&_0x45a937[_0x487d5e(0xe8)]===_0x3ebe88-0x1?_0x45a937[_0x487d5e(0xbc)]||0x1:0x0;if(_0x36f4a1>=0x2)return _0x3da6f8(_0x487d5e(0xc9)+_0x592e18[_0x487d5e(0x147)]+_0x487d5e(0xe2)),![];let _0x33be2f=0x4,_0xf3cdcf=0x1;return _0x36f4a1>0x0?(_0x33be2f=0x6,_0xf3cdcf=_0x36f4a1+0x1,_0x3da6f8(_0x487d5e(0x153)+_0x592e18[_0x487d5e(0x147)]+_0x487d5e(0x123))):_0x3da6f8('✦효과✦\x20'+_0x592e18[_0x487d5e(0x147)]+_0x487d5e(0x144)),_0x592e18[_0x487d5e(0xae)](_0x487d5e(0x12c),_0x487d5e(0x127),0x2,{'stacks':_0x33be2f,'unremovable':!![],'lastAppliedTurn':_0x3ebe88,'consecutiveCount':_0xf3cdcf,'isStackManager':!![]}),_0x417414[_0x487d5e(0x166)](_0x1000c8=>_0x1000c8[_0x487d5e(0x136)]&&_0x1000c8['id']!==_0x592e18['id'])[_0x487d5e(0xfa)](_0x1dd165=>{const _0x46f821=_0x487d5e;_0x1dd165[_0x46f821(0xae)]('reality_def_mult_hidden','',0x2,{'type':_0x46f821(0x11e),'value':1.2}),_0x1dd165[_0x46f821(0xae)](_0x46f821(0xff),'',0x2,{'type':_0x46f821(0x13a),'value':1.2});const _0x5e054a=_0x1dd165[_0x46f821(0xda)](_0x46f821(0x160)),_0x11f374=_0x1dd165['getEffectiveStat'](_0x46f821(0x154)),_0xbff9b5=Math[_0x46f821(0x95)](_0x5e054a,_0x11f374),_0x2e7e80=Math['round'](_0xbff9b5*0.2*_0x33be2f);_0x1dd165[_0x46f821(0xae)]('reality_def_add','',0x2,{'type':'def_boost_add','value':_0x2e7e80}),_0x1dd165[_0x46f821(0xae)](_0x46f821(0xe7),'',0x2,{'type':_0x46f821(0xba),'value':_0x2e7e80}),_0x3da6f8(_0x46f821(0xe4)+_0x1dd165['name']+_0x46f821(0x14d)+_0x2e7e80+')');}),_0x592e18[_0x487d5e(0xc1)][_0x2d1a1f]=_0x3ebe88,_0x592e18[_0x487d5e(0x13d)](_0x3da6f8),!![];}},'SKILL_TRUTH':{'id':_0x41244c(0xbe),'name':'진리','type':'광역\x20디버프','description':_0x41244c(0xa9),'targetType':_0x41244c(0xbf),'targetSelection':_0x41244c(0xd2),'execute':(_0x51fdd1,_0x4874d1,_0x554dad,_0x4a336a,_0x2070e3,_0xa21289)=>{const _0xa8b072=_0x41244c;_0x2070e3(_0xa8b072(0xfb)+_0x51fdd1[_0xa8b072(0x147)]+_0xa8b072(0x12d)),_0x4a336a[_0xa8b072(0x166)](_0x2b5ad8=>_0x2b5ad8[_0xa8b072(0x136)])[_0xa8b072(0xfa)](_0x37c815=>{const _0x5c6d68=_0xa8b072;_0x37c815[_0x5c6d68(0xfe)](_0x5c6d68(0x142),_0x5c6d68(0x126),0x2,{'dotType':_0x5c6d68(0x15f),'ratio':0.015,'casterId':_0x51fdd1['id']});});if(_0x51fdd1[_0xa8b072(0x13d)])_0x51fdd1[_0xa8b072(0x13d)](_0x2070e3);return!![];}},'SKILL_OVERTURE':{'id':_0x41244c(0xac),'name':'서막','type':'단일\x20공격','description':'적에게\x20물리/마법\x20피해를\x20가하고\x20[흠집]을\x20새깁니다.','targetType':_0x41244c(0x169),'targetSelection':_0x41244c(0x116),'execute':(_0x486818,_0x56837d,_0x3882bf,_0x19bcd5,_0xd12698,_0x17d466)=>{const _0x489951=_0x41244c,{calculateDamage:_0x36ddc5}=_0x17d466;if(!_0x56837d||!_0x56837d[_0x489951(0x136)])return![];const _0x4731ff=_0x486818[_0x489951(0xda)](_0x489951(0xab)),_0x194b44=_0x486818['getEffectiveStat'](_0x489951(0xdc)),_0x8f477a=_0x4731ff>=_0x194b44?'physical':_0x489951(0x13c),_0x1799dd=_0x8f477a===_0x489951(0x10f)?0x2:2.5,_0xb9d2ec=_0x36ddc5(_0x486818,_0x56837d,_0x1799dd,_0x8f477a);_0x56837d[_0x489951(0x11c)](_0xb9d2ec,_0xd12698,_0x486818),_0xd12698('✦피해✦\x20'+_0x486818['name']+_0x489951(0xe6)+_0x56837d[_0x489951(0x147)]+_0x489951(0xce)+_0xb9d2ec+'\x20'+(_0x8f477a===_0x489951(0x10f)?'물리':'마법')+_0x489951(0x12b));let _0x1a2c0a;if(_0x486818[_0x489951(0x14a)]==='암석'||_0x486818['type']==='야수')_0x1a2c0a=_0x489951(0x160);else{if(_0x486818[_0x489951(0x14a)]==='천체'||_0x486818[_0x489951(0x14a)]==='나무')_0x1a2c0a=_0x489951(0x154);else _0x1a2c0a=_0x8f477a===_0x489951(0x10f)?_0x489951(0x160):_0x489951(0x154);}_0x56837d[_0x489951(0xfe)](_0x489951(0x15d),_0x489951(0x125),0x2,{'maxStacks':0x3,'overrideDuration':!![],'removerSkillId':_0x489951(0xee),'category':'표식','reductionType':_0x1a2c0a,'reductionValue':0.1});const _0x3f70d2=_0x56837d[_0x489951(0xc0)](_0x489951(0x15d));return _0xd12698(_0x489951(0x9b)+_0x56837d[_0x489951(0x147)]+_0x489951(0xb0)+(_0x1a2c0a===_0x489951(0x160)?_0x489951(0xd3):_0x489951(0x146))+'\x20감소)\x20적용.\x20(현재\x20'+_0x3f70d2+_0x489951(0x98)),!![];}},'SKILL_CLIMAX':{'id':_0x41244c(0xee),'name':'절정','type':_0x41244c(0xb9),'description':_0x41244c(0xb5),'targetType':'single_enemy','targetSelection':'enemy','execute':(_0x21025b,_0x1e3011,_0x131f31,_0x4b3788,_0x242fb2,_0x41fc1e)=>{const _0x1d68d9=_0x41244c,{calculateDamage:_0x558b2a}=_0x41fc1e;if(!_0x1e3011||!_0x1e3011['isAlive'])return![];let _0x52b876,_0x4d48c1;if(_0x21025b['type']==='암석'||_0x21025b['type']==='야수')_0x52b876=_0x1d68d9(0xab),_0x4d48c1=_0x1d68d9(0x10f);else _0x21025b[_0x1d68d9(0x14a)]==='천체'||_0x21025b['type']==='나무'?(_0x52b876=_0x1d68d9(0xdc),_0x4d48c1=_0x1d68d9(0x13c)):(_0x52b876=_0x21025b['getEffectiveStat'](_0x1d68d9(0xab))>=_0x21025b[_0x1d68d9(0xda)]('matk')?_0x1d68d9(0xab):'matk',_0x4d48c1=_0x52b876===_0x1d68d9(0xab)?_0x1d68d9(0x10f):'magical');const _0x56c094=_0x4d48c1===_0x1d68d9(0x10f)?'물리':'마법';_0x242fb2('✦스킬✦\x20'+_0x21025b['name']+',\x20'+_0x1e3011[_0x1d68d9(0x147)]+_0x1d68d9(0x15c));const _0xfa4129=_0x558b2a(_0x21025b,_0x1e3011,2.7,_0x4d48c1,_0x52b876);_0x1e3011[_0x1d68d9(0x11c)](_0xfa4129,_0x242fb2,_0x21025b),_0x242fb2('\x20\x20✦피해✦\x20[절정]:\x20'+_0x1e3011[_0x1d68d9(0x147)]+_0x1d68d9(0xce)+_0xfa4129+'\x20'+_0x56c094+'\x20피해.');if(!_0x1e3011[_0x1d68d9(0x136)])return!![];const _0x290603=_0x1e3011['getDebuffStacks'](_0x1d68d9(0x15d));if(_0x290603>0x0){_0x242fb2(_0x1d68d9(0x153)+_0x1e3011[_0x1d68d9(0x147)]+_0x1d68d9(0xf2)+_0x290603+_0x1d68d9(0x161));let _0x330e7a=0.08;if(_0x290603===0x2)_0x330e7a=0.12;else{if(_0x290603>=0x3)_0x330e7a=0.16;}for(let _0x56e50f=0x0;_0x56e50f<0x2;_0x56e50f++){const _0x33036f=_0x558b2a(_0x21025b,_0x1e3011,_0x330e7a,_0x1d68d9(0x157),{'statTypeToUse':_0x52b876});_0x1e3011[_0x1d68d9(0x11c)](_0x33036f,_0x242fb2,_0x21025b),_0x242fb2('\x20\x20✦추가\x20피해✦\x20[흠집\x20효과]\x20'+(_0x56e50f+0x1)+_0x1d68d9(0x121)+_0x1e3011[_0x1d68d9(0x147)]+'에게\x20'+_0x33036f+'\x20추가\x20고정\x20피해.');if(!_0x1e3011[_0x1d68d9(0x136)])break;}if(_0x1e3011['isAlive'])_0x1e3011['removeDebuffById'](_0x1d68d9(0x15d));_0x242fb2('✦정보✦\x20'+_0x1e3011[_0x1d68d9(0x147)]+_0x1d68d9(0x115));}return!![];}},'SKILL_DISCERNMENT':{'id':_0x41244c(0xb7),'name':'간파','type':_0x41244c(0xb9),'description':_0x41244c(0xdb),'targetType':'single_enemy','targetSelection':_0x41244c(0x116),'execute':(_0x1c25f7,_0x5a3922,_0x1b8ff8,_0x360137,_0x1fa2b2,_0x5f1769)=>{const _0xa8778a=_0x41244c,{calculateDamage:_0x5d408c}=_0x5f1769;if(!_0x5a3922||!_0x5a3922[_0xa8778a(0x136)])return![];const _0x31cdc7=_0x1c25f7[_0xa8778a(0xda)](_0xa8778a(0xab))>=_0x1c25f7[_0xa8778a(0xda)]('matk')?_0xa8778a(0x10f):'magical',_0x2980b6=_0x31cdc7==='physical'?'물리':'마법';_0x1fa2b2(_0xa8778a(0xfb)+_0x1c25f7[_0xa8778a(0x147)]+',\x20'+_0x5a3922[_0xa8778a(0x147)]+_0xa8778a(0xcc)),_0x5a3922[_0xa8778a(0xfe)](_0xa8778a(0xed),_0xa8778a(0x104),0x2,{'damageMultiplierReduction':0.2,'description':_0xa8778a(0xa2),'category':_0xa8778a(0x135)}),_0x1fa2b2(_0xa8778a(0xaa)+_0x5a3922[_0xa8778a(0x147)]+_0xa8778a(0xeb));for(let _0x4052f6=0x0;_0x4052f6<0x2;_0x4052f6++){const _0x34b77d=_0x5d408c(_0x1c25f7,_0x5a3922,1.3,_0x31cdc7,{'penetration':0.2});_0x5a3922[_0xa8778a(0x11c)](_0x34b77d,_0x1fa2b2,_0x1c25f7),_0x1fa2b2(_0xa8778a(0xd5)+(_0x4052f6+0x1)+_0xa8778a(0x165)+_0x5a3922['name']+'에게\x20'+_0x34b77d+'\x20'+_0x2980b6+_0xa8778a(0x12b));if(!_0x5a3922[_0xa8778a(0x136)])return!![];}const _0x561b27=_0x5d408c(_0x1c25f7,_0x5a3922,0x2,_0x31cdc7);_0x5a3922[_0xa8778a(0x11c)](_0x561b27,_0x1fa2b2,_0x1c25f7),_0x1fa2b2(_0xa8778a(0x143)+_0x1c25f7[_0xa8778a(0x147)]+_0xa8778a(0xf5)+_0x5a3922[_0xa8778a(0x147)]+'에게\x20'+_0x561b27+_0xa8778a(0x155)+_0x2980b6+_0xa8778a(0x12b));if(!_0x5a3922[_0xa8778a(0x136)])return!![];return!![];}},'SKILL_RUPTURE':{'id':'SKILL_RUPTURE','name':'파열','type':_0x41244c(0x96),'description':_0x41244c(0xd6),'targetType':_0x41244c(0x169),'targetSelection':_0x41244c(0x116),'cooldown':0x2,'execute':(_0x18fd36,_0x59bcf0,_0x31f485,_0xe6ba00,_0x297537,_0x26c3f6)=>{const _0x2e3aaa=_0x41244c,{currentTurn:_0x5c5cae,calculateDamage:_0x20e646}=_0x26c3f6,_0xf00708=_0x2e3aaa(0xb6);if(!_0x59bcf0||!_0x59bcf0['isAlive'])return![];if(!_0x18fd36[_0x2e3aaa(0xc1)])_0x18fd36['lastSkillTurn']={};const _0x424597=_0x18fd36['lastSkillTurn'][_0xf00708]||0x0;if(_0x424597!==0x0&&_0x5c5cae-_0x424597<0x2){const _0x10902f=0x2-(_0x5c5cae-_0x424597);return _0x297537(_0x2e3aaa(0xc9)+_0x18fd36[_0x2e3aaa(0x147)]+',\x20[파열]\x20사용\x20불가:\x20쿨타임\x20'+_0x10902f+'턴\x20남음.'),![];}const _0x4b9f15=_0x18fd36['type']==='암석'||_0x18fd36[_0x2e3aaa(0x14a)]==='야수'?'atk':'matk',_0x5a99c1=_0x4b9f15===_0x2e3aaa(0xab)?_0x2e3aaa(0x10f):_0x2e3aaa(0x13c),_0x95d758=_0x5a99c1===_0x2e3aaa(0x10f)?'물리':'마법';_0x297537(_0x2e3aaa(0xfb)+_0x18fd36['name']+_0x2e3aaa(0xd1)+_0x59bcf0[_0x2e3aaa(0x147)]+'.');const _0x119a48=_0x20e646(_0x18fd36,_0x59bcf0,2.1,_0x5a99c1,{'statTypeToUse':_0x4b9f15});_0x59bcf0['takeDamage'](_0x119a48,_0x297537,_0x18fd36),_0x297537(_0x2e3aaa(0xd4)+_0x59bcf0[_0x2e3aaa(0x147)]+':\x20'+_0x119a48+'\x20'+_0x95d758+_0x2e3aaa(0x12b));if(_0x59bcf0[_0x2e3aaa(0x136)]&&_0x59bcf0[_0x2e3aaa(0x14e)]('weakness')){const _0x13c3eb=_0x20e646(_0x18fd36,_0x59bcf0,0.3,_0x2e3aaa(0x157),{'statTypeToUse':_0x4b9f15});_0x59bcf0[_0x2e3aaa(0x11c)](_0x13c3eb,_0x297537,_0x18fd36),_0x297537(_0x2e3aaa(0xdd)+_0x59bcf0[_0x2e3aaa(0x147)]+'\x20([쇠약]\x20대상):\x20'+_0x13c3eb+_0x2e3aaa(0x150));}const _0x10bdc3=_0xe6ba00[_0x2e3aaa(0x166)](_0x3ac4db=>_0x3ac4db[_0x2e3aaa(0x136)]&&_0x3ac4db['id']!==_0x59bcf0['id']);return _0x10bdc3[_0x2e3aaa(0xfa)](_0x5ceb2d=>{const _0x205533=_0x2e3aaa,_0x90d61b=_0x20e646(_0x18fd36,_0x5ceb2d,1.4,_0x5a99c1,{'statTypeToUse':_0x4b9f15});_0x5ceb2d['takeDamage'](_0x90d61b,_0x297537,_0x18fd36),_0x297537(_0x205533(0x11a)+_0x5ceb2d['name']+':\x20'+_0x90d61b+'\x20'+_0x95d758+_0x205533(0x12b));if(_0x5ceb2d['isAlive']&&_0x5ceb2d[_0x205533(0x14e)](_0x205533(0xed))){const _0x50943e=_0x20e646(_0x18fd36,_0x5ceb2d,0.3,_0x205533(0x157),{'statTypeToUse':_0x4b9f15});_0x5ceb2d[_0x205533(0x11c)](_0x50943e,_0x297537,_0x18fd36),_0x297537(_0x205533(0xf4)+_0x5ceb2d[_0x205533(0x147)]+_0x205533(0x129)+_0x50943e+'\x20추가\x20고정\x20피해.');}}),_0x18fd36[_0x2e3aaa(0xc1)][_0xf00708]=_0x5c5cae,!![];}},'SKILL_RESONANCE':{'id':'SKILL_RESONANCE','name':'공명','type':_0x41244c(0xd7),'description':_0x41244c(0x131),'targetType':'single_ally_or_gimmick','targetSelection':_0x41244c(0x112),'execute':(_0x3b5c79,_0x4e8813,_0x24ce6c,_0x4636fc,_0x532883,_0x2d9550)=>{const _0x46975f=_0x41244c,{applyHeal:_0x17ad5,displayCharacters:_0x5cf468}=_0x2d9550;if(!_0x4e8813)return![];if(_0x4e8813['type']===_0x46975f(0xf8)){const _0xee2c91=Math[_0x46975f(0x10b)](_0x3b5c79[_0x46975f(0xda)](_0x46975f(0x160))*0x2);_0x4e8813[_0x46975f(0xe5)]+=_0xee2c91,_0x532883(_0x46975f(0xfb)+_0x3b5c79[_0x46975f(0x147)]+_0x46975f(0xc7)+_0x4e8813[_0x46975f(0x147)]+_0x46975f(0x133)+_0xee2c91+_0x46975f(0xcd));if(_0x5cf468)_0x5cf468();return!![];}if(!_0x4e8813[_0x46975f(0x136)])return![];const _0x5a8ae7=_0x4e8813[_0x46975f(0x148)]-_0x4e8813[_0x46975f(0x16b)];let _0x54ba79=Math[_0x46975f(0x10b)](_0x5a8ae7*0.5);return _0x3b5c79[_0x46975f(0x93)]==='힐러'&&_0x3b5c79[_0x46975f(0x16b)]<=_0x3b5c79[_0x46975f(0x148)]*0.5&&(_0x3b5c79[_0x46975f(0x10a)]||0x0)<0x2&&(_0x54ba79=Math[_0x46975f(0x10b)](_0x54ba79*1.1),_0x3b5c79[_0x46975f(0x10a)]=(_0x3b5c79[_0x46975f(0x10a)]||0x0)+0x1,_0x532883(_0x46975f(0x158))),_0x2d9550['applyHeal'](_0x4e8813,_0x54ba79,_0x532883,'공명'),_0x4e8813[_0x46975f(0xca)][_0x46975f(0x110)]>0x0&&(_0x4e8813[_0x46975f(0xca)]=[],_0x532883(_0x46975f(0x138)+_0x4e8813[_0x46975f(0x147)]+':\x20모든\x20디버프가\x20제거되었습니다.')),_0x3b5c79[_0x46975f(0xae)](_0x46975f(0x12e),_0x46975f(0x14b),0x3,{'description':'스킬\x20시전\x20시\x20체력이\x20가장\x20낮은\x20아군\x20추가\x20회복.','healPower':Math[_0x46975f(0x10b)](_0x3b5c79[_0x46975f(0xda)]('def')*0.6)}),_0x532883('✦버프✦\x20'+_0x3b5c79[_0x46975f(0x147)]+_0x46975f(0x120)),_0x3b5c79[_0x46975f(0x13d)](_0x532883),!![];}},'SKILL_COMPENSATION':{'id':_0x41244c(0x159),'name':'보상','type':_0x41244c(0x168),'description':'자신의\x20체력을\x20소모하여\x20적에게\x20동일한\x20고정\x20피해를\x20입히고\x20[전이]를\x20부여합니다.','targetType':_0x41244c(0x169),'targetSelection':_0x41244c(0x116),'execute':(_0x93b49a,_0x31840a,_0x3f135a,_0x351952,_0x1821ac)=>{const _0x4fa66a=_0x41244c;if(!_0x31840a||!_0x31840a[_0x4fa66a(0x136)])return![];const _0x1f890f=Math[_0x4fa66a(0x10b)](_0x93b49a[_0x4fa66a(0x148)]*0.15);_0x93b49a[_0x4fa66a(0x11c)](_0x1f890f,_0x1821ac,null),_0x1821ac(_0x4fa66a(0x114)+_0x93b49a[_0x4fa66a(0x147)]+':\x20스킬\x20대가로\x20'+_0x1f890f+_0x4fa66a(0x118));if(!_0x93b49a[_0x4fa66a(0x136)])return!![];return _0x31840a[_0x4fa66a(0x11c)](_0x1f890f,_0x1821ac,_0x93b49a),_0x1821ac(_0x4fa66a(0xc4)+_0x31840a[_0x4fa66a(0x147)]+_0x4fa66a(0xea)+_0x1f890f+_0x4fa66a(0x14f)),_0x31840a[_0x4fa66a(0xfe)](_0x4fa66a(0x103),_0x4fa66a(0x9c),0x2,{'description':_0x4fa66a(0x102),'casterId':_0x93b49a['id']}),_0x1821ac(_0x4fa66a(0x9b)+_0x31840a[_0x4fa66a(0x147)]+_0x4fa66a(0x16a)),!![];}},'SKILL_SEDIMENTATION':{'id':_0x41244c(0xb8),'name':'침전','type':_0x41244c(0x94),'description':_0x41244c(0x15e),'targetType':_0x41244c(0x140),'targetSelection':_0x41244c(0x140),'execute':(_0x442105,_0x1dac8e,_0x3dbe76,_0x544c8f,_0x24c9c9,_0x4f0bdb)=>{const _0x2679ac=_0x41244c,{applyHeal:_0x164268,displayCharacters:_0x203f7e,mapObjects:_0x4ff6a0}=_0x4f0bdb,_0xf3aa7=Math[_0x2679ac(0x10b)](_0x442105['maxHp']*0.2);_0x442105[_0x2679ac(0x16b)]=Math['max'](0x1,_0x442105[_0x2679ac(0x16b)]-_0xf3aa7),_0x24c9c9(_0x2679ac(0x114)+_0x442105['name']+':\x20체력\x20'+_0xf3aa7+'을\x20소모하여\x20아군을\x20구원합니다.'),_0x3dbe76[_0x2679ac(0x166)](_0x29ecfb=>_0x29ecfb[_0x2679ac(0x136)]&&_0x29ecfb['id']!==_0x442105['id'])[_0x2679ac(0xfa)](_0x5b37e6=>{const _0x2586a9=_0x2679ac,_0x55029b=_0x5b37e6[_0x2586a9(0x148)]-_0x5b37e6[_0x2586a9(0x16b)];_0x55029b>0x0&&_0x4f0bdb[_0x2586a9(0xe3)](_0x5b37e6,Math[_0x2586a9(0x10b)](_0x55029b*0.7),_0x24c9c9,'침전'),_0x5b37e6['addBuff']('immunity',_0x2586a9(0xaf),0x2,{'singleUse':!![]}),_0x24c9c9(_0x2586a9(0xe4)+_0x5b37e6['name']+':\x20[면역](1회)\x20획득.');});const _0x1f24f3=(_0x4ff6a0||[])[_0x2679ac(0x11f)](_0x3215ce=>_0x3215ce[_0x2679ac(0x14a)]==='spring');_0x1f24f3&&(_0x1f24f3['healingReceived']+=_0xf3aa7,_0x24c9c9(_0x2679ac(0x145)+_0x1f24f3[_0x2679ac(0x147)]+_0x2679ac(0xf9)+_0xf3aa7+_0x2679ac(0xcd)));_0x442105[_0x2679ac(0x13d)](_0x24c9c9);if(_0x203f7e)_0x203f7e();return!![];}},'SKILL_DIFFERANCE':{'id':_0x41244c(0x139),'name':'차연','type':_0x41244c(0x94),'description':_0x41244c(0x15b),'targetType':_0x41244c(0x140),'targetSelection':_0x41244c(0x140),'execute':(_0x1c6fe2,_0x3b0c05,_0x3d3288,_0x416cce,_0x568a79,_0x1f9cc5)=>{const _0x27e332=_0x41244c,{applyHeal:_0x51ca38}=_0x1f9cc5,_0x26a008=Math[_0x27e332(0x10b)](_0x1c6fe2['currentHp']*0.15);_0x1c6fe2[_0x27e332(0x11c)](_0x26a008,_0x568a79,null);if(!_0x1c6fe2[_0x27e332(0x136)])return!![];const _0x4828a2=Math['round'](_0x1c6fe2['currentHp']*0.1);return _0x416cce[_0x27e332(0x166)](_0x10faca=>_0x10faca[_0x27e332(0x136)])[_0x27e332(0xfa)](_0x1b296d=>{const _0x2cded7=_0x27e332;_0x1b296d['takeDamage'](_0x4828a2,_0x568a79,_0x1c6fe2),_0x568a79(_0x2cded7(0xa7)+_0x1b296d['name']+_0x2cded7(0xce)+_0x4828a2+'의\x20고정\x20피해.');}),_0x568a79(_0x27e332(0x11d)),_0x1f9cc5[_0x27e332(0xe3)](_0x1c6fe2,Math[_0x27e332(0x10b)](_0x1c6fe2['maxHp']*0.3),_0x568a79,'차연'),_0x3d3288['filter'](_0x3c09eb=>_0x3c09eb['isAlive'])[_0x27e332(0xfa)](_0x239e47=>{const _0x1f3a00=_0x27e332;_0x239e47[_0x1f3a00(0xae)]('trace',_0x1f3a00(0xdf),0x3,{'description':'체력\x2050%\x20이하\x20피격\x20시\x20시전자가\x20희생하여\x20회복시킴.','originalCasterId':_0x1c6fe2['id']});}),_0x1c6fe2['checkSupporterPassive'](_0x568a79),!![];}}};
+export const SKILLS = {
+  // [근성]
+  SKILL_RESILIENCE: {
+    id: "SKILL_RESILIENCE",
+    name: "근성",
+    type: "어그로",
+    description:
+      "원래 연극은 대사를 고르게 나누지 않는다. … 잠깐. 또 너야?<br><br>홀수 턴에는 [철옹성]을, 짝수 턴에는 [의지]를 획득. <br><br>[철옹성]: (자신에게 현재 체력의 2배 + 방어력 2배)만큼의 보호막 부여. 해당 턴에 발생한 모든 아군의 감소한 체력을 대신 감소. 3턴 유지. <br>[의지]: 자신에게 (해당 전투에서 시전 턴까지 받은 대미지의 총 합 * 2.5배)만큼의 보호막을 부여. 이후 [의지] 버프가 해제될 때에 남아 있는 보호막만큼을 자신의 체력으로 흡수. 3턴 유지. 단, [의지] 버프가 해제되면 그동안 받은 대미지의 총합을 초기화.",
+    targetType: "self",
+    targetSelection: "self",
+    execute: (caster, target, allies, enemies, battleLog, state) => {
+      const { currentTurn } = state;
+
+      if (currentTurn % 2 === 1) {
+        // 홀수 턴: 철옹성
+        caster.lastRedirectTime = Date.now();
+        const shieldAmount = Math.round(
+          caster.currentHp * 2.0 + caster.def * 2.0
+        );
+        caster.shield += shieldAmount;
+        
+        caster.removeBuffById("iron_fortress");
+        caster.addBuff("iron_fortress", "[철옹성]", 3, {
+          description: "자신에게 보호막 부여. 3턴간 아군 피해 대신 받음.",
+          shieldAmount: shieldAmount,
+          redirectAllyDamage: true,
+        });
+        battleLog(
+          `✦스킬✦ ${
+            caster.name
+          }, [근성](홀수) 사용: [철옹성] 효과 발동. 보호막 +${shieldAmount} (3턴). (현재 총 보호막: ${caster.shield.toFixed(
+            0
+          )})`
+        );
+      } else {
+        // 짝수 턴: 의지
+        const damageTaken = caster.totalDamageTakenThisBattle;
+        const shieldAmount = Math.round(damageTaken * 2.5);
+
+        // 1. 실제 보호막 수치 반영
+        caster.shield += shieldAmount;
+        
+        caster.removeBuffById("will_buff");
+        caster.addBuff("will_buff", "[의지]", 3, {
+          description:
+            "받은 총 피해 비례 보호막. 해제 시 남은 보호막만큼 체력 흡수 및 받은 피해 총합 초기화.",
+          shieldAmount: shieldAmount,
+          healOnRemove: true,
+          resetsTotalDamageTaken: true,
+        });
+        battleLog(`✦스킬✦ ${caster.name}, [근성](짝수) 사용: [의지] 발동. (누적 피해: ${damageTaken}) 보호막 +${shieldAmount}. (현재 총 보호막: ${Math.round(caster.shield)})`);
+      }
+      return true;
+    },
+  },
+
+// [반격]
+  SKILL_COUNTER: {
+    id: "SKILL_COUNTER",
+    name: "반격",
+    type: "카운터",
+    description: "보호막을 분배하고 턴에 따라 [응수] 또는 [격노] 태세를 취합니다.",
+    targetType: "self",
+    targetSelection: "self",
+    cooldown: 1,
+    execute: (caster, target, allies, enemies, battleLog, state) => {
+      const { currentTurn } = state;
+      const skillId = "SKILL_COUNTER";
+      const skillName = "반격";
+
+      // 쿨타임 체크
+      const lastUsed = caster.lastSkillTurn[skillId] || 0;
+      if (lastUsed !== 0 && currentTurn - lastUsed < 1) { 
+        battleLog(`✦정보✦ ${caster.name}, [${skillName}] 사용 불가: 쿨타임 ${2 - (currentTurn - lastUsed)}턴 남음.`);
+        return false;
+      }
+
+
+      // 보호막 분배 로직
+      const baseShield = caster.shield;
+      if (baseShield > 0) {
+        const livingAllies = allies.filter((a) => a.isAlive);
+        if (livingAllies.length > 0) {
+          const shieldPerAlly = Math.round(baseShield / livingAllies.length);
+          battleLog(`✦효과✦ ${caster.name}, [${skillName}]의 보호막 분배: 아군 ${livingAllies.length}명에게 보호막 부여.`);
+          livingAllies.forEach((ally) => {
+            const buffId = `counter_shield_${caster.id}_to_${ally.id}_${currentTurn}`;
+            ally.addBuff(buffId, "[반격 보호막]", 2, { shieldAmount: shieldPerAlly });
+          });
+          caster.shield = 0;
+        }
+      }
+
+      // 태세 전환 로직 (홀수/짝수 턴)
+      caster.removeBuffById("counter_active");
+      caster.removeBuffById("riposte_stance");
+      caster.removeBuffById("fury_stance");
+
+      if (currentTurn % 2 === 1) {
+        caster.addBuff("counter_active", "[응수]", 1, {
+          mode: "riposte",
+          description: "피격 시 단일 반격(1.5배/0.5배). 발동 시 보호막 10% 소모."
+        });
+        battleLog(`✦스킬✦ ${caster.name}, [반격](홀수) 사용: [응수] 태세 돌입.`);
+      } else {
+        caster.addBuff("counter_active", "[격노]", 1, {
+          mode: "fury",
+          description: "피격 시 광역 반격(1.5배/0.5배). 발동 시 보호막 10% 소모."
+        });
+        battleLog(`✦스킬✦ ${caster.name}, [반격](짝수) 사용: [격노] 태세 돌입.`);
+      }
+
+      caster.lastSkillTurn[skillId] = currentTurn;
+      return true;
+    },
+  },
+
+  // [도발]
+  SKILL_PROVOKE: {
+  id: "SKILL_PROVOKE",
+  name: "도발",
+  type: "어그로",
+  description: "받는 피해가 70% 감소하고, 2턴간 모든 아군에 대한 공격을 가로채 대신 맞습니다.",
+  targetType: "self",
+  targetSelection: "self",
+  execute: (caster, target, allies, enemies, battleLog, state) => {
+    // 1. 자신에게 '도발 상태' 부여
+    // 2턴으로 설정하여 다음 턴까지 아군을 보호
+    caster.lastRedirectTime = Date.now();
+    caster.addDebuff("provoked_self", "도발 상태", 2, {
+      damageReduction: 0.7, // 70% 대미지 감소
+      description: "모든 아군의 피해를 대신 받고 받는 피해가 70% 감소합니다."
+    });
+
+    // 2. 모든 적에게 '타겟 고정' 부여
+    enemies.filter((e) => e.isAlive).forEach((enemy) => {
+      enemy.addDebuff("provoked", "도발 (타겟 고정)", 2, {
+        targetId: caster.id,
+      });
+    });
+
+    caster.aggroDamageStored = 0;
+    battleLog(`✦효과✦ ${caster.name}, [도발] 사용: 모든 적의 공격을 집중시킵니다.`);
+    return true;
+  },
+},
+
+  // [역습]
+  SKILL_REVERSAL: {
+    id: "SKILL_REVERSAL",
+    name: "역습",
+    type: "카운터",
+    description: "체력을 소모하여 다음 공격에 대한 강력한 반격을 준비합니다.",
+    targetType: "self",
+    targetSelection: "self",
+    cooldown: 2,
+    execute: (caster, target, allies, enemies, battleLog, state) => {
+      const { currentTurn } = state;
+      const skillId = "SKILL_REVERSAL";
+
+      const lastUsed = caster.lastSkillTurn[skillId] || 0;
+      if (lastUsed !== 0 && currentTurn - lastUsed < 2) {
+        battleLog(`✦정보✦ ${caster.name}, [역습] 사용 불가: 쿨타임 ${2 - (currentTurn - lastUsed)}턴 남음.`);
+        return false;
+      }
+
+      const hpLoss = Math.round(caster.currentHp * 0.5);
+      caster.currentHp = Math.max(1, caster.currentHp - hpLoss);
+      
+      battleLog(`✦소모✦ ${caster.name}, [역습] 준비: 체력 ${hpLoss} 소모. (HP: ${caster.currentHp.toFixed(0)})`);
+      
+      caster.addBuff("reversal_active", "역습 대기", 1, {});
+      caster.lastSkillTurn[skillId] = currentTurn;
+      return true;
+    },
+  },
+
+// [허상]
+  SKILL_ILLUSION: {
+    id: "SKILL_ILLUSION",
+    name: "허상",
+    type: "지정 버프",
+    description: "자신에겐 회복을, 아군에겐 조건부 공격력 증폭을 부여합니다. 턴 종료 시 추가 공격을 수행합니다.",
+    targetType: "single_ally_or_self",
+    targetSelection: "ally_or_self",
+    execute: (caster, target, allies, enemies, battleLog, state) => {
+      const { currentTurn } = state;
+
+      // 1. 첫 턴 제약: 다른 아군에게 사용 불가
+      if (caster.id !== target.id && currentTurn === 1) {
+        battleLog(`✦정보✦ ${caster.name} [허상]: 첫 번째 턴에는 다른 아군에게 사용할 수 없습니다.`);
+        return false;
+      }
+
+      // 2. 엄격한 ID 비교를 통한 자신/타인 판정
+    const isSelf = (caster.id === target.id);
+
+      if (isSelf) {
+        // 2. 자신 사용: (공격) x 0.5 회복
+        const healAmount = Math.round(caster.getEffectiveStat("atk") * 0.5);
+        state.applyHeal(caster, healAmount, battleLog, "허상");
+      } else {
+        // 3. 아군 사용: (공격) x 0.2 체력 소모 및 공격 스탯 2배(100% 증가)
+        const hpLoss = Math.round(caster.getEffectiveStat("atk") * 0.2);
+        caster.currentHp = Math.max(1, caster.currentHp - hpLoss);
+        
+        const totalDamage = caster.totalDamageTakenThisBattle || 0;
+        const isEven = totalDamage % 2 === 0;
+        const statType = isEven ? "matk" : "atk";
+        const statName = isEven ? "마법 공격력" : "공격력";
+
+        target.addBuff(`illusion_${statType}_boost`, `[허상:${statName}]`, 2, {
+          type: `${statType}_boost_multiplier`,
+          value: 2.0, // 2배 증가
+        });
+        // 로그에서 시전자(caster)와 대상(target)을 명확히 분리하여 출력
+      battleLog(`✦스킬✦ ${caster.name}이(가) ${target.name}에게 [허상]을 시전합니다.`);
+      battleLog(`✦효과✦ ${target.name}의 ${statName}이 2배 증가하고, ${caster.name}의 체력이 소모됩니다.`);
+    }
+
+      // 4. 턴 종료 시 추가 공격 예약 (가장 체력이 높은 적 타겟팅)
+      const targetEnemy = [...enemies]
+          .filter(e => e.isAlive)
+          .sort((a, b) => b.currentHp - a.currentHp)[0]; // 체력 내림차순 정렬 후 첫 번째
+      
+      if (targetEnemy) {
+          caster.addBuff("illusion_extra_hit", "[허상:추격]", 1, {
+              extraAttack: true,
+              targetId: targetEnemy.id,
+              powerMultiplier: 0.5
+          });
+      }
+
+      return true;
+    },
+  },
+
+  // [허무]
+  SKILL_NIHILITY: {
+    id: "SKILL_NIHILITY",
+    name: "허무",
+    type: "지정 버프",
+    description: "아군의 디버프를 정화하고 무작위 이로운 효과를 부여합니다.",
+    targetType: "single_ally",
+    targetSelection: "ally",
+    execute: (caster, target, allies, enemies, battleLog, state) => {
+      // 1. 랜덤 디버프 2개 정화
+      if (target.debuffs.length > 0) {
+        // 디버프 목록을 섞어서 앞의 2개를 제거
+        const shuffled = [...target.debuffs].sort(() => 0.5 - Math.random());
+        const removed = shuffled.slice(0, 2);
+        const removedIds = removed.map(d => d.id);
+        
+        target.debuffs = target.debuffs.filter(d => !removedIds.includes(d.id));
+        battleLog(`✦정화✦ ${target.name}의 디버프(${removed.map(d => d.name).join(", ")})가 정화되었습니다.`);
+      }
+
+      // 2. 랜덤 버프 결정 (시전 시 1회 추첨, 2턴 유지)
+      const buffChoices = [
+        { id: "void_heal", name: "회복(허무)", effect: { type: "turn_start_heal", value: 0.5 } },
+        { id: "void_reflect", name: "반사(허무)", effect: { type: "damage_reflect", value: 0.3 } },
+        { id: "void_def", name: "경화(허무)", effect: { type: "def_boost_multiplier", value: 1.3 } },
+        { id: "void_atk", name: "고양(허무)", effect: { type: "atk_boost_multiplier", value: 2.5 } } // 150% 증가 = 2.5배
+      ];
+      
+      const chosen = buffChoices[Math.floor(Math.random() * buffChoices.length)];
+      
+      // 버프 부여
+      target.addBuff(chosen.id, `[${chosen.name}]`, 2, chosen.effect);
+      
+      battleLog(`✦허무✦ ${target.name}에게 2턴간 ${chosen.name} 효과를 부여합니다.`);
+
+      caster.checkSupporterPassive(battleLog);
+      return true;
+    },
+  },
+
+// [실존]
+SKILL_REALITY: {
+  id: "SKILL_REALITY",
+  name: "실존",
+  type: "광역 버프",
+  description: "모든 아군의 방어력을 강화하고 자신에게 [실재] 스택을 부여합니다. 3턴 연속 사용은 불가능합니다.",
+  targetType: "all_allies",
+  targetSelection: "all_allies",
+  execute: (caster, target, allies, enemies, battleLog, state) => {
+    const { currentTurn } = state;
+    const skillId = "SKILL_REALITY";
+    
+    // 1. 시전자의 연속 사용 제한 체크
+    const existingReality = caster.buffs.find((b) => b.id === "reality_stacks");
+    const prevConsecutiveCount = (existingReality && existingReality.lastAppliedTurn === currentTurn - 1) 
+      ? (existingReality.consecutiveCount || 1) 
+      : 0;
+
+    if (prevConsecutiveCount >= 2) {
+      battleLog(`✦정보✦ ${caster.name}: [실존]을 3턴 연속 사용할 수 없습니다.`);
+      return false;
+    }
+
+    // 2. [실재] 스택 결정
+    let realityStacks = 4;
+    let newConsecutiveCount = 1;
+    
+    if (prevConsecutiveCount > 0) {
+      realityStacks = 6; // 연속 사용 시 4 -> 6스택으로 강화
+      newConsecutiveCount = prevConsecutiveCount + 1;
+      battleLog(`✦효과✦ ${caster.name} [실존] 연속 사용: [실재]가 6스택으로 강화됩니다.`);
+    } else {
+      battleLog(`✦효과✦ ${caster.name} [실존] 사용: [실재] 4스택을 획득합니다.`);
+    }
+
+    // 3. 시전자 본인에게 [실재] 스택 부여 (2턴 유지)
+    caster.addBuff("reality_stacks", "[실재]", 2, {
+      stacks: realityStacks,
+      unremovable: true,
+      lastAppliedTurn: currentTurn,
+      consecutiveCount: newConsecutiveCount,
+      isStackManager: true // 시전자는 효과를 받지 않고 스택만 관리함
+    });
+
+    // 4. 아군 전체 버프 적용 (시전자의 [실재] 스택 수치에 기반)
+    allies.filter(a => a.isAlive && a.id !== caster.id).forEach(ally => {
+      // 방어/마방 20% 기본 증가
+      ally.addBuff("reality_def_mult_hidden", "", 2, { type: "def_boost_multiplier", value: 1.2 });
+      ally.addBuff("reality_mdef_mult_hidden", "", 2, { type: "mdef_boost_multiplier", value: 1.2 });
+
+      // 보너스 수치 계산: (아군의 높은 스탯 * 0.2) * 시전자의 [실재] 스택
+      const allyDef = ally.getEffectiveStat('def');
+      const allyMdef = ally.getEffectiveStat('mdef');
+      const higherStat = Math.max(allyDef, allyMdef);
+      const boostValue = Math.round((higherStat * 0.2) * realityStacks);
+      
+      ally.addBuff("reality_def_add", "", 2, { type: "def_boost_add", value: boostValue });
+      ally.addBuff("reality_mdef_add", "", 2, { type: "mdef_boost_add", value: boostValue });
+      
+      battleLog(`✦버프✦ ${ally.name}: 시전자의 [실재] 영향으로 방어 성능이 강화됩니다. (+${boostValue})`);
+    });
+
+    caster.lastSkillTurn[skillId] = currentTurn;
+    caster.checkSupporterPassive(battleLog);
+    return true;
+  },
+},
+
+  // [진리]
+  SKILL_TRUTH: {
+    id: "SKILL_TRUTH",
+    name: "진리",
+    type: "광역 디버프",
+    description: "모든 적에게 [중독]을 부여합니다. 중독 결산 후 랜덤한 적에게 [맹독] 피해를 입힙니다.",
+    targetType: "all_enemies",
+    targetSelection: "none", // 대상을 고르지 않고 즉시 발동하도록 수정
+    execute: (caster, target, allies, enemies, battleLog, state) => {
+      battleLog(`✦스킬✦ ${caster.name}, [진리] 사용: 모든 적에게 독을 퍼뜨립니다.`);
+
+      // 살아있는 모든 적군을 필터링하여 루프 실행
+      enemies.filter((e) => e.isAlive).forEach((enemy) => {
+        enemy.addDebuff("poison_truth", "[중독]", 2, {
+          dotType: "current_hp_ratio",
+          ratio: 0.015, // 1.5%
+          casterId: caster.id,
+        });
+      });
+      
+      // 서포터 패시브 체크 및 UI 갱신
+      if (caster.checkSupporterPassive) caster.checkSupporterPassive(battleLog);
+      return true;
+    },
+},
+
+  // [서막]
+  SKILL_OVERTURE: {
+    id: "SKILL_OVERTURE",
+    name: "서막",
+    type: "단일 공격",
+    description: "적에게 물리/마법 피해를 가하고 [흠집]을 새깁니다.",
+    targetType: "single_enemy",
+    targetSelection: "enemy",
+    execute: (caster, target, allies, enemies, battleLog, state) => {
+      const { calculateDamage } = state;
+      if (!target || !target.isAlive) return false;
+
+      // 1. 데미지 계산 및 적용
+      const atk = caster.getEffectiveStat("atk");
+      const matk = caster.getEffectiveStat("matk");
+      const damageType = atk >= matk ? "physical" : "magical";
+      const skillPower = damageType === "physical" ? 2.0 : 2.5;
+      
+      const damage = calculateDamage(caster, target, skillPower, damageType);
+      target.takeDamage(damage, battleLog, caster);
+      battleLog(`✦피해✦ ${caster.name}, [서막]: ${target.name}에게 ${damage} ${damageType === "physical" ? "물리" : "마법"} 피해.`);
+
+      // 2. 타입에 따른 감소 방어력 결정
+      let defenseToReduce;
+      if (caster.type === "암석" || caster.type === "야수") defenseToReduce = "def";
+      else if (caster.type === "천체" || caster.type === "나무") defenseToReduce = "mdef";
+      else defenseToReduce = (damageType === "physical") ? "def" : "mdef";
+
+      // 3. [흠집] 디버프 부여
+      target.addDebuff("scratch", "[흠집]", 2, {
+        maxStacks: 3,
+        overrideDuration: true,
+        removerSkillId: "SKILL_CLIMAX", // 다음 스킬 연계 아이디
+        category: "표식",
+        reductionType: defenseToReduce,
+        reductionValue: 0.1,
+      });
+
+      const scratchStacks = target.getDebuffStacks("scratch");
+      battleLog(`✦디버프✦ ${target.name}, [흠집] (${defenseToReduce === "def" ? "방어력" : "마법 방어력"} 감소) 적용. (현재 ${scratchStacks}스택).`);
+
+      return true;
+    },
+  },
+
+// [절정]
+  SKILL_CLIMAX: {
+    id: "SKILL_CLIMAX",
+    name: "절정",
+    type: "단일 공격",
+    description: "시전자의 타입에 따라 강력한 피해를 입힙니다. 대상에게 [흠집]이 있다면 추가 공격을 가합니다.",
+    targetType: "single_enemy",
+    targetSelection: "enemy",
+    execute: (caster, target, allies, enemies, battleLog, state) => {
+      const { calculateDamage } = state;
+      if (!target || !target.isAlive) return false;
+
+      // 1. 공격 스탯 및 데미지 타입 결정
+      let statTypeToUse;
+      let damageType;
+      if (caster.type === "암석" || caster.type === "야수") {
+        statTypeToUse = "atk";
+        damageType = "physical";
+      } else if (caster.type === "천체" || caster.type === "나무") {
+        statTypeToUse = "matk";
+        damageType = "magical";
+      } else {
+        statTypeToUse = caster.getEffectiveStat("atk") >= caster.getEffectiveStat("matk") ? "atk" : "matk";
+        damageType = statTypeToUse === "atk" ? "physical" : "magical";
+      }
+      const damageTypeKorean = damageType === "physical" ? "물리" : "마법";
+
+      // 2. 메인 공격 수행
+      battleLog(`✦스킬✦ ${caster.name}, ${target.name}에게 [절정] 공격.`);
+      const mainDamage = calculateDamage(caster, target, 2.7, damageType, statTypeToUse);
+      target.takeDamage(mainDamage, battleLog, caster);
+      battleLog(`  ✦피해✦ [절정]: ${target.name}에게 ${mainDamage} ${damageTypeKorean} 피해.`);
+
+      if (!target.isAlive) return true;
+
+      // 3. [흠집] 연계 추가 공격
+      const scratchStacks = target.getDebuffStacks("scratch");
+      if (scratchStacks > 0) {
+          battleLog(`✦효과✦ ${target.name} [흠집 ${scratchStacks}스택]: 추가타 발생.`);
+          
+          // 스택에 따른 위력 설정
+          let bonusPower = 0.08;
+          if (scratchStacks === 2) bonusPower = 0.12;
+          else if (scratchStacks >= 3) bonusPower = 0.16;
+      
+          for (let i = 0; i < 2; i++) {
+              // [수정] 4번째 인자로 "fixed"를 명시하여 방어력을 무시하도록 합니다.
+              // options 객체는 { statTypeToUse } 형태로 넘겨야 합니다.
+              const bonusDamage = calculateDamage(caster, target, bonusPower, "fixed", { statTypeToUse });
+              
+              target.takeDamage(bonusDamage, battleLog, caster);
+              
+              // [수정] damageTypeKorean 대신 "고정" 피해라고 명시하는 것이 정확합니다.
+              battleLog(`  ✦추가 피해✦ [흠집 효과] ${i + 1}회: ${target.name}에게 ${bonusDamage} 추가 고정 피해.`);
+              
+              if (!target.isAlive) break;
+          }
+
+        if (target.isAlive) target.removeDebuffById("scratch");
+        battleLog(`✦정보✦ ${target.name}: [흠집] 효과 소멸.`);
+      }
+      return true;
+    },
+  },
+
+// [간파]
+  SKILL_DISCERNMENT: {
+    id: "SKILL_DISCERNMENT",
+    name: "간파",
+    type: "단일 공격",
+    description: "관통율 30%가 적용된 2연타 공격 후, 추가 피해를 입히고 [쇠약] 상태를 부여합니다.",
+    targetType: "single_enemy",
+    targetSelection: "enemy",
+    execute: (caster, target, allies, enemies, battleLog, state) => {
+      const { calculateDamage } = state;
+      if (!target || !target.isAlive) return false;
+
+      const damageType = caster.getEffectiveStat("atk") >= caster.getEffectiveStat("matk") ? "physical" : "magical";
+      const damageTypeKorean = damageType === "physical" ? "물리" : "마법";
+
+      battleLog(`✦스킬✦ ${caster.name}, ${target.name}에게 [간파] 발동.`);
+
+      // 1. [쇠약] 디버프 부여
+    target.addDebuff("weakness", "[쇠약]", 2, {
+        damageMultiplierReduction: 0.2, // 적이 가하는 피해량 20% 감소
+        description: "받는 추가 피해 증가 및 가하는 피해 감소",
+        category: "상태 이상",
+    });
+    battleLog(`✦상태 이상✦ ${target.name}, [쇠약] 효과 적용 (2턴).`);
+      
+      // 2. 관통 2연타 (방어력 20% 무시로 0데미지 방지)
+    for (let i = 0; i < 2; i++) {
+        const d1 = calculateDamage(caster, target, 1.3, damageType, { penetration: 0.2 });
+        target.takeDamage(d1, battleLog, caster);
+        battleLog(`✦피해✦ [간파] ${i + 1}타: ${target.name}에게 ${d1} ${damageTypeKorean} 피해.`);
+        
+        if (!target.isAlive) return true;
+    }
+
+    // 3. 추가 피해
+    const d2 = calculateDamage(caster, target, 2.0, damageType);
+    target.takeDamage(d2, battleLog, caster);
+    battleLog(`✦추가 피해✦ ${caster.name} [간파 효과]: ${target.name}에게 ${d2} 추가 ${damageTypeKorean} 피해.`);
+    
+    if (!target.isAlive) return true;
+    
+    return true;
+    },
+  },
+
+// [파열]
+  SKILL_RUPTURE: {
+    id: "SKILL_RUPTURE",
+    name: "파열",
+    type: "광역 공격",
+    description: "균열은 가장 고요한 순간에 일어난다.<br><br>주 목표와 주변 적들에게 피해를 입힙니다. [쇠약] 상태인 적에게는 추가 고정 피해를 입힙니다.",
+    targetType: "single_enemy",
+    targetSelection: "enemy",
+    cooldown: 2,
+    execute: (caster, mainTarget, allies, enemies, battleLog, state) => {
+      const { currentTurn, calculateDamage } = state; 
+      const skillId = "SKILL_RUPTURE";
+
+      if (!mainTarget || !mainTarget.isAlive) return false;
+
+      // 1. 쿨타임 체크 (캐릭터 객체 내 lastSkillTurn 확인)
+      if (!caster.lastSkillTurn) caster.lastSkillTurn = {};
+      const lastUsed = caster.lastSkillTurn[skillId] || 0;
+      if (lastUsed !== 0 && currentTurn - lastUsed < 2) {
+        const remainingTurns = 2 - (currentTurn - lastUsed);
+        battleLog(`✦정보✦ ${caster.name}, [파열] 사용 불가: 쿨타임 ${remainingTurns}턴 남음.`);
+        return false;
+      }
+
+      // 2. 캐릭터 타입에 따른 스탯 및 대미지 타입 결정
+      const statType = (caster.type === "암석" || caster.type === "야수") ? "atk" : "matk";
+      const damageType = statType === "atk" ? "physical" : "magical";
+      const damageTypeKr = damageType === "physical" ? "물리" : "마법";
+
+      battleLog(`✦스킬✦ ${caster.name}, [파열] 사용. 주 대상: ${mainTarget.name}.`);
+
+      // 3. 주 대상 공격 (2.1배)
+      const dMain = calculateDamage(caster, mainTarget, 2.1, damageType, { statTypeToUse: statType });
+      mainTarget.takeDamage(dMain, battleLog, caster);
+      battleLog(`  ✦피해✦ [파열 주 대상] ${mainTarget.name}: ${dMain} ${damageTypeKr} 피해.`);
+
+      // 쇠약 상태인 경우 추가 고정 피해 (0.3배)
+      if (mainTarget.isAlive && mainTarget.hasDebuff("weakness")) {
+        const bonus = calculateDamage(caster, mainTarget, 0.3, "fixed", { statTypeToUse: statType });
+        mainTarget.takeDamage(bonus, battleLog, caster);
+        battleLog(`  ✦추가 피해✦ ${mainTarget.name} ([쇠약] 대상): ${bonus} 추가 고정 피해.`);
+      }
+
+      // 4. 부가 대상 공격 (1.4배) - 주 대상을 제외한 살아있는 모든 적
+      const subTargets = enemies.filter(e => e.isAlive && e.id !== mainTarget.id);
+      subTargets.forEach(sub => {
+        const dSub = calculateDamage(caster, sub, 1.4, damageType, { statTypeToUse: statType });
+        sub.takeDamage(dSub, battleLog, caster);
+        battleLog(`    ✦피해✦ [파열 부 대상] ${sub.name}: ${dSub} ${damageTypeKr} 피해.`);
+
+        if (sub.isAlive && sub.hasDebuff("weakness")) {
+          const bSub = calculateDamage(caster, sub, 0.3, "fixed", { statTypeToUse: statType });
+          sub.takeDamage(bSub, battleLog, caster);
+          battleLog(`    ✦추가 피해✦ ${sub.name} ([쇠약] 대상): ${bSub} 추가 고정 피해.`);
+        }
+      });
+
+      // 5. 사용 턴 기록
+      caster.lastSkillTurn[skillId] = currentTurn;
+      return true;
+    },
+  },
+
+// [공명]
+  SKILL_RESONANCE: {
+    id: "SKILL_RESONANCE",
+    name: "공명",
+    type: "지정 버프",
+    description: "대상의 체력을 회복하고 모든 상태 이상을 정화합니다. 기믹 오브젝트와 상호작용할 수 있습니다.",
+    targetType: "single_ally_or_gimmick",
+    targetSelection: "single_ally_or_gimmick",
+    execute: (caster, target, allies, enemies, battleLog, state) => {
+      const { applyHeal, displayCharacters } = state;
+      if (!target) return false;
+
+      // 1. 기믹 오브젝트(메마른 생명의 샘) 상호작용
+      if (target.type === "spring") {
+        const healAmount = Math.round(caster.getEffectiveStat("def") * 2);
+        target.healingReceived += healAmount;
+        battleLog(`✦스킬✦ ${caster.name}, [${target.name}]에 [공명] 사용. 생명력 ${healAmount} 주입.`);
+        if (displayCharacters) displayCharacters(); 
+        return true;
+      }
+
+      if (!target.isAlive) return false;
+
+      // 2. 아군 회복 및 정화
+      const lostHp = target.maxHp - target.currentHp;
+      let healAmount = Math.round(lostHp * 0.5);
+
+      // 힐러 직군 보너스
+      if (caster.job === "힐러" && caster.currentHp <= caster.maxHp * 0.5 && (caster.healerBoostCount || 0) < 2) {
+        healAmount = Math.round(healAmount * 1.1);
+        caster.healerBoostCount = (caster.healerBoostCount || 0) + 1;
+        battleLog(`✦직군 효과✦ [은총의 방패] 발동. 회복량 10% 증가.`);
+      }
+
+      state.applyHeal(target, healAmount, battleLog, "공명");
+
+      if (target.debuffs.length > 0) {
+        target.debuffs = [];
+        battleLog(`✦정화✦ ${target.name}: 모든 디버프가 제거되었습니다.`);
+      }
+
+      // 3. [환원] 버프 부여
+      caster.addBuff("restoration", "[환원]", 3, {
+        description: "스킬 시전 시 체력이 가장 낮은 아군 추가 회복.",
+        healPower: Math.round(caster.getEffectiveStat("def") * 0.6),
+      });
+
+      battleLog(`✦버프✦ ${caster.name}: [환원] 상태가 되어 3턴간 스킬 사용 시 아군을 추가 회복합니다.`);
+      
+      caster.checkSupporterPassive(battleLog);
+      return true;
+    },
+  },
+
+  // [보상]
+SKILL_COMPENSATION: {
+  id: "SKILL_COMPENSATION",
+  name: "보상",
+  type: "지정 디버프",
+  description: "자신의 체력을 소모하여 적에게 동일한 고정 피해를 입히고 [전이]를 부여합니다.", // 설명 수정
+  targetType: "single_enemy",
+  targetSelection: "enemy",
+  execute: (caster, target, allies, enemies, battleLog) => {
+    if (!target || !target.isAlive) return false;
+
+    // 1. 시전자 체력 소모 (최대 체력의 15%)
+    const selfDamage = Math.round(caster.maxHp * 0.15);
+    caster.takeDamage(selfDamage, battleLog, null);
+    battleLog(`✦소모✦ ${caster.name}: 스킬 대가로 ${selfDamage}의 피해를 입습니다.`);
+
+    if (!caster.isAlive) return true;
+    target.takeDamage(selfDamage, battleLog, caster); 
+    battleLog(`✦피해✦ ${target.name}: [보상]의 여파로 ${selfDamage}의 고정 피해를 입었습니다.`);
+
+    // 3. 적에게 [전이] 디버프 부여 (기존 로직)
+    target.addDebuff("transfer", "[전이]", 2, {
+      description: "피격 시 공격자를 (자신의 공격력x100%)만큼 회복시킴.",
+      casterId: caster.id,
+    });
+    battleLog(`✦디버프✦ ${target.name}: [전이] 상태 부여 (2턴).`);
+
+    return true;
+  },
+},
+
+  // [침전]
+  SKILL_SEDIMENTATION: {
+    id: "SKILL_SEDIMENTATION",
+    name: "침전",
+    type: "광역 버프",
+    description: "자신의 체력을 소모하여 아군 전체를 대폭 회복시키고 [면역]을 부여합니다.",
+    targetType: "all_allies",
+    targetSelection: "all_allies",
+    execute: (caster, target, allies, enemies, battleLog, state) => {
+      const { applyHeal, displayCharacters, mapObjects } = state;
+      
+      const hpCost = Math.round(caster.maxHp * 0.2);
+      caster.currentHp = Math.max(1, caster.currentHp - hpCost);
+      battleLog(`✦소모✦ ${caster.name}: 체력 ${hpCost}을 소모하여 아군을 구원합니다.`);
+
+      // 1. 아군 전체 회복 및 면역
+      allies.filter((a) => a.isAlive && a.id !== caster.id).forEach((ally) => {
+        const lostHp = ally.maxHp - ally.currentHp;
+        if (lostHp > 0) {
+          state.applyHeal(ally, Math.round(lostHp * 0.7), battleLog, "침전");
+        }
+        ally.addBuff("immunity", "[면역]", 2, { singleUse: true });
+        battleLog(`✦버프✦ ${ally.name}: [면역](1회) 획득.`);
+      });
+
+      // 2. 기믹 오브젝트 연동
+      const spring = (mapObjects || []).find((obj) => obj.type === "spring");
+      if (spring) {
+        spring.healingReceived += hpCost;
+        battleLog(`✦기믹✦ [${spring.name}]에 생명력 ${hpCost} 주입.`);
+      }
+
+      caster.checkSupporterPassive(battleLog);
+      if (displayCharacters) displayCharacters();
+      return true;
+    },
+  },
+
+  // [차연]
+  SKILL_DIFFERANCE: {
+    id: "SKILL_DIFFERANCE",
+    name: "차연",
+    type: "광역 버프",
+    description: "체력을 소모하여 자신을 회복하고 적에게 피해를 입히며, 아군에게 [흔적]을 남깁니다.",
+    targetType: "all_allies",
+    targetSelection: "all_allies",
+    execute: (caster, target, allies, enemies, battleLog, state) => {
+      const { applyHeal } = state;
+
+      // 1. 시전자 코스트 및 적군 고정 피해
+      const selfCost = Math.round(caster.currentHp * 0.15);
+      caster.takeDamage(selfCost, battleLog, null);
+      
+      if (!caster.isAlive) return true;
+
+      const enemyDamage = Math.round(caster.currentHp * 0.10);
+      enemies.filter(e => e.isAlive).forEach(enemy => { 
+      enemy.takeDamage(enemyDamage, battleLog, caster);
+      battleLog(`✦피해✦ [차연]: ${enemy.name}에게 ${enemyDamage}의 고정 피해.`); 
+    });
+
+      battleLog(`✦스킬✦ [차연]의 여파가 적들에게 전해졌습니다.`);
+
+      // 2. 시전자 회복 및 아군 [흔적] 부여
+      state.applyHeal(caster, Math.round(caster.maxHp * 0.3), battleLog, "차연");
+
+      allies.filter(a => a.isAlive).forEach(ally => {
+        ally.addBuff("trace", "[흔적]", 3, {
+          description: "체력 50% 이하 피격 시 시전자가 희생하여 회복시킴.",
+          originalCasterId: caster.id,
+        });
+      });
+
+      caster.checkSupporterPassive(battleLog);
+      return true;
+    },
+  },
+};
+
