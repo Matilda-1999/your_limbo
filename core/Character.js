@@ -54,58 +54,60 @@ export class Character {
         this.usedAttackSkillThisTurn = false;   // 이번 턴에 사용한 스킬이 '공격'이었는가?
     }
 
-    getEffectiveStat(statName) {
-    let value = this[statName];
-    let additiveBonus = 0; 
+   getEffectiveStat(statName) {
+    let baseValue = this[statName]; // 기본값 (20)
+    let additiveBonus = 0;          // 고정치 합계
+    let multiplierTotal = 1.0;      // 배율 합계
 
     // 1. 버프 처리
     this.buffs.forEach(buff => {
         if (buff.turnsLeft > 0 && buff.effect) {
+            // 고정치 보너스 (실재 버프 등)
+            if (buff.effect.type === `${statName}_boost_add` || buff.id.includes(`${statName}_add`)) {
+                additiveBonus += (buff.effect.value || 0);
+            }
+            // 배율 보너스
             if (buff.effect.type === `${statName}_boost_multiplier`) {
-                value *= (buff.effect.value || 1);
-            }
-            if (buff.effect.type === `${statName}_boost_add`) {
-                additiveBonus += (buff.effect.value || 0);
-            }
-            if (buff.id === `reality_${statName}_add`) {
-                additiveBonus += (buff.effect.value || 0);
+                multiplierTotal *= (buff.effect.value || 1);
             }
         }
     });
 
-    let totalStat = value + additiveBonus;
-
-    // 2. 디버프 및 낙인(Brand) 처리
     this.debuffs.forEach(debuff => {
-        if (debuff.turnsLeft > 0) {
-            const stacks = debuff.stacks || 1;
+    if (debuff.turnsLeft > 0) {
+        const stacks = debuff.stacks || 1;
 
-            // 우울: 공/마공 10% 감소 (중첩당)
-            if (debuff.id === "brand_melancholy" && (statName === "atk" || statName === "matk")) {
-                totalStat *= (1 - (0.1 * stacks));
-            }
-            // 환희: 방/마방 20% 감소, 공/마공 10% 증폭 (중첩당)
-            if (debuff.id === "brand_joy") {
-                if (statName === "def" || statName === "mdef") totalStat *= (1 - (0.2 * stacks));
-                else if (statName === "atk" || statName === "matk") totalStat *= (1 + (0.1 * stacks));
-            }
-
-            // [기존 흠집 디버프]: 스택당 방어 성능 감소
-            if (debuff.id === "scratch" && debuff.effect && debuff.effect.reductionType === statName) {
-                const reductionPerStack = debuff.effect.reductionValue || 0.1;
-                totalStat *= (1 - (reductionPerStack * stacks));
-            }
-
-            // [기타 일반 디버프 배율]
-            if (debuff.effect && debuff.effect.type === `${statName}_reduce_multiplier`) {
-                totalStat *= (debuff.effect.value || 1);
+        // 1. [흠집] 효과: 중첩당 방어/마방 10% 감소 (최대 3중첩)
+        if (debuff.id === "scratched") {
+            if (statName === "def" || statName === "mdef") {
+                multiplierTotal *= (1 - (0.1 * stacks)); // 중첩당 10%씩 차감
             }
         }
-    });
 
-    // 최종 스탯 반환 (여기서 메서드가 끝나야 합니다)
-    return Math.max(0, totalStat);
-}
+        // 2. [환희 낙인]: 방어 성능 20% 감소
+        if (debuff.id === "brand_joy" && (statName === "def" || statName === "mdef")) {
+            multiplierTotal *= (1 - (0.2 * stacks));
+        }
+
+        // 3. [우울 낙인]: 공격 성능 10% 감소
+        if (debuff.id === "brand_melancholy" && (statName === "atk" || statName === "matk")) {
+            multiplierTotal *= (1 - (0.1 * stacks));
+        }
+
+        // 4. 기타 일반 디버프 배율 처리
+        if (debuff.effect && debuff.effect.type === `${statName}_reduce_multiplier`) {
+            multiplierTotal *= (debuff.effect.value || 1);
+                }
+            }
+        });
+        
+        // 최종 계산: (기본 + 고정치) * 통합 배율
+        let finalStat = (baseValue + additiveBonus) * multiplierTotal;
+        return Math.max(0, Math.round(finalStat));
+        
+            // 최종 스탯 반환 (여기서 메서드가 끝나야 합니다)
+            return Math.max(0, totalStat);
+        }
 
     takeDamage(rawDamage, logFn, attacker = null, allies = [], enemies = [], state = {}, isRedirected = false) {
         if (!this.isAlive) return;
