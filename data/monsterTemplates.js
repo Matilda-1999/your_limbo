@@ -1,1 +1,112 @@
-function _0x56a4(){const _0x378110=['GIMMICK_Aegis_of_Earth1','GIMMICK_Duet','GIMMICK_Path_of_Ruin','2094099HHshdK','5shqZES','21043SQlYyN','1834026zgMDXb','GIMMICK_Aegis_of_Earth4','GIMMICK_Curtain_Call','254588SzXbMe','GIMMICK_Aegis_of_Earth3','324pvFLpd','GIMMICK_Dress_Rehearsal2','GIMMICK_Encore','SKILL_Crimson','SKILL_Crushing_Sky','1154619PPGoFY','SKILL_Spores_of_Silence','카르나블룸','GIMMICK_Seed_of_Devour','SKILL_Slapstick_Comdey_P','SKILL_Play1','GIMMICK_Dress_Rehearsal1','GIMMICK_Script_Reversal','GIMMICK_Tears_of','4BpsojO','9970EHefVz','GIMMICK_The_Final_Curtain1','58568xiFyTh','SKILL_Seismic_Fissure','GIMMICK_Dress_Rehearsal4','2625070NuSpBH','SKILL_Echo_of_Silence','SKILL_Get_a_Present_P','SKILL_Birth_of_Vines','SKILL_Thread_of_Emotion','GIMMICK_The_Final_Curtain2','SKILL_Slapstick_Comdey_C'];_0x56a4=function(){return _0x378110;};return _0x56a4();}const _0x471423=_0x405b;function _0x405b(_0x21c5d4,_0x1f7a5f){_0x21c5d4=_0x21c5d4-0x1bc;const _0x56a43c=_0x56a4();let _0x405b43=_0x56a43c[_0x21c5d4];return _0x405b43;}(function(_0x3881c5,_0x165195){const _0x277b86=_0x405b,_0x3bda9f=_0x3881c5();while(!![]){try{const _0x5bb504=parseInt(_0x277b86(0x1cc))/0x1*(-parseInt(_0x277b86(0x1d1))/0x2)+-parseInt(_0x277b86(0x1d8))/0x3+-parseInt(_0x277b86(0x1e1))/0x4*(-parseInt(_0x277b86(0x1c1))/0x5)+-parseInt(_0x277b86(0x1ce))/0x6+-parseInt(_0x277b86(0x1cb))/0x7+-parseInt(_0x277b86(0x1be))/0x8*(parseInt(_0x277b86(0x1d3))/0x9)+parseInt(_0x277b86(0x1bc))/0xa*(parseInt(_0x277b86(0x1cd))/0xb);if(_0x5bb504===_0x165195)break;else _0x3bda9f['push'](_0x3bda9f['shift']());}catch(_0x59e864){_0x3bda9f['push'](_0x3bda9f['shift']());}}}(_0x56a4,0x84754));export const MONSTER_TEMPLATES={'Terrmor_1':{'name':'테르모르','type':'암석','maxHp':0x320,'atk':0x32,'matk':0x32,'def':0x23,'mdef':0x14,'skills':[_0x471423(0x1bf),_0x471423(0x1c2),_0x471423(0x1d7)],'gimmicks':[_0x471423(0x1c8),'GIMMICK_Aegis_of_Earth2',_0x471423(0x1d2),_0x471423(0x1cf)]},'Terrmor_2':{'name':'테르모르','type':'나무','maxHp':0x3e8,'atk':0x3c,'matk':0x3c,'def':0x14,'mdef':0x23,'skills':[_0x471423(0x1c4),_0x471423(0x1d9),'SKILL_Seeds_Wrath','SKILL_Ruin_Explosion'],'gimmicks':[_0x471423(0x1ca),_0x471423(0x1db)]},'Carnabloom_1':{'name':_0x471423(0x1da),'type':'야수','maxHp':0x3e8,'atk':0x32,'matk':0x32,'def':0x23,'mdef':0x14,'skills':[_0x471423(0x1c5)],'gimmicks':[_0x471423(0x1d0),_0x471423(0x1d5),_0x471423(0x1c9)]},'Carnabloom_2':{'name':'카르나블룸','type':'천체','maxHp':0x4b0,'atk':0x3c,'matk':0x3c,'def':0x19,'mdef':0x23,'skills':[_0x471423(0x1dd),_0x471423(0x1d6),'SKILL_Silence'],'gimmicks':[_0x471423(0x1df),_0x471423(0x1bd),_0x471423(0x1c6),_0x471423(0x1de),_0x471423(0x1d4),'GIMMICK_Dress_Rehearsal3',_0x471423(0x1c0)]},'Pierrot':{'name':'피에로','type':['암석','나무'],'maxHp':0x12c,'atk':0x23,'matk':0x23,'def':0x14,'mdef':0x14,'skills':[_0x471423(0x1dc),_0x471423(0x1c3),_0x471423(0x1e0)],'gimmicks':[]},'Clown':{'name':'클라운','type':['암석','나무'],'maxHp':0x12c,'atk':0x23,'matk':0x23,'def':0x14,'mdef':0x14,'skills':[_0x471423(0x1c7),'SKILL_Get_a_Present_C','GIMMICK_Laugh_of'],'gimmicks':[]}};
+/**
+ * monsterTemplates.js
+ * 몬스터의 기본 능력치 및 보유 스킬/기믹 리스트를 정의합니다.
+ */
+
+export const MONSTER_TEMPLATES = {
+  // 1. 고정 타입을 갖는 보스 몬스터 (테르모르)
+  Terrmor_1: {
+    name: "테르모르",
+    type: "암석",
+    maxHp: 800,
+    atk: 50,
+    matk: 50,
+    def: 35,
+    mdef: 20,
+    skills: [
+      "SKILL_Seismic_Fissure",
+      "SKILL_Echo_of_Silence",
+      "SKILL_Crushing_Sky",
+    ],
+    gimmicks: [
+      "GIMMICK_Aegis_of_Earth1",
+      "GIMMICK_Aegis_of_Earth2",
+      "GIMMICK_Aegis_of_Earth3",
+      "GIMMICK_Aegis_of_Earth4",
+    ],
+  },
+
+  Terrmor_2: {
+    name: "테르모르",
+    type: "나무",
+    maxHp: 1000,
+    atk: 60,
+    matk: 60,
+    def: 20,
+    mdef: 35,
+    skills: [
+      "SKILL_Birth_of_Vines",
+      "SKILL_Spores_of_Silence",
+      "SKILL_Seeds_Wrath",
+      "SKILL_Ruin_Explosion"
+    ],
+    gimmicks: ["GIMMICK_Path_of_Ruin", "GIMMICK_Seed_of_Devour"],
+  },
+
+  // 2. 고정 타입을 갖는 보스 몬스터 (카르나블룸)
+  Carnabloom_1: {
+    name: "카르나블룸",
+    type: "야수",
+    maxHp: 1000,
+    atk: 50,
+    matk: 50,
+    def: 35,
+    mdef: 20,
+    skills: ["SKILL_Strings_of_Emotion", "SKILL_Puppet_Parade"], 
+    gimmicks: ["GIMMICK_Curtain_Call", "GIMMICK_Encore"],
+  },
+
+  Carnabloom_2: {
+    name: "카르나블룸",
+    type: "천체",
+    maxHp: 1200,
+    atk: 60,
+    matk: 60,
+    def: 25, 
+    mdef: 35,
+    skills: [
+      "SKILL_Carnabloom_Playtime", 
+      "SKILL_Play2", 
+      "SKILL_Silence", 
+      "SKILL_Dress_Rehearsal"
+    ],
+    gimmicks: [
+      "SKILL_Script_Reversal",
+      "GIMMICK_Curtain_Call",
+      "SKILL_Dress_Rehearsal"
+    ],
+  },
+
+  // 3. 랜덤 타입을 갖는 일반/엘리트 몬스터
+  Pierrot: {
+    name: "피에로",
+    type: ["암석", "나무"],
+    maxHp: 300,
+    atk: 35,
+    matk: 35,
+    def: 20,
+    mdef: 20,
+    skills: [
+      "SKILL_Slapstick_Comdey_P",
+      "SKILL_Get_a_Present_P",
+      "GIMMICK_Tears_of",
+    ],
+    gimmicks: [],
+  },
+
+  Clown: {
+    name: "클라운",
+    type: ["암석", "나무"],
+    maxHp: 300,
+    atk: 35,
+    matk: 35,
+    def: 20,
+    mdef: 20,
+    skills: [
+      "SKILL_Slapstick_Comdey_C",
+      "SKILL_Get_a_Present_C",
+      "GIMMICK_Laugh_of",
+    ],
+    gimmicks: [],
+  },
+};
