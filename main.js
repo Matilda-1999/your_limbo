@@ -88,6 +88,12 @@ function addCharacterAtPos(templateId, pos) {
   if (!pos) return;
   const template = MONSTER_TEMPLATES[templateId];
   if (!template) return;
+
+  let finalType = template.type;
+  if (Array.isArray(template.type)) {
+    finalType = template.type[Math.floor(Math.random() * template.type.length)];
+  }
+  
   const monster = new Character(template.name, template.type, null);
   Object.assign(monster, {
     maxHp: template.maxHp,
