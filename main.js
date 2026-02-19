@@ -550,6 +550,18 @@ async function executeBattleTurn() {
         mapObjects: state.mapObjects
       });
 
+      if (state.activeGimmickState && target && target.name.includes(state.activeGimmickState.requiredTarget)) {
+          // 타격 횟수 1 증가
+          state.activeGimmickState.hits += 1;
+          log(`✦기믹 저지✦ ${target.name}에게 유효타가 적중합니다.`);
+
+          // 3회 타격 시 기믹 파괴
+          if (state.activeGimmickState.hits >= state.activeGimmickState.requiredHits) {
+              log(`\n<b>✦기믹 파훼✦ ${target.name}: 고통에 몸부림치며 기괴한 소음이 잦아듭니다.</b>`);
+              state.activeGimmickState = null; // 기믹 상태 즉시 종료
+          }
+      }
+
       // 스킬 사용 기록 업데이트
       if (!caster.lastSkillTurn) caster.lastSkillTurn = {};
       caster.lastSkillTurn[skill.id] = state.currentTurn;
