@@ -91,21 +91,32 @@ export class Character {
     return Math.max(0, totalStat);
 }
 
-    takeDamage(rawDamage, logFn, attacker = null, allies = [], enemies = [], state = {}) {
+    takeDamage(rawDamage, logFn, attacker = null, allies = [], enemies = [], state = {}, isRedirected = false) {
         if (!this.isAlive) return;
         let finalDamage = rawDamage;
 
-        // [철옹성/도발] 가로채기
-        const protector = allies.find(a => 
+        // 1. [가로채기] 로직: 이미 가로챈 대미지(isRedirected=true)가 아닐 때만 실행
+    if (!isRedirected) {
+        // 철옹성이나 도발 상태인 아군들을 찾습니다.
+        const protectors = allies.filter(a => 
             a.isAlive && (a.hasBuff("iron_fortress") || a.hasDebuff("provoked_self"))
         );
-        
-        if (protector && protector.id !== this.id) {
-        logFn(`✦방어✦ ${protector.name}, 공격을 가로채 대신 맞습니다.`);
-            // protector가 대신 대미지를 입음
-            protector.takeDamage(rawDamage, logFn, attacker, [this, ...allies.filter(a => a.id !== protector.id)], enemies, state);
-            return; 
+
+        if (protectors.length > 0) {
+            // lastRedirectTime이 가장 큰(가장 나중에 행동을 결정한) 보호자를 찾습니다.
+            const latestProtector = protectors.reduce((prev, current) => {
+                return (prev.lastRedirectTime || 0) >= (current.lastRedirectTime || 0) ? current : prev;
+            });
+
+            // 내가 가장 최신 보호자가 아니라면, 최신 보호자에게 대미지를 넘깁니다.
+            if (latestProtector.id !== this.id) {
+                logFn(`✦방어✦ ${latestProtector.name}, 주문 순서에 따라 공격을 대신 맞습니다.`);
+                // 마지막 인자에 true를 보내서, 넘겨받은 보호자가 다시 가로채기를 발동하지 않게 합니다.
+                latestProtector.takeDamage(rawDamage, logFn, attacker, allies, enemies, state, true);
+                return; 
+            }
         }
+    }
 
         // 2. [반격/역습] 판정 (보호막 적용 전 rawDamage 기준으로 실행)
     const isOddTurn = (state.currentTurn || 1) % 2 !== 0;
@@ -179,7 +190,7 @@ export class Character {
         }
     
         if (this.currentHp <= 0) {
-            this.isAlive = False;
+            this.isAlive = false;
             logFn(`✦☠️✦ ${this.name}, 쓰러집니다.`);
         }
     }
