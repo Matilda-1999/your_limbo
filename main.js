@@ -110,7 +110,7 @@ function loadSelectedMap() {
   const mapId = document.getElementById("mapSelect").value;
 
   // B-1 선택 시 로딩 차단
-  if (mapId === "B-1") {
+  if (mapId === "A-1") {
     return alert("현재 이용할 수 없습니다.");
   }
   
