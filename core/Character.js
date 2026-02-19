@@ -54,7 +54,11 @@ export class Character {
 
     getEffectiveStat(statName) {
     let value = this[statName];
-    let additiveBonus = 0; // [실존] 등의 합연산 보너스
+    let additiveBonus = 0;
+
+    getEffectiveStat(statName) {
+    let value = this[statName];
+    let additiveBonus = 0; // [실재] 등의 합연산 보너스
 
     // 1. 버프 처리 (곱연산 우선 후 합연산 합산)
     this.buffs.forEach(buff => {
@@ -63,8 +67,13 @@ export class Character {
             if (buff.effect.type === `${statName}_boost_multiplier`) {
                 value *= (buff.effect.value || 1);
             }
-            // 합연산 버프 (예: [실존] 스택 보너스 고정치)
+            // 합연산 버프 (일반 보너스 타입)
             if (buff.effect.type === `${statName}_boost_add`) {
+                additiveBonus += (buff.effect.value || 0);
+            }
+            
+            // [실재/실존]: buff.id가 reality_def_add 또는 reality_mdef_add인 경우
+            if (buff.id === `reality_${statName}_add`) {
                 additiveBonus += (buff.effect.value || 0);
             }
         }
@@ -76,15 +85,14 @@ export class Character {
     // 2. 디버프 처리 (최종 수치에서 깎음)
     this.debuffs.forEach(debuff => {
         if (debuff.turnsLeft > 0 && debuff.effect) {
-            // [흠집] 등 스택형 감소 디버프
+            // [흠집] 등 스택형 감소 디버프 (정상 반영 중)
             if (debuff.id === "scratch" && debuff.effect.reductionType === statName) {
                 const reductionPerStack = debuff.effect.reductionValue || 0.1;
                 const stacks = debuff.stacks || 1;
-                // 예: 10%씩 5스택이면 총 50% 감소
                 totalStat *= (1 - (reductionPerStack * stacks));
             }
             
-            // 일반적인 고정 수치 감소 디버프가 있다면 추가 가능
+            // 일반적인 고정 수치 감소 디버프
             if (debuff.effect.type === `${statName}_reduce_multiplier`) {
                 totalStat *= (debuff.effect.value || 1);
             }
@@ -94,6 +102,9 @@ export class Character {
     return Math.max(0, totalStat);
 }
 
+    // 최종 스탯은 0 미만으로 내려가지 않도록 보정
+    return Math.max(0, totalStat);
+}
     takeDamage(rawDamage, logFn, attacker = null, allies = [], enemies = [], state = {}) {
         if (!this.isAlive) return;
         let finalDamage = rawDamage;
