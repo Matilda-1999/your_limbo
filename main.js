@@ -673,15 +673,64 @@ function resolveDressRehearsal(allies, battleLog, state) {
 }
 
 function checkMapShrink() {
-  if (state.selectedMapId !== "B-2") return;
+  if (state.selectedMapId !== "B-2") return; // 곡예사 모드(9x9)에서만 작동
+  
   const boss = state.enemyCharacters.find(e => e.name === "카르나블룸" && e.isAlive);
   if (!boss) return;
+
   const hpPercent = (boss.currentHp / boss.maxHp) * 100;
-  if (hpPercent <= 20 && state.mapShrinkState < 2) {
-    state.mapShrinkState = 2; log("✦기믹✦ [최종 막]: 무대가 극도로 좁아집니다!");
-  } else if (hpPercent <= 50 && state.mapShrinkState < 1) {
-    state.mapShrinkState = 1; log("✦기믹✦ [제 2막]: 무대가 좁아지기 시작합니다.");
+  let newShrinkState = 0;
+
+  // 기획 수치 반영
+  if (hpPercent <= 10) newShrinkState = 3;      // 3x3 (가장 좁음)
+  else if (hpPercent <= 30) newShrinkState = 2; // 5x5
+  else if (hpPercent <= 50) newShrinkState = 1; // 7x7
+
+  if (newShrinkState > state.mapShrinkState) {
+    state.mapShrinkState = newShrinkState;
+    const size = newShrinkState === 1 ? "7x7" : (newShrinkState === 2 ? "5x5" : "3x3");
+    log(`\n<b>☂︎ [마지막 막]: 무대가 좁아집니다. 어둠이 차오릅니다.</b>`);
   }
+
+  applyShrinkDamage();
+}
+
+function applyShrinkDamage() {
+  if (state.mapShrinkState === 0) return;
+
+  // 안전 구역 범위 계산 (9x9 기준)
+  // state 1(7x7): 인덱스 1~7 | state 2(5x5): 인덱스 2~6 | state 3(3x3): 인덱스 3~5
+  const offset = state.mapShrinkState;
+  const start = offset;
+  const end = 8 - offset;
+
+  state.allyCharacters.filter(a => a.isAlive).forEach(a => {
+    const isOutside = a.posX < start || a.posX > end || a.posY < start || a.posY > end;
+    
+    if (isOutside) {
+      const dmg = Math.round(a.maxHp * 0.15); // 외곽 대미지 15%
+      a.takeDamage(dmg, log);
+      log(`✦어둠✦ 무대 밖의 ${a.name}, ${dmg}의 피해를 입습니다.`);
+    }
+  });
+}
+
+function applyShrinkDamage() {
+  if (state.mapShrinkState === 0) return;
+
+  // 안전 구역 계산 (9x9 기준 중심부)
+  const size = state.mapShrinkState === 2 ? 3 : 5;
+  const start = Math.floor((9 - size) / 2);
+  const end = start + size - 1;
+
+  state.allyCharacters.filter(a => a.isAlive).forEach(a => {
+    const isOutside = a.posX < start || a.posX > end || a.posY < start || a.posY > end;
+    if (isOutside) {
+      const dmg = Math.round(a.maxHp * 0.15); // 최대 체력의 15% 고정 피해
+      a.takeDamage(dmg, log);
+      log(`✦어둠✦ 무대 밖으로 밀려난 ${a.name}이(가) ${dmg}의 지속 피해를 입습니다.`);
+    }
+  });
 }
 
 async function performEnemyAction(enemy) {
