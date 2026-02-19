@@ -192,6 +192,7 @@ function startBattle() {
 function prepareNextTurnCycle() {
   state.currentTurn++;
 
+  // 1. 상태 및 행동 기록 초기화
   state.allyCharacters.forEach(a => {
     a.actedThisTurn = false;
     a.usedAttackSkillThisTurn = false;
@@ -202,27 +203,35 @@ function prepareNextTurnCycle() {
   state.bossGimmickExecuted = false;
   DOM.executeBtn.style.display = "none";
 
-  const boss = state.enemyCharacters.find(e => e.isAlive && (e.name.includes("테르모르") || e.name.includes("카르나블룸")));
+  // 턴 시작 로그를 보스 존재 여부와 상관없이 가장 먼저 출력
+  log(`\n\n ☂︎ <b>${state.currentTurn} 턴</b>을 시작합니다.`);
+
+  // 2. 보스 탐색
+  const boss = state.enemyCharacters.find(e => 
+    e.isAlive && (e.name.includes("테르모르") || e.name.includes("카르나블룸"))
+  );
 
   if (boss) {
     const available = [...(boss.skills || []), ...(boss.gimmicks || [])];
-    const nextSkillId = available[Math.floor(Math.random() * available.length)];
-    state.enemyPreviewAction = { skillId: nextSkillId };
+    if (available.length > 0) {
+      const nextSkillId = available[Math.floor(Math.random() * available.length)];
+      state.enemyPreviewAction = { skillId: nextSkillId };
 
-    const skillData = MONSTER_SKILLS[nextSkillId];
-    if (skillData) {
-      console.group(`%c[턴 ${state.currentTurn}] 적군 행동 예고`, 'color: #ff4d4d; font-weight: bold;');
-      console.log(`시전자: ${boss.name}`);
-      console.log(`예고 스킬: ${skillData.name} (${nextSkillId})`);
-      console.log(`타격 범위(hitArea):`, skillData.hitArea || "범위 정보 없음");
-      console.groupEnd();
+      const skillData = MONSTER_SKILLS[nextSkillId];
+      if (skillData && skillData.script) {
+        log(skillData.script);
 
-      log(`\n\n ☂︎ ${state.currentTurn} 턴을 시작합니다.\n\n`);
-      const scriptText = skillData.script || `\n<pre>${skillData.name} 태세를 취합니다.</pre>\n`;
-      log(`${scriptText}`);
+        // 콘솔 디버깅용
+        console.log(`[턴 ${state.currentTurn}] 적군 행동 예고: ${skillData.name}`);
+      }
     }
-    log(`\n\n ☂︎ 전원, 5 분 동안 행동해 주세요.\n\n`);
+  } else {
+    // 보스가 없을 경우(일반 몹 구간 등)에도 최소한의 정보를 출력
+    log(`\n<pre>전장에 긴장감이 맴돕니다.</pre>`);
   }
+
+  // [수정] 행동 유도 문구를 항상 마지막에 출력
+  log(`\n ☂︎ 전원, 5분 동안 행동을 예약해 주세요.\n\n`);
 
   promptAllySelection();
   syncUI();
@@ -236,7 +245,7 @@ function promptAllySelection() {
 
   if (available.length === 0) {
     DOM.executeBtn.style.display = "block";
-    log("모든 아군의 행동 예약이 완료되었습니다. [턴 실행]을 눌러주세요.\n\n");
+    log("\n\n모든 아군의 행동 예약이 완료되었습니다. [턴 실행]을 눌러주세요.\n\n");
   } else {
     DOM.allySelectDiv.style.display = "block";
     available.forEach((ally) => {
