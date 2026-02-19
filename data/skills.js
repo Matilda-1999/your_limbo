@@ -414,67 +414,62 @@ SKILL_REALITY: {
     },
   },
 
-// [절정]
+// [절정] - monsterSkills.js 에 추가
   SKILL_CLIMAX: {
     id: "SKILL_CLIMAX",
     name: "절정",
     type: "단일 공격",
-    description: "시전자의 타입에 따라 강력한 피해를 입힙니다. 대상에게 [흠집]이 있다면 추가 공격을 가합니다.",
-    targetType: "single_enemy",
-    targetSelection: "enemy",
+    description: "시전자의 타입에 따라 강력한 피해를 입힙니다. 대상에게 [흠집]이 있다면 추가 고정 피해를 가합니다.",
     execute: (caster, target, allies, enemies, battleLog, state) => {
       const { calculateDamage } = state;
       if (!target || !target.isAlive) return false;
 
       // 1. 공격 스탯 및 데미지 타입 결정
-      let statTypeToUse;
-      let damageType;
-      if (caster.type === "암석" || caster.type === "야수") {
-        statTypeToUse = "atk";
-        damageType = "physical";
-      } else if (caster.type === "천체" || caster.type === "나무") {
+      let statTypeToUse = "atk";
+      let damageType = "physical";
+
+      // 카르나블룸의 타입에 따라 공격 방식 자동 변경
+      if (caster.type === "천체" || caster.type === "나무") {
         statTypeToUse = "matk";
         damageType = "magical";
-      } else {
-        statTypeToUse = caster.getEffectiveStat("atk") >= caster.getEffectiveStat("matk") ? "atk" : "matk";
-        damageType = statTypeToUse === "atk" ? "physical" : "magical";
       }
       const damageTypeKorean = damageType === "physical" ? "물리" : "마법";
 
-      // 2. 메인 공격 수행
-      battleLog(`✦스킬✦ ${caster.name}, ${target.name}에게 [절정] 공격.`);
-      const mainDamage = calculateDamage(caster, target, 2.7, damageType, statTypeToUse);
-      target.takeDamage(mainDamage, battleLog, caster);
+      // 2. 메인 공격 수행 (계수 270%)
+      battleLog(`✦스킬✦ ${caster.name}의 [절정] 공격.`);
+      
+      // 엔진 규격에 맞게 options 객체 { statTypeToUse } 전달
+      const mainDamage = calculateDamage(caster, target, 2.7, damageType, { statTypeToUse });
+      target.takeDamage(mainDamage, battleLog, caster, allies, enemies, state);
       battleLog(`  ✦피해✦ [절정]: ${target.name}에게 ${mainDamage} ${damageTypeKorean} 피해.`);
 
       if (!target.isAlive) return true;
 
-      // 3. [흠집] 연계 추가 공격
-      const scratchStacks = target.getDebuffStacks("scratch");
+      // 3. [흠집] 연계 추가 공격 (ID: scratched)
+      const scratchStacks = target.getDebuffStacks("scratched");
       if (scratchStacks > 0) {
-          battleLog(`✦효과✦ ${target.name} [흠집 ${scratchStacks}스택]: 추가타 발생.`);
+          battleLog(`✦효과✦ ${target.name} [흠집 ${scratchStacks}중첩]: 추가타 발생.`);
           
-          // 스택에 따른 위력 설정
+          // 기획안 수치 반영 (1스택: 0.08, 2스택: 0.12, 3스택: 0.16)
           let bonusPower = 0.08;
           if (scratchStacks === 2) bonusPower = 0.12;
           else if (scratchStacks >= 3) bonusPower = 0.16;
       
-          for (let i = 0; i < 2; i++) {
-              // [수정] 4번째 인자로 "fixed"를 명시하여 방어력을 무시하도록 합니다.
-              // options 객체는 { statTypeToUse } 형태로 넘겨야 합니다.
+          // 2회 추가 타격
+          for (let i = 1; i <= 2; i++) {
               const bonusDamage = calculateDamage(caster, target, bonusPower, "fixed", { statTypeToUse });
               
-              target.takeDamage(bonusDamage, battleLog, caster);
-              
-              // [수정] damageTypeKorean 대신 "고정" 피해라고 명시하는 것이 정확합니다.
-              battleLog(`  ✦추가 피해✦ [흠집 효과] ${i + 1}회: ${target.name}에게 ${bonusDamage} 추가 고정 피해.`);
+              target.takeDamage(bonusDamage, battleLog, caster, allies, enemies, state);
+              battleLog(`  ✦추가 피해✦ [흠집 효과] ${i}회: ${target.name}에게 ${bonusDamage} 고정 피해.`);
               
               if (!target.isAlive) break;
           }
 
-        if (target.isAlive) target.removeDebuffById("scratch");
-        battleLog(`✦정보✦ ${target.name}: [흠집] 효과 소멸.`);
+        // 공격 시퀀스 종료 후 흠집 제거 (기획안: 모든 흠집 소멸)
+        target.removeDebuffById("scratched");
+        battleLog(`✦정보✦ ${target.name}의 [흠집] 표식이 모두 소멸했습니다.`);
       }
+      
       return true;
     },
   },
