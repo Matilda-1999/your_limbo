@@ -91,9 +91,6 @@ export class Character {
     return Math.max(0, totalStat);
 }
 
-    // 최종 스탯은 0 미만으로 내려가지 않도록 보정
-    return Math.max(0, totalStat);
-}
     takeDamage(rawDamage, logFn, attacker = null, allies = [], enemies = [], state = {}) {
         if (!this.isAlive) return;
         let finalDamage = rawDamage;
