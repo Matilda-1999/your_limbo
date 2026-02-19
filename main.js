@@ -606,6 +606,72 @@ function resolveMinionGimmicks() {
   }
 }
 
+function resolveDressRehearsal(allies, battleLog, state) {
+  battleLog(`\n<b>☂︎ [최종 리허설] 판정: 무대 감독의 눈이 번뜩입니다.</b>`);
+  
+  let grimReaperTriggered = false; // 무표정한 자 실패 여부
+
+  allies.filter(a => a.isAlive && a.hasBuff("rehearsal_role")).forEach(a => {
+    const buff = a.buffs.find(b => b.id === "rehearsal_role");
+    const role = buff.effect.roleType;
+    const moved = (a.posX !== buff.effect.startPosX || a.posY !== buff.effect.startPosY);
+    const acted = a.actedThisTurn; // 행동 완료 여부 (state에서 관리)
+    const usedAttack = a.usedAttackSkillThisTurn; // 공격 스킬 사용 여부
+
+    let success = true;
+
+    switch(role) {
+      case "웃는 자":
+        if (!usedAttack) {
+          success = false;
+          a.addDebuff("move_bind", "[이동 불가]", 3, { isRoot: true });
+          battleLog(`  ✦낙제✦ ${a.name}: 웃음을 잃어 3턴간 발이 묶입니다.`);
+        }
+        break;
+
+      case "우는 자":
+        // acted(행동함)인데 공격스킬을 썼거나, 아예 행동을 안 한 경우 실패
+        if (usedAttack || !acted) {
+          success = false;
+          a.addDebuff("brand_melancholy", "[우울 낙인]", 99, { maxStacks: 3 });
+          battleLog(`  ✦낙제✦ ${a.name}: 슬픔을 외면하여 [우울 낙인]이 새겨집니다.`);
+        }
+        break;
+
+      case "흥분한 자":
+        if (!moved) {
+          success = false;
+          a.addDebuff("brand_joy", "[환희 낙인]", 99, { maxStacks: 3 });
+          battleLog(`  ✦낙제✦ ${a.name}: 고요함에 질려 [환희 낙인]이 새겨집니다.`);
+        }
+        break;
+
+      case "무표정한 자":
+        if (acted || moved) {
+          success = false;
+          grimReaperTriggered = true;
+          battleLog(`  ✦낙제✦ ${a.name}: 감정을 드러내 무대 전체에 혼란을 줍니다!`);
+        }
+        break;
+    }
+
+    if (success) {
+      battleLog(`  ✦통과✦ ${a.name}: 완벽한 연기였습니다.`);
+    }
+    
+    a.removeBuffById("rehearsal_role");
+  });
+
+  // 무표정한 자 실패 시 전원 피해
+  if (grimReaperTriggered) {
+    allies.filter(a => a.isAlive).forEach(a => {
+      const dmg = Math.round(a.maxHp * 0.1);
+      a.takeDamage(dmg, battleLog);
+      battleLog(`  ✦공동 책임✦ 체력이 10% 감소합니다.`);
+    });
+  }
+}
+
 function checkMapShrink() {
   if (state.selectedMapId !== "B-2") return;
   const boss = state.enemyCharacters.find(e => e.name === "카르나블룸" && e.isAlive);
