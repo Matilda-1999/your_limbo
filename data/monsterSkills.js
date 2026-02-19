@@ -395,20 +395,55 @@ export const MONSTER_SKILLS = {
 SKILL_Puppet_Parade: {
   id: "SKILL_Puppet_Parade",
   name: "퍼펫 퍼레이드",
-  script: `\n\n<pre>유려한 손짓이 자나간 곳에는 기묘한 퍼레이드 음악이 울린다.\n눈을 감고 있던 인형들은 곧 생명을 되찾고 깨어난다.\n"나의 아이들아, 어서 나가 보렴. 손님들이 찾아왔단다."<pre>\n\n`,
+  type: "기믹/이동",
+  script: `\n<pre>유려한 손짓이 지나간 곳에는 기묘한 퍼레이드 음악이 울린다.\n멈춰있던 인형들이 태엽 소리를 내며 기괴하게 움직이기 시작한다.\n"나의 아이들아, 손님들을 위해 자리를 옮겨보렴."</pre>\n`,
   execute: (caster, target, allies, enemies, battleLog, state) => {
-    battleLog(`✦기믹✦ 카르나 블룸의 손짓에 새로운 인형들이 무대로 걸어 나옵니다.`);
-    
-    // 빈 칸에 클라운 1체, 피에로 1체 추가 소환 로직 (main.js의 addCharacterAtPos 활용)
-    const clownPos = state.utils.getRandomEmptyCell(state.mapWidth, state.mapHeight, state.characterPositions);
-    if (clownPos) state.addCharacterAtPos("Clown", clownPos);
-    
-    const pierrotPos = state.utils.getRandomEmptyCell(state.mapWidth, state.mapHeight, state.characterPositions);
-    if (pierrotPos) state.addCharacterAtPos("Pierrot", pierrotPos);
-    
+    battleLog(`✦기믹✦ 카르나 블룸의 명령에 인형들이 일제히 움직입니다!`);
+
+    // 모든 적군(인형들)을 대상으로 반복
+    enemies.filter(e => e.isAlive).forEach(unit => {
+      let directions = [];
+      
+      // 1. 유닛 종류에 따른 이동 방향 정의
+      if (unit.name.includes("Clown") || unit.name.includes("클라운")) {
+        // 상하좌우
+        directions = [{x:0, y:1}, {x:0, y:-1}, {x:1, y:0}, {x:-1, y:0}];
+      } else if (unit.name.includes("Pierrot") || unit.name.includes("피에로")) {
+        // 대각선
+        directions = [{x:1, y:1}, {x:1, y:-1}, {x:-1, y:1}, {x:-1, y:-1}];
+      } else {
+        return; // 다른 적군은 이동 안 함
+      }
+
+      // 2. 가능한 이동 후보지 필터링 (맵 안 + 아군/적군이 없는 곳)
+      const possibleMoves = directions.map(d => ({
+        x: unit.posX + d.x,
+        y: unit.posY + d.y
+      })).filter(pos => {
+        // 맵 범위 체크 (9x9 기준)
+        const isInside = pos.x >= 0 && pos.x < 9 && pos.y >= 0 && pos.y < 9;
+        // 해당 위치에 아무도 없는지 체크
+        const isOccupied = state.characterPositions[`${pos.x},${pos.y}`];
+        return isInside && !isOccupied;
+      });
+
+      // 3. 무작위 이동 실행
+      if (possibleMoves.length > 0) {
+        const nextMove = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+        
+        // 위치 업데이트 (기존 위치 삭제 후 새 위치 등록)
+        delete state.characterPositions[`${unit.posX},${unit.posY}`];
+        unit.posX = nextMove.x;
+        unit.posY = nextMove.y;
+        state.characterPositions[`${unit.posX},${unit.posY}`] = unit.id;
+        
+        // battleLog(`  ✦이동✦ ${unit.name}이(가) (${unit.posX}, ${unit.posY})로 이동했습니다.`);
+      }
+    });
+
     return true;
   }
- },
+},
 
  SKILL_Play2: {
    id: "SKILL_Play2",
