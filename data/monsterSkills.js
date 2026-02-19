@@ -476,13 +476,15 @@ SKILL_Puppet_Parade: {
   name: "커튼콜 / 앵콜",
   type: "특수 기믹",
   execute: (caster, target, allies, enemies, battleLog, state) => {
+    if (caster.isAlive && caster.currentHp > 0) return false;
+   
     // 1. 전장에 남은 미니언(피에로, 클라운) 확인
     const minions = enemies.filter(e => e.isAlive && (e.name === "피에로" || e.name === "클라운"));
 
     if (minions.length > 0) {
       // [커튼콜 발동]
-      battleLog(`\n<pre>--------------------------------</pre>`);
-      battleLog(`<b>☂︎ 하지만, 아직 공연은 끝나지 않았습니다.</b>`);
+      battleLog(`\n<pre> 마침내 카르나블룸이 장렬하게 쓰러집니다! </pre>`);
+      battleLog(`<b>아! 하지만, 아직 공연은 끝나지 않았습니다.</b>`);
       battleLog(`"나의 아이들아, 마지막 장면을 위해 조금 더 힘을 빌려주렴."`);
 
       // 2. 미니언들의 현재 체력 10%를 바침
@@ -496,7 +498,7 @@ SKILL_Puppet_Parade: {
       caster.isAlive = true;
       caster.currentHp = Math.round(caster.maxHp * 0.4);
       
-      battleLog(`\n<b>✦앵콜✦ 카르나 블룸이 다시 무대 위로 소환되었습니다!</b>`);
+      battleLog(`\n<b>✦앵콜✦ 카르나블룸이 다시 무대 위로 소환되었습니다!</b>`);
       battleLog(`<pre>"자, 관객 여러분. 다시 한번 박수를!"</pre>`);
       battleLog(`<pre>--------------------------------</pre>\n`);
 
