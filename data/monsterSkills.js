@@ -364,14 +364,13 @@ export const MONSTER_SKILLS = {
       const chosenEffect = effects[Math.floor(Math.random() * effects.length)];
 
       if (chosenEffect === "nightmare") {
-        // [악몽] 부여
-        t.addDebuff("nightmare", "[악몽]", 2, {
-          isStun: true,
-          description: "행동 불가 및 보스 공격 불가. 피격 시 해제."
-        });
-        battleLog(`  ✦상태 이상✦ ${t.name}, 실에 묶여 자아를 잃고 [악몽]에 빠집니다.`);
-        
-      } else if (chosenEffect === "brand_joy") {
+         t.addDebuff("nightmare", "[악몽]", 2, {
+           isStun: true,
+           stacks: 2, // 2회 타격 필요
+           description: "행동 불가. 공격을 2회 받아야 해제됩니다."
+         });
+         battleLog(`  ✦상태 이상✦ ${t.name}, 실에 묶여 자아를 잃고 [악몽]에 빠집니다.`);
+       } else if (chosenEffect === "brand_joy") {
         // [환희 낙인] 부여 (영구, 3중첩)
         t.addDebuff("brand_joy", "[환희 낙인]", 99, {
           maxStacks: 3,
