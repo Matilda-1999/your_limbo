@@ -364,7 +364,7 @@ export const MONSTER_SKILLS = {
       const chosenEffect = effects[Math.floor(Math.random() * effects.length)];
 
       if (chosenEffect === "nightmare") {
-         t.addDebuff("nightmare", "[악몽]", 2, {
+         t.addDebuff("nightmare", "[악몽]", 99, {
            isStun: true,
            stacks: 2, // 2회 타격 필요
            description: "행동 불가. 공격을 2회 받아야 해제됩니다."
