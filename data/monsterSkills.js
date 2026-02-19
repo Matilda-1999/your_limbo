@@ -364,10 +364,9 @@ export const MONSTER_SKILLS = {
       const chosenEffect = effects[Math.floor(Math.random() * effects.length)];
 
       if (chosenEffect === "nightmare") {
-         t.addDebuff("nightmare", "[악몽]", 99, {
+         t.addDebuff("nightmare", "[악몽]", 3, {
            isStun: true,
-           stacks: 2, // 2회 타격 필요
-           description: "행동 불가. 공격을 2회 받아야 해제됩니다."
+           description: "행동 불가."
          });
          battleLog(`  ✦낙인✦ ${t.name}, 실에 묶여 자아를 잃고 [악몽]에 빠집니다.`);
        } else if (chosenEffect === "brand_joy") {
