@@ -83,22 +83,22 @@ const log = (msg) => {
   }).catch(e => console.error("로그 전송 실패:", e));
 };
 
-// 6. 전투 준비 및 캐릭터 관리
+// 3. 캐릭터
 function addCharacterAtPos(templateId, pos) {
   if (!pos) return;
   const template = MONSTER_TEMPLATES[templateId];
   if (!template) return;
 
-   // 1. 속성 결정 (배열일 경우 무작위 선택)
+  // 속성 랜덤 선택 (배열일 경우 하나만 선택)
   let selectedType = template.type;
   if (Array.isArray(template.type)) {
     selectedType = template.type[Math.floor(Math.random() * template.type.length)];
   }
 
-  // 2. 결정된 단일 속성(selectedType)으로 캐릭터 생성
+  // 단일 속성으로 캐릭터 생성
   const monster = new Character(template.name, selectedType, null);
 
-  // 3. 템플릿의 나머지 능력치 할당
+  // 템플릿 정보 할당
   Object.assign(monster, {
     maxHp: template.maxHp,
     currentHp: template.maxHp,
@@ -111,6 +111,7 @@ function addCharacterAtPos(templateId, pos) {
     posX: pos.x,
     posY: pos.y,
   });
+
   state.enemyCharacters.push(monster);
   state.characterPositions[`${pos.x},${pos.y}`] = monster.id;
 }
