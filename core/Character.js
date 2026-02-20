@@ -282,17 +282,17 @@ export class Character {
 }
 
     updateDebuffs(logFn, allies = [], enemies = [], state = {}) {
-        this.debuffs.forEach(debuff => {
-            debuff.turnsLeft--;
+    this.debuffs.forEach(debuff => {
+        debuff.turnsLeft--;
 
-            if (debuff.id === "poison_truth") {
+        if (debuff.id === "poison_truth") {
             // 1. [중독] 결산: 현재 체력의 1.5% 피해 계산
             const poisonDmg = Math.max(1, Math.round(this.currentHp * 0.015));
             logFn(`✦중독✦ ${this.name}, 독으로 ${poisonDmg}의 피해를 입습니다.`);
             
             // 중독 대미지 본인에게 적용
             this.takeDamage(poisonDmg, logFn, null, enemies, allies, state);
-        
+
             // 2. [맹독] 결산: 시전자가 살아 있다면 본인을 포함한 '모든 적'에게 30% 추가 피해
             const caster = allies.find(a => a.id === debuff.effect.casterId);
             if (caster && caster.isAlive) {
@@ -300,20 +300,17 @@ export class Character {
                 
                 if (aliveEnemies.length > 0) {
                     const venomDmg = Math.round(poisonDmg * 0.3);
-                    // 모든 적(본인 포함)에게 피해가 간다는 점을 로그로 명시
-                    logFn(`✦맹독✦ ${this.name}의 독기가 폭발하여 모든 적에게 퍼집니다. (추가 피해: ${venomDmg})`);
-        
+                    logFn(`✦맹독✦ ${this.name}의 독기가 모든 적에게 퍼집니다. (추가 피해: ${venomDmg})`);
+
                     aliveEnemies.forEach(target => {
                         target.takeDamage(venomDmg, logFn, caster, enemies, allies, state);
                     });
                 }
             }
         }
-        });
-
-        // 턴이 다 된 디버프 제거
-        this.debuffs = this.debuffs.filter(d => d.turnsLeft > 0);
-    }
+    });
+    this.debuffs = this.debuffs.filter(d => d.turnsLeft > 0);
+}
     
     addDebuff(id, name, turns, effect = {}) {
     // 1. 기존에 같은 ID의 디버프가 있는지 확인
