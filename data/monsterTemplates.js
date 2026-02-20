@@ -59,7 +59,7 @@ export const MONSTER_TEMPLATES = {
   Carnabloom_2: {
     name: "카르나블룸",
     type: "천체",
-    maxHp: 1200,
+    maxHp: 1300,
     atk: 60,
     matk: 60,
     def: 25, 
