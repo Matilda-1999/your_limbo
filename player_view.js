@@ -42,11 +42,12 @@ const createEnemySpectatorCard = (character) => {
             <strong>${character.name}</strong>
         </p>
         <p>속성: <strong style="color: var(--color-primary-gold-lighter);">${character.type}</strong></p>
+        p>위치: <strong style="color: var(--color-accent-blue);">(X: ${character.posX}, Y: ${character.posY})</strong></p>
         <div class="status-effects" style="margin-top: 8px;">
             <p style="font-size: 0.9em; margin-bottom: 4px;">상태 이상 및 강화:</p>
             ${character.buffs.length > 0 ? `<p style="color: #4db8ff;">버프: ${character.buffs.map(b => `${b.name}(${b.turnsLeft}턴)`).join(", ")}</p>` : ""}
             ${character.debuffs.length > 0 ? `<p style="color: #ff4d4d;">디버프: ${character.debuffs.map(d => `${d.name}(${d.turnsLeft}턴)`).join(", ")}</p>` : ""}
-            ${character.buffs.length === 0 && character.debuffs.length === 0 ? '<p style="color: #888;">특이사항 없음</p>' : ""}
+            ${character.buffs.length === 0 && character.debuffs.length === 0 ? '<p style="color: #888;">특이 사항 없음</p>' : ""}
         </div>
     `;
     return card;
