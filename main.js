@@ -592,12 +592,21 @@ if (state.selectedMapId === "B-2") {
 }
 
   [...state.allyCharacters, ...state.enemyCharacters].forEach((c) => {
-  if (c.isAlive) {
-    // 턴 감소 (1턴 종료 직후 실행되어 2->1이 됨)
-    c.buffs.forEach((b) => { if (!b.unremovable) b.turnsLeft--; });
-    c.debuffs.forEach((d) => { d.turnsLeft--; });
-    c.buffs = c.buffs.filter((b) => b.turnsLeft > 0 || b.unremovable);
-    c.debuffs = c.debuffs.filter((d) => d.turnsLeft > 0);
+
+    if (c.isAlive) {
+        // --- 추가된 부분: 디버프 대미지 및 맹독 결산 실행 ---
+        // 아군/적군 배열을 올바르게 전달하여 시전자와 타겟을 찾을 수 있게 합니다.
+        if (state.allyCharacters.includes(c)) {
+            c.updateDebuffs(log, state.allyCharacters, state.enemyCharacters, state);
+        } else {
+            c.updateDebuffs(log, state.enemyCharacters, state.allyCharacters, state);
+        }
+      
+      // 턴 감소 (1턴 종료 직후 실행되어 2->1이 됨)
+      c.buffs.forEach((b) => { if (!b.unremovable) b.turnsLeft--; });
+      c.debuffs.forEach((d) => { d.turnsLeft--; });
+      c.buffs = c.buffs.filter((b) => b.turnsLeft > 0 || b.unremovable);
+      c.debuffs = c.debuffs.filter((d) => d.turnsLeft > 0);
   }
 });
 
