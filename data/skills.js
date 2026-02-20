@@ -348,13 +348,13 @@ SKILL_REALITY: {
     id: "SKILL_TRUTH",
     name: "진리",
     type: "광역 디버프",
-    description: "모든 적에게 [중독]을 부여합니다. 중독 결산 후 랜덤한 적에게 [맹독] 피해를 입힙니다.",
+    // 설명에서 '랜덤'을 제거하고 모든 적 전파로 수정
+    description: "모든 적에게 [중독]을 부여합니다. 중독 결산 시 발생한 대미지의 30%만큼 모든 적에게 추가 피해를 입힙니다.",
     targetType: "all_enemies",
-    targetSelection: "none", // 대상을 고르지 않고 즉시 발동하도록 수정
+    targetSelection: "none", 
     execute: (caster, target, allies, enemies, battleLog, state) => {
       battleLog(`✦스킬✦ ${caster.name}, [진리] 사용: 모든 적에게 독을 퍼뜨립니다.`);
 
-      // 살아있는 모든 적군을 필터링하여 루프 실행
       enemies.filter((e) => e.isAlive).forEach((enemy) => {
         enemy.addDebuff("poison_truth", "[중독]", 2, {
           dotType: "current_hp_ratio",
@@ -363,7 +363,6 @@ SKILL_REALITY: {
         });
       });
       
-      // 서포터 패시브 체크 및 UI 갱신
       if (caster.checkSupporterPassive) caster.checkSupporterPassive(battleLog);
       return true;
     },
