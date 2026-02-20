@@ -281,28 +281,28 @@ export class Character {
     this.buffs = this.buffs.filter(b => b.turnsLeft > 0);
 }
 
-    updateDebuffs(logFn, allies = [], enemies = [], state = {}) {
+    updateDebuffs(logFn, state = {}) { // 인자를 logFn과 state로 단순화
     this.debuffs.forEach(debuff => {
-
         if (debuff.id === "poison_truth") {
-            // 1. [중독] 결산: 현재 체력의 1.5% 피해 계산
             const poisonDmg = Math.max(1, Math.round(this.currentHp * 0.015));
             logFn(`✦중독✦ ${this.name}, 독으로 ${poisonDmg}의 피해를 입습니다.`);
-            
-            // 중독 대미지 본인에게 적용
-            this.takeDamage(poisonDmg, logFn, null, enemies, allies, state);
+            this.takeDamage(poisonDmg, logFn, null, [], [], state);
 
-            // 2. [맹독] 결산: 시전자가 살아 있다면 본인을 포함한 '모든 적'에게 30% 추가 피해
-            const caster = allies.find(a => a.id === debuff.effect.casterId);
+            // state 내의 모든 캐릭터(아군+적군)에서 시전자를 찾음
+            const allCharacters = [...(state.allyCharacters || []), ...(state.enemyCharacters || [])];
+            const caster = allCharacters.find(a => a.id === debuff.effect.casterId);
+
             if (caster && caster.isAlive) {
-                const aliveEnemies = enemies.filter(e => e.isAlive);
+                // 피해를 입을 대상은 시전자와 반대 팀인 모든 캐릭터
+                const isCasterAlly = state.allyCharacters.some(a => a.id === caster.id);
+                const targets = isCasterAlly ? state.enemyCharacters : state.allyCharacters;
                 
-                if (aliveEnemies.length > 0) {
+                const aliveTargets = targets.filter(t => t.isAlive);
+                if (aliveTargets.length > 0) {
                     const venomDmg = Math.round(poisonDmg * 0.3);
                     logFn(`✦맹독✦ ${this.name}의 독기가 모든 적에게 퍼집니다. (추가 피해: ${venomDmg})`);
-
-                    aliveEnemies.forEach(target => {
-                        target.takeDamage(venomDmg, logFn, caster, enemies, allies, state);
+                    aliveTargets.forEach(target => {
+                        target.takeDamage(venomDmg, logFn, caster, [], [], state);
                     });
                 }
             }
