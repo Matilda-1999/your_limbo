@@ -336,8 +336,7 @@ export const MONSTER_SKILLS = {
     const { currentTurn, calculateDamage } = state;
     const isOdd = currentTurn % 2 === 1;
     
-    // 기획: 홀수 발동 시 초록색 범위, 짝수 발동 시 붉은색 범위
-    // (여기서는 시각적 로그와 판정 로직으로 구현)
+    // 홀수 발동 시 초록색 범위, 짝수 발동 시 붉은색 범위
     battleLog(`✦공격✦ 카르나블룸의 유희! ${isOdd ? "[초록색 범위]" : "[붉은색 범위]"}가 전장을 휩씁니다.`);
 
     // 2페이즈는 9x9 맵이므로 범위 판정이 중요함 (예시: 십자 혹은 부채꼴)
