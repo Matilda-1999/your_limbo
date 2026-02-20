@@ -358,7 +358,7 @@ SKILL_REALITY: {
       enemies.filter((e) => e.isAlive).forEach((enemy) => {
         enemy.addDebuff("poison_truth", "[중독]", 2, {
           dotType: "current_hp_ratio",
-          ratio: 0.015, // 1.5%
+          ratio: 0.017,
           casterId: caster.id,
         });
       });
