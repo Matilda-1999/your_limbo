@@ -310,8 +310,8 @@ SKILL_REALITY: {
       battleLog(`✦효과✦ ${caster.name} [실존] 사용: [실재] 4스택을 획득합니다.`);
     }
 
-    // 3. 시전자 본인에게 [실재] 스택 부여 (2턴 유지)
-    caster.addBuff("reality_stacks", "[실재]", 2, {
+    // 3. 시전자 본인에게 [실재] 스택 부여
+    caster.addBuff("reality_stacks", "[실재]", 3, {
       stacks: realityStacks,
       unremovable: true,
       lastAppliedTurn: currentTurn,
