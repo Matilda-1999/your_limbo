@@ -68,7 +68,8 @@ export const MONSTER_TEMPLATES = {
       "SKILL_Carnabloom_Playtime", 
       "SKILL_Play2", 
       "SKILL_Silence", 
-      "SKILL_Dress_Rehearsal"
+      "SKILL_Dress_Rehearsal",
+      "SKILL_Puppet_Parade"
     ],
     gimmicks: [
       "SKILL_Script_Reversal",
