@@ -285,25 +285,27 @@ export class Character {
         this.debuffs.forEach(debuff => {
             debuff.turnsLeft--;
 
-            // [진리] 중독 & 맹독 처리
             if (debuff.id === "poison_truth") {
                 // 1. [중독] 결산: 현재 체력의 1.5% 피해
                 const poisonDmg = Math.max(1, Math.round(this.currentHp * 0.015));
                 logFn(`✦중독✦ ${this.name}, 독으로 ${poisonDmg}의 피해를 입습니다.`);
                 
-                // 데미지 입힘 (공격자 null 처리)
+                // 중독 대미지 적용
                 this.takeDamage(poisonDmg, logFn, null, enemies, allies, state);
-
-                // 2. [맹독] 결산 후 추가 공격 (시전자의 공격력 x 30%)
+            
+                // 2. [맹독] 결산: 중독 대미지를 입은 '모든 적'에게 30% 추가 피해
                 const caster = allies.find(a => a.id === debuff.effect.casterId);
                 if (caster && caster.isAlive) {
+                    // 살아 있는 모든 적군을 대상으로 맹독 전파
                     const aliveEnemies = enemies.filter(e => e.isAlive);
+                    
                     if (aliveEnemies.length > 0) {
-                        const randomTarget = aliveEnemies[Math.floor(Math.random() * aliveEnemies.length)];
-                        const venomDmg = Math.round(caster.getEffectiveStat("atk") * 0.3);
-                        
-                        logFn(`✦맹독✦ 결산 완료. ${caster.name}의 맹독이 ${randomTarget.name}을(를) 추가 타격합니다!`);
-                        randomTarget.takeDamage(venomDmg, logFn, caster, enemies, allies, state);
+                        const venomDmg = Math.round(poisonDmg * 0.3);
+                        logFn(`✦맹독✦ 결산 완료. ${caster.name}의 독기가 주변에 퍼집니다. (추가 피해: ${venomDmg})`);
+            
+                        aliveEnemies.forEach(target => {
+                            target.takeDamage(venomDmg, logFn, caster, enemies, allies, state);
+                        });
                     }
                 }
             }
