@@ -283,7 +283,6 @@ export class Character {
 
     updateDebuffs(logFn, allies = [], enemies = [], state = {}) {
     this.debuffs.forEach(debuff => {
-        debuff.turnsLeft--;
 
         if (debuff.id === "poison_truth") {
             // 1. [중독] 결산: 현재 체력의 1.5% 피해 계산
@@ -309,7 +308,6 @@ export class Character {
             }
         }
     });
-    this.debuffs = this.debuffs.filter(d => d.turnsLeft > 0);
 }
     
     addDebuff(id, name, turns, effect = {}) {
