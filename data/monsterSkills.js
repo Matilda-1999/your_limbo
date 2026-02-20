@@ -483,39 +483,80 @@ SKILL_Puppet_Parade: {
   name: "커튼콜 / 앵콜",
   type: "특수 기믹",
   execute: (caster, target, allies, enemies, battleLog, state) => {
-    if (caster.isAlive && caster.currentHp > 0) return false;
-   
-    // 1. 전장에 남은 미니언(피에로, 클라운) 확인
+    const boss = caster; // 카르나블룸
     const minions = enemies.filter(e => e.isAlive && (e.name === "피에로" || e.name === "클라운"));
+    const isMinionsWiped = minions.length === 0;
 
-    if (minions.length > 0) {
-      // [커튼콜 발동]
-      battleLog(`\n<pre> 마침내 카르나블룸이 장렬하게 쓰러집니다! </pre>`);
-      battleLog(`<b>아! 하지만, 아직 공연은 끝나지 않았습니다.</b>`);
-      battleLog(`"나의 아이들아, 마지막 장면을 위해 조금 더 힘을 빌려주렴."`);
+    // --- [1] 보스 사망 시 (커튼콜: 부활 로직) ---
+    if (!boss.isAlive || boss.currentHp <= 0) {
+      if (!isMinionsWiped) {
+        if (!state.bossWipedTurn) state.bossWipedTurn = state.currentTurn;
 
-      // 2. 미니언들의 현재 체력 10%를 바침
-      minions.forEach(m => {
-        const hpSacrifice = Math.round(m.currentHp * 0.1);
-        m.currentHp = Math.max(1, m.currentHp - hpSacrifice);
-        battleLog(`  ✦희생✦ ${m.name}의 생명력이 인형사에게로 흘러 들어갑니다.`);
-      });
+        // 보스 사망 후 3턴 이내 판정
+        if (state.currentTurn <= state.bossWipedTurn + 2) {
+          battleLog(`\n<pre>마침내 카르나블룸이 장렬하게 쓰러집니다!</pre>`);
+          battleLog(`<b>아! 하지만, 아직 공연은 끝나지 않았습니다.</b>`);
+          battleLog(`"나의 아이들아, 마지막 장면을 위해 조금 더 힘을 빌려주렴."`);
 
-      // 3. 보스 부활 (최대 체력의 40% 복구)
-      caster.isAlive = true;
-      caster.currentHp = Math.round(caster.maxHp * 0.4);
-      
-      battleLog(`\n<b>✦앵콜✦ 카르나블룸이 다시 무대 위로 소환되었습니다!</b>`);
-      battleLog(`<pre>"자, 관객 여러분. 다시 한번 박수를!"</pre>`);
-      battleLog(`<pre>--------------------------------</pre>\n`);
+          // 일반 몬스터 체력 10% 희생
+          minions.forEach(m => {
+            const hpSacrifice = Math.round(m.currentHp * 0.1);
+            m.currentHp = Math.max(1, m.currentHp - hpSacrifice);
+            battleLog(`  ✦희생✦ ${m.name}의 생명력이 인형사에게로 흘러 들어옵니다.`);
+          });
 
-      if (state.displayCharacters) state.displayCharacters();
-      return true; // 부활 성공
-    } else {
-      // 모든 미니언이 처치된 상태면 부활 실패
-      battleLog(`\n✦종료✦ 광대들이 모두 사라져, 인형사의 무대가 완전히 막을 내립니다.`);
-      return false; // 최종 사망
+          // 보스 부활 (최대 체력의 40%)
+          boss.isAlive = true;
+          boss.currentHp = Math.round(boss.maxHp * 0.4);
+          state.bossWipedTurn = null; 
+
+          battleLog(`\n<b>✦앵콜✦ 카르나블룸이 다시 무대를 이어갑니다.</b>`);
+          return true;
+        }
+      } else {
+        battleLog(`\n✦종료✦ 인형사의 무대가 완전히 막을 내립니다. 아쉬워라!`);
+        return false;
+      }
     }
+
+    // --- [2] 일반 몬스터 전멸 시 (앵콜: 재소환 로직) ---
+    if (boss.isAlive && isMinionsWiped) {
+      if (state.minionsWipedTurn && state.currentTurn >= state.minionsWipedTurn + 2) {
+        battleLog(`\n<pre>마침내 카르나블룸의 광대들이 장렬하게 쓰러집니다!</pre>`);
+        battleLog(`<b>아! 하지만, 아직 공연은 끝나지 않았습니다.</b>`);
+        battleLog(`"나의 아이들아, 마지막 장면을 위해 조금 더 힘을 빌려주렴."`);
+        
+        // 보스 체력 20% 회복
+        const healAmount = Math.round(boss.maxHp * 0.2);
+        boss.currentHp = Math.min(boss.maxHp, boss.currentHp + healAmount);
+        battleLog(`✦회복✦ 인형사가 기운을 차립니다. 다시 무대를 이어갑니다.`);
+
+        // 쫄몹 재소환
+        if (state.addCharacterAtPos) {
+          const pos1 = state.utils.getRandomEmptyCell(state.mapWidth, state.mapHeight, state.characterPositions);
+          if (pos1) state.addCharacterAtPos("Pierrot", pos1);
+          
+          const pos2 = state.utils.getRandomEmptyCell(state.mapWidth, state.mapHeight, state.characterPositions);
+          if (pos2) state.addCharacterAtPos("Clown", pos2);
+          
+          battleLog(`✦앵콜✦ 피에로와 클라운이 기괴한 웃음과 함께 다시 나타납니다. 환영의 박수를!`);
+        }
+
+        // 랜덤 낙인 부여
+        const aliveAllies = allies.filter(a => a.isAlive);
+        if (aliveAllies.length > 0) {
+          const randomAlly = aliveAllies[Math.floor(Math.random() * aliveAllies.length)];
+          const brandType = Math.random() > 0.5 ? "brand_melancholy" : "brand_joy";
+          const brandName = brandType === "brand_melancholy" ? "[우울 낙인]" : "[환희 낙인]";
+          randomAlly.addDebuff(brandType, brandName, 99, { maxStacks: 3 });
+          battleLog(`✦낙인✦ ${randomAlly.name}에게 ${brandName}이 새겨집니다.`);
+        }
+
+        state.minionsWipedTurn = null; 
+        return true;
+      }
+    }
+    return false;
   }
 },
 
